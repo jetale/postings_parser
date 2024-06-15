@@ -10,3 +10,9 @@
 ## Questions -
 - Best way to string compare, find in string. Is regex better? at what load should you switch from "s" in string to regex
 - To declare a variable or not
+
+
+
+
+## Notes -
+- If you want to print directory structure use this command. This samples command ignores env and lib directory - `tree -I 'env|lib'`
