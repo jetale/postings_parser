@@ -16,3 +16,8 @@
 
 ## Notes -
 - If you want to print directory structure use this command. This samples command ignores env and lib directory - `tree -I 'env|lib'`
+- TO remove a file from remote after adding it to `.gitignore` - 
+	- `git rm --cached file`
+	- `git add .`
+	- `git commit -m "msg"`
+	- `git push`
