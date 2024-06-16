@@ -1,16 +1,18 @@
 import csv 
 import pickle
-from datetime import datetime, date, time
+from datetime import datetime, date
+import pkg_resources
+import time
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
-import time
 import uuid
 
-from database_connector import Connector
-from scrape_postings import PageScraper
+from postings_parser.utils.database_connector import Connector
+from postings_parser.backend.scrape_postings import PageScraper
 
 
 
@@ -18,7 +20,8 @@ from scrape_postings import PageScraper
 class ParsePostings:
 
     def __init__(self):
-        self.input_path = "input/urls.txt"
+        self.input_path = pkg_resources.resource_filename('postings_parser', 'input/urls.txt')
+        #self.input_path = "input/urls.txt"
         chrome_options = Options()
         chrome_options.add_argument('--headless')
         self.driver = webdriver.Chrome(options=chrome_options)
@@ -42,10 +45,12 @@ class ParsePostings:
 
         loader = self.load_url()
         for url in loader:
-            postings_list = self.scraper.scrape(url=url)
-            #self.insert_query(postings_list)
-            print(postings_list)
-            exit()
+            if ".lever." not in url: # Temporary measure while I sort out the scrapy situation
+                postings_list = self.scraper.scrape(url=url)
+                self.insert_query(postings_list)
+                time.sleep(10)
+                #print(postings_list)
+                #exit()
 
         self.close_connection()
         self.driver.quit()
@@ -72,8 +77,9 @@ class ParsePostings:
                                         company,         
                                         parsed_date,     
                                         parsed_time,     
-                                        posting_url )
-                    VALUES (%s, %s, %s, %s, %s, %s);
+                                        posting_url,
+                                        posting_date )
+                    VALUES (%s, %s, %s, %s, %s, %s, %s);
                     """
         try:
             self.cursor.executemany(insert_query, postings_list)

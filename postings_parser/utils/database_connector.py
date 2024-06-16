@@ -9,7 +9,6 @@ import os
 class Connector:
     def __init__(self):
         load_dotenv()
-        print(os.getenv("DB_PASSWORD"))
         self.db_params = {
                             'dbname': 'postgres',
                             'user': 'dev',
