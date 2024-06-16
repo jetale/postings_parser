@@ -1,3 +1,4 @@
 env/
 __pycache__/
 postings_parser.egg-info/
+.env
