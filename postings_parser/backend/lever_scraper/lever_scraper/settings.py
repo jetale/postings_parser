@@ -8,6 +8,7 @@
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
 BOT_NAME = "lever_scraper"
+LOG_LEVEL = 'INFO'
 
 SPIDER_MODULES = ["lever_scraper.spiders"]
 NEWSPIDER_MODULE = "lever_scraper.spiders"
@@ -17,7 +18,7 @@ NEWSPIDER_MODULE = "lever_scraper.spiders"
 #USER_AGENT = "lever_scraper (+http://www.yourdomain.com)"
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -62,9 +63,9 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    "lever_scraper.pipelines.LeverScraperPipeline": 300,
-#}
+ITEM_PIPELINES = {
+    "lever_scraper.pipelines.LeverScraperPipeline": 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html

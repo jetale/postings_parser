@@ -16,7 +16,6 @@ from scrapy.crawler import CrawlerProcess
 from scrapy.signalmanager import dispatcher
 from scrapy import signals
 
-from postings_parser.backend.lever_scraper.spiders.lever_scraper_spider import LeverSpider
 
 
 class ItemCollector:
@@ -38,10 +37,7 @@ class PageScraper:
 
     def scrape(self, url):
         # Add conditions based on url and which scraper to use. Eg. workday, lever etc.
-        if "lever" in url:
-            postings_list = self.scrape_lever(url)
-        else:
-            postings_list = self.scrape_workday(url)
+        postings_list = self.scrape_workday(url)
         return postings_list
     
     def get_date_time(self):
@@ -137,7 +133,7 @@ class PageScraper:
 
         return postings_list
     
-        
+    """ 
     @defer.inlineCallbacks
     def crawl(self, url):
         self.collector.clear_items()
@@ -146,14 +142,14 @@ class PageScraper:
         yield runner.crawl(LeverSpider, url=url)
         reactor.callLater(0, reactor.stop)
 
-    """
+    
     def scrape_lever(self, url):
         dispatcher.connect(collector.collect_item, signal=signals.item_scraped)
         process = CrawlerProcess()
         process.crawl(LeverSpider, url=url)
         process.start()
         return self.convert_to_tuple(collector.items)
-    """
+   
 
     def scrape_lever(self, url):
         deferred = self.crawl(url)
@@ -166,3 +162,4 @@ class PageScraper:
         keys_order = ['job_id', 'job_title', 'company_name',  'parsed_date', 'parsed_time', 'job_href', 'posting_date' ]
         list_of_tuples_ordered = [tuple(d[key] for key in keys_order) for d in list_of_dicts]
         return list_of_tuples_ordered
+    """

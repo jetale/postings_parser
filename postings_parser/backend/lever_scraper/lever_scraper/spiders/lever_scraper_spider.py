@@ -2,7 +2,7 @@ import scrapy
 from scrapy.selector import Selector
 from datetime import datetime, date, time, timedelta
 
-from postings_parser.backend.lever_scraper.items import JobItem
+from postings_parser.backend.lever_scraper.lever_scraper.items import JobItem
 
 
 class LeverSpider(scrapy.Spider):
