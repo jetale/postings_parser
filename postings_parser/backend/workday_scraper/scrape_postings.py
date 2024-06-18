@@ -2,6 +2,7 @@
 from datetime import datetime, date, timedelta
 import time
 import uuid
+import sys
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -113,6 +114,7 @@ class PageScraper:
                         posted_on_date
                     )
                     postings_list.append(temp_tuple)
+                    print(temp_tuple)
 
                 #print(f"Page {page} - Total jobs parsed from {company_name}")
 
@@ -130,7 +132,8 @@ class PageScraper:
         except Exception as e:
             print(f"An error occurred while processing {company_name}: {str(e)}")
 
-
+        print(postings_list)
+        sys.stdout.flush()
         return postings_list
     
     """ 

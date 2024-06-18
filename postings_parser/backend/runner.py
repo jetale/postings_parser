@@ -6,7 +6,7 @@ from postings_parser.backend.lever_scraper.main_lever_scraper import StartSpider
 
 class Runner:
     def __init__(self):
-        self.run_lever()
+        self.run_workday()
 
     def run_workday(self):
         workday_parser_obj = ParsePostings()

@@ -57,7 +57,6 @@ class StartSpiders:
                 if len(batch_list) == 6:
                     main_list.append(batch_list)
                     batch_list = []
-
         return main_list
 
 

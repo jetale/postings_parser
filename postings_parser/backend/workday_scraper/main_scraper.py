@@ -1,8 +1,9 @@
 import csv 
 import pickle
 from datetime import datetime, date
-import pkg_resources
+from importlib.resources import files
 import time
+import sys
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -20,10 +21,13 @@ from postings_parser.backend.workday_scraper.scrape_postings import PageScraper
 class ParsePostings:
 
     def __init__(self):
-        self.input_path = pkg_resources.resource_filename('postings_parser', 'input/urls.txt')
+        self.input_path = files('postings_parser.input').joinpath('urls.txt')  #('postings_parser', 'input/urls.txt')
         #self.input_path = "input/urls.txt"
         chrome_options = Options()
         chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument('--disable-dev-shm-usage')
+        chrome_options.add_argument('--remote-debugging-pipe')
         self.driver = webdriver.Chrome(options=chrome_options)
         self.wait = WebDriverWait(self.driver, 10)  # Adjust the timeout as needed
 
@@ -45,12 +49,12 @@ class ParsePostings:
 
         loader = self.load_url()
         for url in loader:
-            if ".lever." not in url: # Temporary measure while I sort out the scrapy situation
-                postings_list = self.scraper.scrape(url=url)
-                self.insert_query(postings_list)
-                time.sleep(10)
-                #print(postings_list)
-                #exit()
+            # Temporary measure while I sort out the scrapy situation
+            postings_list = self.scraper.scrape(url=url)
+            self.insert_query(postings_list)
+            time.sleep(2)
+            #print(postings_list)
+            #exit()
 
         self.close_connection()
         self.driver.quit()
@@ -81,6 +85,7 @@ class ParsePostings:
                                         posting_date )
                     VALUES (%s, %s, %s, %s, %s, %s, %s);
                     """
+        print(postings_list)
         try:
             self.cursor.executemany(insert_query, postings_list)
             self.connection.commit()
