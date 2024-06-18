@@ -44,6 +44,7 @@ COPY . /app/
 RUN pip install . 
 
 ENV PYTHONPATH "${PYTHONPATH}:/app/"
+RUN apt-get remove -y wget curl unzip gnupg ca-certificates
 
 # Run the Flask application
 #CMD ["python3", "postings_parser/backend/runner.py"]

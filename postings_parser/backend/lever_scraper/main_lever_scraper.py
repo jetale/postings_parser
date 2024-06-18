@@ -8,6 +8,7 @@ from scrapy.utils.project import get_project_settings
 
 
 from postings_parser.backend.lever_scraper.lever_scraper.spiders.lever_scraper_spider import LeverSpider
+#from postings_parser.backend.lever_scraper.lever_scraper.spiders.workday_spider import WorkdaySpider
 
 
 
@@ -41,7 +42,6 @@ class StartSpiders:
             self.logger.info(f"Starting process for {url}")
             if "lever" in url: # This is for sanity check only. All urls should be for lever.co only
                 spider_process.crawl(LeverSpider, url=url)
-
         spider_process.start()
 
 
@@ -57,6 +57,8 @@ class StartSpiders:
                 if len(batch_list) == 6:
                     main_list.append(batch_list)
                     batch_list = []
+
+        return [['https://jobs.lever.co/rover']]
         return main_list
 
 
