@@ -1,0 +1,1037 @@
+2024-06-16 17:54:31 [scrapy.utils.log] INFO: Scrapy 2.11.2 started (bot: scrapybot)
+2024-06-16 17:54:31 [scrapy.utils.log] INFO: Versions: lxml 5.2.2.0, libxml2 2.12.6, cssselect 1.2.0, parsel 1.9.1, w3lib 2.2.1, Twisted 24.3.0, Python 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0], pyOpenSSL 24.1.0 (OpenSSL 3.2.2 4 Jun 2024), cryptography 42.0.8, Platform Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
+2024-06-16 17:54:31 [logger] INFO: Starting process for https://jobs.lever.co/rover
+2024-06-16 17:54:31 [lever_postings] INFO: Initialized Spider, default_source
+2024-06-16 17:54:31 [scrapy.addons] INFO: Enabled addons:
+[]
+2024-06-16 17:54:31 [py.warnings] WARNING: /home/vishwajeet/projects/job_parser/env/lib/python3.10/site-packages/scrapy/utils/request.py:254: ScrapyDeprecationWarning: '2.6' is a deprecated value for the 'REQUEST_FINGERPRINTER_IMPLEMENTATION' setting.
+
+It is also the default value. In other words, it is normal to get this warning if you have not defined a value for the 'REQUEST_FINGERPRINTER_IMPLEMENTATION' setting. This is so for backward compatibility reasons, but it will change in a future version of Scrapy.
+
+See the documentation of the 'REQUEST_FINGERPRINTER_IMPLEMENTATION' setting for information on how to handle this deprecation.
+  return cls(crawler)
+
+2024-06-16 17:54:31 [scrapy.utils.log] DEBUG: Using reactor: twisted.internet.epollreactor.EPollReactor
+2024-06-16 17:54:31 [scrapy.extensions.telnet] INFO: Telnet Password: 5f6058dbcfcda641
+2024-06-16 17:54:31 [scrapy.middleware] INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.memusage.MemoryUsage',
+ 'scrapy.extensions.logstats.LogStats']
+2024-06-16 17:54:31 [scrapy.crawler] INFO: Overridden settings:
+{}
+2024-06-16 17:54:32 [scrapy.middleware] INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+2024-06-16 17:54:32 [scrapy.middleware] INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+2024-06-16 17:54:32 [scrapy.middleware] INFO: Enabled item pipelines:
+[]
+2024-06-16 17:54:32 [scrapy.core.engine] INFO: Spider opened
+2024-06-16 17:54:32 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+2024-06-16 17:54:32 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6023
+2024-06-16 17:54:32 [logger] INFO: Starting process for https://jobs.lever.co/frontapp
+2024-06-16 17:54:32 [lever_postings] INFO: Initialized Spider, default_source
+2024-06-16 17:54:32 [scrapy.addons] INFO: Enabled addons:
+[]
+2024-06-16 17:54:32 [py.warnings] WARNING: /home/vishwajeet/projects/job_parser/env/lib/python3.10/site-packages/scrapy/utils/request.py:254: ScrapyDeprecationWarning: '2.6' is a deprecated value for the 'REQUEST_FINGERPRINTER_IMPLEMENTATION' setting.
+
+It is also the default value. In other words, it is normal to get this warning if you have not defined a value for the 'REQUEST_FINGERPRINTER_IMPLEMENTATION' setting. This is so for backward compatibility reasons, but it will change in a future version of Scrapy.
+
+See the documentation of the 'REQUEST_FINGERPRINTER_IMPLEMENTATION' setting for information on how to handle this deprecation.
+  return cls(crawler)
+
+2024-06-16 17:54:32 [scrapy.extensions.telnet] INFO: Telnet Password: 70ee61e529fecd12
+2024-06-16 17:54:32 [scrapy.middleware] INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.memusage.MemoryUsage',
+ 'scrapy.extensions.logstats.LogStats']
+2024-06-16 17:54:32 [scrapy.crawler] INFO: Overridden settings:
+{}
+2024-06-16 17:54:32 [scrapy.middleware] INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+2024-06-16 17:54:32 [scrapy.middleware] INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+2024-06-16 17:54:32 [scrapy.middleware] INFO: Enabled item pipelines:
+[]
+2024-06-16 17:54:32 [scrapy.core.engine] INFO: Spider opened
+2024-06-16 17:54:32 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+2024-06-16 17:54:32 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6024
+2024-06-16 17:54:32 [logger] INFO: Starting process for https://jobs.lever.co/rivian
+2024-06-16 17:54:32 [lever_postings] INFO: Initialized Spider, default_source
+2024-06-16 17:54:32 [scrapy.addons] INFO: Enabled addons:
+[]
+2024-06-16 17:54:32 [scrapy.extensions.telnet] INFO: Telnet Password: 6e30c0055393ccff
+2024-06-16 17:54:32 [scrapy.middleware] INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.memusage.MemoryUsage',
+ 'scrapy.extensions.logstats.LogStats']
+2024-06-16 17:54:32 [scrapy.crawler] INFO: Overridden settings:
+{}
+2024-06-16 17:54:32 [scrapy.middleware] INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+2024-06-16 17:54:32 [scrapy.middleware] INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+2024-06-16 17:54:32 [scrapy.middleware] INFO: Enabled item pipelines:
+[]
+2024-06-16 17:54:32 [scrapy.core.engine] INFO: Spider opened
+2024-06-16 17:54:32 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+2024-06-16 17:54:32 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6025
+2024-06-16 17:54:32 [logger] INFO: Starting process for https://jobs.lever.co/thriveglobal
+2024-06-16 17:54:32 [lever_postings] INFO: Initialized Spider, default_source
+2024-06-16 17:54:32 [scrapy.addons] INFO: Enabled addons:
+[]
+2024-06-16 17:54:32 [scrapy.extensions.telnet] INFO: Telnet Password: 03192942a58272e4
+2024-06-16 17:54:32 [scrapy.middleware] INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.memusage.MemoryUsage',
+ 'scrapy.extensions.logstats.LogStats']
+2024-06-16 17:54:32 [scrapy.crawler] INFO: Overridden settings:
+{}
+2024-06-16 17:54:32 [scrapy.middleware] INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+2024-06-16 17:54:32 [scrapy.middleware] INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+2024-06-16 17:54:32 [scrapy.middleware] INFO: Enabled item pipelines:
+[]
+2024-06-16 17:54:32 [scrapy.core.engine] INFO: Spider opened
+2024-06-16 17:54:32 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+2024-06-16 17:54:32 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6026
+2024-06-16 17:54:32 [logger] INFO: Starting process for https://jobs.lever.co/akidolabs
+2024-06-16 17:54:32 [lever_postings] INFO: Initialized Spider, default_source
+2024-06-16 17:54:32 [scrapy.addons] INFO: Enabled addons:
+[]
+2024-06-16 17:54:32 [scrapy.extensions.telnet] INFO: Telnet Password: bf76ab5e4017c38c
+2024-06-16 17:54:32 [scrapy.middleware] INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.memusage.MemoryUsage',
+ 'scrapy.extensions.logstats.LogStats']
+2024-06-16 17:54:32 [scrapy.crawler] INFO: Overridden settings:
+{}
+2024-06-16 17:54:32 [scrapy.middleware] INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+2024-06-16 17:54:32 [scrapy.middleware] INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+2024-06-16 17:54:32 [scrapy.middleware] INFO: Enabled item pipelines:
+[]
+2024-06-16 17:54:32 [scrapy.core.engine] INFO: Spider opened
+2024-06-16 17:54:32 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+2024-06-16 17:54:32 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6027
+2024-06-16 17:54:32 [logger] INFO: Starting process for https://jobs.lever.co/swoopapp
+2024-06-16 17:54:32 [lever_postings] INFO: Initialized Spider, default_source
+2024-06-16 17:54:32 [scrapy.addons] INFO: Enabled addons:
+[]
+2024-06-16 17:54:32 [scrapy.extensions.telnet] INFO: Telnet Password: 08921f122473b77b
+2024-06-16 17:54:32 [scrapy.middleware] INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.memusage.MemoryUsage',
+ 'scrapy.extensions.logstats.LogStats']
+2024-06-16 17:54:32 [scrapy.crawler] INFO: Overridden settings:
+{}
+2024-06-16 17:54:32 [scrapy.middleware] INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+2024-06-16 17:54:32 [scrapy.middleware] INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+2024-06-16 17:54:32 [scrapy.middleware] INFO: Enabled item pipelines:
+[]
+2024-06-16 17:54:32 [scrapy.core.engine] INFO: Spider opened
+2024-06-16 17:54:32 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+2024-06-16 17:54:32 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6028
+2024-06-16 17:54:32 [scrapy.core.engine] DEBUG: Crawled (404) <GET https://jobs.lever.co/thriveglobal> (referer: None)
+2024-06-16 17:54:32 [scrapy.core.engine] DEBUG: Crawled (404) <GET https://jobs.lever.co/akidolabs> (referer: None)
+2024-06-16 17:54:32 [scrapy.core.engine] DEBUG: Crawled (404) <GET https://jobs.lever.co/rivian> (referer: None)
+2024-06-16 17:54:32 [scrapy.core.engine] DEBUG: Crawled (200) <GET https://jobs.lever.co/frontapp> (referer: None)
+2024-06-16 17:54:32 [scrapy.spidermiddlewares.httperror] INFO: Ignoring response <404 https://jobs.lever.co/thriveglobal>: HTTP status code is not handled or not allowed
+2024-06-16 17:54:32 [scrapy.core.engine] INFO: Closing spider (finished)
+2024-06-16 17:54:32 [scrapy.statscollectors] INFO: Dumping Scrapy stats:
+{'downloader/request_bytes': 226,
+ 'downloader/request_count': 1,
+ 'downloader/request_method_count/GET': 1,
+ 'downloader/response_bytes': 290086,
+ 'downloader/response_count': 1,
+ 'downloader/response_status_count/404': 1,
+ 'elapsed_time_seconds': 0.609958,
+ 'finish_reason': 'finished',
+ 'finish_time': datetime.datetime(2024, 6, 16, 23, 54, 32, 687492, tzinfo=datetime.timezone.utc),
+ 'httperror/response_ignored_count': 1,
+ 'httperror/response_ignored_status_count/404': 1,
+ 'log_count/DEBUG': 4,
+ 'log_count/INFO': 35,
+ 'memusage/max': 62210048,
+ 'memusage/startup': 62210048,
+ 'response_received_count': 1,
+ 'scheduler/dequeued': 1,
+ 'scheduler/dequeued/memory': 1,
+ 'scheduler/enqueued': 1,
+ 'scheduler/enqueued/memory': 1,
+ 'start_time': datetime.datetime(2024, 6, 16, 23, 54, 32, 77534, tzinfo=datetime.timezone.utc)}
+2024-06-16 17:54:32 [scrapy.core.engine] INFO: Spider closed (finished)
+2024-06-16 17:54:32 [scrapy.core.engine] DEBUG: Crawled (200) <GET https://jobs.lever.co/swoopapp> (referer: None)
+2024-06-16 17:54:32 [scrapy.spidermiddlewares.httperror] INFO: Ignoring response <404 https://jobs.lever.co/akidolabs>: HTTP status code is not handled or not allowed
+2024-06-16 17:54:32 [scrapy.core.engine] DEBUG: Crawled (200) <GET https://jobs.lever.co/rover> (referer: None)
+2024-06-16 17:54:32 [scrapy.core.engine] INFO: Closing spider (finished)
+2024-06-16 17:54:32 [scrapy.statscollectors] INFO: Dumping Scrapy stats:
+{'downloader/request_bytes': 223,
+ 'downloader/request_count': 1,
+ 'downloader/request_method_count/GET': 1,
+ 'downloader/response_bytes': 290086,
+ 'downloader/response_count': 1,
+ 'downloader/response_status_count/404': 1,
+ 'elapsed_time_seconds': 0.617453,
+ 'finish_reason': 'finished',
+ 'finish_time': datetime.datetime(2024, 6, 16, 23, 54, 32, 699157, tzinfo=datetime.timezone.utc),
+ 'httperror/response_ignored_count': 1,
+ 'httperror/response_ignored_status_count/404': 1,
+ 'log_count/DEBUG': 6,
+ 'log_count/INFO': 27,
+ 'memusage/max': 62480384,
+ 'memusage/startup': 62480384,
+ 'response_received_count': 1,
+ 'scheduler/dequeued': 1,
+ 'scheduler/dequeued/memory': 1,
+ 'scheduler/enqueued': 1,
+ 'scheduler/enqueued/memory': 1,
+ 'start_time': datetime.datetime(2024, 6, 16, 23, 54, 32, 81704, tzinfo=datetime.timezone.utc)}
+2024-06-16 17:54:32 [scrapy.core.engine] INFO: Spider closed (finished)
+2024-06-16 17:54:32 [scrapy.spidermiddlewares.httperror] INFO: Ignoring response <404 https://jobs.lever.co/rivian>: HTTP status code is not handled or not allowed
+2024-06-16 17:54:32 [scrapy.core.engine] INFO: Closing spider (finished)
+2024-06-16 17:54:32 [scrapy.statscollectors] INFO: Dumping Scrapy stats:
+{'downloader/request_bytes': 220,
+ 'downloader/request_count': 1,
+ 'downloader/request_method_count/GET': 1,
+ 'downloader/response_bytes': 290086,
+ 'downloader/response_count': 1,
+ 'downloader/response_status_count/404': 1,
+ 'elapsed_time_seconds': 0.657819,
+ 'finish_reason': 'finished',
+ 'finish_time': datetime.datetime(2024, 6, 16, 23, 54, 32, 731530, tzinfo=datetime.timezone.utc),
+ 'httperror/response_ignored_count': 1,
+ 'httperror/response_ignored_status_count/404': 1,
+ 'log_count/DEBUG': 6,
+ 'log_count/INFO': 55,
+ 'memusage/max': 61915136,
+ 'memusage/startup': 61915136,
+ 'response_received_count': 1,
+ 'scheduler/dequeued': 1,
+ 'scheduler/dequeued/memory': 1,
+ 'scheduler/enqueued': 1,
+ 'scheduler/enqueued/memory': 1,
+ 'start_time': datetime.datetime(2024, 6, 16, 23, 54, 32, 73711, tzinfo=datetime.timezone.utc)}
+2024-06-16 17:54:32 [scrapy.core.engine] INFO: Spider closed (finished)
+2024-06-16 17:54:32 [scrapy.core.engine] INFO: Closing spider (finished)
+2024-06-16 17:54:32 [scrapy.statscollectors] INFO: Dumping Scrapy stats:
+{'downloader/request_bytes': 222,
+ 'downloader/request_count': 1,
+ 'downloader/request_method_count/GET': 1,
+ 'downloader/response_bytes': 339562,
+ 'downloader/response_count': 1,
+ 'downloader/response_status_count/200': 1,
+ 'elapsed_time_seconds': 0.69867,
+ 'finish_reason': 'finished',
+ 'finish_time': datetime.datetime(2024, 6, 16, 23, 54, 32, 768477, tzinfo=datetime.timezone.utc),
+ 'log_count/DEBUG': 6,
+ 'log_count/INFO': 70,
+ 'log_count/WARNING': 1,
+ 'memusage/max': 61915136,
+ 'memusage/startup': 61915136,
+ 'response_received_count': 1,
+ 'scheduler/dequeued': 1,
+ 'scheduler/dequeued/memory': 1,
+ 'scheduler/enqueued': 1,
+ 'scheduler/enqueued/memory': 1,
+ 'start_time': datetime.datetime(2024, 6, 16, 23, 54, 32, 69807, tzinfo=datetime.timezone.utc)}
+2024-06-16 17:54:32 [scrapy.core.engine] INFO: Spider closed (finished)
+2024-06-16 17:54:32 [scrapy.core.engine] INFO: Closing spider (finished)
+2024-06-16 17:54:32 [scrapy.statscollectors] INFO: Dumping Scrapy stats:
+{'downloader/request_bytes': 222,
+ 'downloader/request_count': 1,
+ 'downloader/request_method_count/GET': 1,
+ 'downloader/response_bytes': 336132,
+ 'downloader/response_count': 1,
+ 'downloader/response_status_count/200': 1,
+ 'elapsed_time_seconds': 0.710447,
+ 'finish_reason': 'finished',
+ 'finish_time': datetime.datetime(2024, 6, 16, 23, 54, 32, 796642, tzinfo=datetime.timezone.utc),
+ 'log_count/DEBUG': 6,
+ 'log_count/INFO': 25,
+ 'memusage/max': 62480384,
+ 'memusage/startup': 62480384,
+ 'response_received_count': 1,
+ 'scheduler/dequeued': 1,
+ 'scheduler/dequeued/memory': 1,
+ 'scheduler/enqueued': 1,
+ 'scheduler/enqueued/memory': 1,
+ 'start_time': datetime.datetime(2024, 6, 16, 23, 54, 32, 86195, tzinfo=datetime.timezone.utc)}
+2024-06-16 17:54:32 [scrapy.core.engine] INFO: Spider closed (finished)
+2024-06-16 17:54:32 [lever_postings] INFO: Parsing row 1, default_company lever_postings
+2024-06-16 17:54:32 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/rover>
+{'company_name': 'rover',
+ 'job_href': 'https://jobs.lever.co/rover/a5138f61-df3e-4d4c-a01f-7d30d3ca1216',
+ 'job_id': None,
+ 'job_title': 'Senior Financial Analyst',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:54:32.804072',
+ 'posting_date': None}
+2024-06-16 17:54:32 [lever_postings] INFO: Parsing row 1, default_company lever_postings
+2024-06-16 17:54:32 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/rover>
+{'company_name': 'rover',
+ 'job_href': 'https://jobs.lever.co/rover/81692699-eba4-4c0e-94a3-5acf0c8f7928',
+ 'job_id': None,
+ 'job_title': 'Senior Income Tax Accountant',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:54:32.804072',
+ 'posting_date': None}
+2024-06-16 17:54:32 [lever_postings] INFO: Parsing row 1, default_company lever_postings
+2024-06-16 17:54:32 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/rover>
+{'company_name': 'rover',
+ 'job_href': 'https://jobs.lever.co/rover/c39ac04b-214b-49b8-b4aa-e9f9a33b77ed',
+ 'job_id': None,
+ 'job_title': 'Tax Accountant, Indirect Tax',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:54:32.804072',
+ 'posting_date': None}
+2024-06-16 17:54:32 [lever_postings] INFO: Parsing row 2, default_company lever_postings
+2024-06-16 17:54:32 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/rover>
+{'company_name': 'rover',
+ 'job_href': 'https://jobs.lever.co/rover/c420ce54-fce1-4416-bb24-66809f07e679',
+ 'job_id': None,
+ 'job_title': 'Director, Corporate Development',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:54:32.804072',
+ 'posting_date': None}
+2024-06-16 17:54:32 [lever_postings] INFO: Parsing row 3, default_company lever_postings
+2024-06-16 17:54:32 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/rover>
+{'company_name': 'rover',
+ 'job_href': 'https://jobs.lever.co/rover/7a1157e5-bc3b-4e1d-879f-211d07e6a871',
+ 'job_id': None,
+ 'job_title': 'Lead Data Analyst - Operations Analytics',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:54:32.804072',
+ 'posting_date': None}
+2024-06-16 17:54:32 [lever_postings] INFO: Parsing row 4, default_company lever_postings
+2024-06-16 17:54:32 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/rover>
+{'company_name': 'rover',
+ 'job_href': 'https://jobs.lever.co/rover/07f25675-7139-414f-9966-56993eb3b2b9',
+ 'job_id': None,
+ 'job_title': 'Lead Data Analyst - Marketing Analytics',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:54:32.804072',
+ 'posting_date': None}
+2024-06-16 17:54:32 [lever_postings] INFO: Parsing row 4, default_company lever_postings
+2024-06-16 17:54:32 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/rover>
+{'company_name': 'rover',
+ 'job_href': 'https://jobs.lever.co/rover/a8dfbe59-3dc0-40ab-8102-0866dff376ee',
+ 'job_id': None,
+ 'job_title': 'Senior Director, Product and Marketing Analytics',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:54:32.804072',
+ 'posting_date': None}
+2024-06-16 17:54:32 [lever_postings] INFO: Parsing row 5, default_company lever_postings
+2024-06-16 17:54:32 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/rover>
+{'company_name': 'rover',
+ 'job_href': 'https://jobs.lever.co/rover/80f29c75-2ff9-420c-a4c1-d3103dd3f793',
+ 'job_id': None,
+ 'job_title': 'Engineering Manager, Payments',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:54:32.804072',
+ 'posting_date': None}
+2024-06-16 17:54:32 [lever_postings] INFO: Parsing row 5, default_company lever_postings
+2024-06-16 17:54:32 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/rover>
+{'company_name': 'rover',
+ 'job_href': 'https://jobs.lever.co/rover/3f2fa9a3-a2c0-4aaf-aae9-19b730b8b4ad',
+ 'job_id': None,
+ 'job_title': 'Production Support Engineer',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:54:32.804072',
+ 'posting_date': None}
+2024-06-16 17:54:32 [lever_postings] INFO: Parsing row 5, default_company lever_postings
+2024-06-16 17:54:32 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/rover>
+{'company_name': 'rover',
+ 'job_href': 'https://jobs.lever.co/rover/a825940e-3c09-408a-bfe8-a4f14c9f2c9a',
+ 'job_id': None,
+ 'job_title': 'Senior Software Engineer',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:54:32.804072',
+ 'posting_date': None}
+2024-06-16 17:54:32 [lever_postings] INFO: Parsing row 5, default_company lever_postings
+2024-06-16 17:54:32 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/rover>
+{'company_name': 'rover',
+ 'job_href': 'https://jobs.lever.co/rover/39f8c22d-89dc-49bb-94ee-27088caa6c0b',
+ 'job_id': None,
+ 'job_title': 'Software Engineer II, Orders',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:54:32.804072',
+ 'posting_date': None}
+2024-06-16 17:54:32 [lever_postings] INFO: Parsing row 5, default_company lever_postings
+2024-06-16 17:54:32 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/rover>
+{'company_name': 'rover',
+ 'job_href': 'https://jobs.lever.co/rover/afe0374b-8557-489b-9bd7-50ae73d0e983',
+ 'job_id': None,
+ 'job_title': 'Software Engineer II, Payments',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:54:32.804072',
+ 'posting_date': None}
+2024-06-16 17:54:32 [lever_postings] INFO: Parsing row 5, default_company lever_postings
+2024-06-16 17:54:32 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/rover>
+{'company_name': 'rover',
+ 'job_href': 'https://jobs.lever.co/rover/e6ccc0d1-8bf9-41db-a605-23af29341ecd',
+ 'job_id': None,
+ 'job_title': 'Staff Engineer, Payments Team',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:54:32.804072',
+ 'posting_date': None}
+2024-06-16 17:54:32 [lever_postings] INFO: Parsing row 6, default_company lever_postings
+2024-06-16 17:54:32 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/rover>
+{'company_name': 'rover',
+ 'job_href': 'https://jobs.lever.co/rover/1f865377-bbb2-4364-89ad-8237459ea991',
+ 'job_id': None,
+ 'job_title': 'IT Support Specialist',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:54:32.804072',
+ 'posting_date': None}
+2024-06-16 17:54:32 [lever_postings] INFO: Parsing row 7, default_company lever_postings
+2024-06-16 17:54:32 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/rover>
+{'company_name': 'rover',
+ 'job_href': 'https://jobs.lever.co/rover/994d4e29-0a1e-4f62-9118-2b945edfd0b7',
+ 'job_id': None,
+ 'job_title': 'Corporate Paralegal',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:54:32.804072',
+ 'posting_date': None}
+2024-06-16 17:54:32 [lever_postings] INFO: Parsing row 7, default_company lever_postings
+2024-06-16 17:54:32 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/rover>
+{'company_name': 'rover',
+ 'job_href': 'https://jobs.lever.co/rover/c22e3375-9100-4a87-81d7-e2a64927ddb6',
+ 'job_id': None,
+ 'job_title': 'Senior Corporate Counsel',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:54:32.804072',
+ 'posting_date': None}
+2024-06-16 17:54:32 [lever_postings] INFO: Parsing row 8, default_company lever_postings
+2024-06-16 17:54:32 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/rover>
+{'company_name': 'rover',
+ 'job_href': 'https://jobs.lever.co/rover/12276961-5f46-45d0-a16d-36b92e4a5911',
+ 'job_id': None,
+ 'job_title': 'Global Growth Marketer',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:54:32.804072',
+ 'posting_date': None}
+2024-06-16 17:54:32 [lever_postings] INFO: Parsing row 8, default_company lever_postings
+2024-06-16 17:54:32 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/rover>
+{'company_name': 'rover',
+ 'job_href': 'https://jobs.lever.co/rover/3e13f1f1-a4e1-475e-852c-a00ca0caad33',
+ 'job_id': None,
+ 'job_title': 'Senior Lifecycle Marketer (Lead)',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:54:32.804072',
+ 'posting_date': None}
+2024-06-16 17:54:32 [lever_postings] INFO: Parsing row 8, default_company lever_postings
+2024-06-16 17:54:32 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/rover>
+{'company_name': 'rover',
+ 'job_href': 'https://jobs.lever.co/rover/d79d8ac2-aafa-4cc4-a62b-341ccb2937bb',
+ 'job_id': None,
+ 'job_title': 'Sr. Director / Vice President of Growth Marketing',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:54:32.804072',
+ 'posting_date': None}
+2024-06-16 17:54:32 [lever_postings] INFO: Parsing row 9, default_company lever_postings
+2024-06-16 17:54:32 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/rover>
+{'company_name': 'rover',
+ 'job_href': 'https://jobs.lever.co/rover/89cff45e-bf36-4e2c-abba-2449882da6c1',
+ 'job_id': None,
+ 'job_title': 'Director of Global Customer Experience & Support',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:54:32.804072',
+ 'posting_date': None}
+2024-06-16 17:54:32 [lever_postings] INFO: Parsing row 10, default_company lever_postings
+2024-06-16 17:54:32 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/rover>
+{'company_name': 'rover',
+ 'job_href': 'https://jobs.lever.co/rover/c51920da-70a4-4afe-a63a-65502a3f8bf4',
+ 'job_id': None,
+ 'job_title': 'Director of Employee Inclusion and Engagement',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:54:32.804072',
+ 'posting_date': None}
+2024-06-16 17:54:32 [lever_postings] INFO: Parsing row 11, default_company lever_postings
+2024-06-16 17:54:32 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/rover>
+{'company_name': 'rover',
+ 'job_href': 'https://jobs.lever.co/rover/5b6a4527-d3ae-436e-9296-a46dc462fdae',
+ 'job_id': None,
+ 'job_title': 'Director of Product, Retention',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:54:32.804072',
+ 'posting_date': None}
+2024-06-16 17:54:32 [lever_postings] INFO: Parsing row 11, default_company lever_postings
+2024-06-16 17:54:32 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/rover>
+{'company_name': 'rover',
+ 'job_href': 'https://jobs.lever.co/rover/0de74720-b6f7-4e33-b102-024c6ca517d1',
+ 'job_id': None,
+ 'job_title': 'Product Manager - Trust and Safety',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:54:32.804072',
+ 'posting_date': None}
+2024-06-16 17:54:32 [lever_postings] INFO: Parsing row 11, default_company lever_postings
+2024-06-16 17:54:32 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/rover>
+{'company_name': 'rover',
+ 'job_href': 'https://jobs.lever.co/rover/d0ccf950-573e-468f-83cb-1404551d0c9d',
+ 'job_id': None,
+ 'job_title': 'Tax Program Manager (Contractor Role)',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:54:32.804072',
+ 'posting_date': None}
+2024-06-16 17:54:32 [lever_postings] INFO: Parsing row 12, default_company lever_postings
+2024-06-16 17:54:32 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/rover>
+{'company_name': 'rover',
+ 'job_href': 'https://jobs.lever.co/rover/faf473c0-6667-495b-8379-6f20bb55d67e',
+ 'job_id': None,
+ 'job_title': 'International Researcher/ Research Coordinator',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:54:32.804072',
+ 'posting_date': None}
+2024-06-16 17:54:32 [lever_postings] INFO: Parsing row 12, default_company lever_postings
+2024-06-16 17:54:32 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/rover>
+{'company_name': 'rover',
+ 'job_href': 'https://jobs.lever.co/rover/b30dcdad-4467-4d3b-8563-cb255daae75d',
+ 'job_id': None,
+ 'job_title': 'Senior Product Designer, Search',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:54:32.804072',
+ 'posting_date': None}
+2024-06-16 17:54:32 [lever_postings] INFO: Parsing row 13, default_company lever_postings
+2024-06-16 17:54:32 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/rover>
+{'company_name': 'rover',
+ 'job_href': 'https://jobs.lever.co/rover/ac94f515-a0ba-4d03-ad77-01306c8b9c4b',
+ 'job_id': None,
+ 'job_title': 'Senior Project Manager, International Country Launch',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:54:32.804072',
+ 'posting_date': None}
+2024-06-16 17:54:32 [scrapy.core.engine] INFO: Closing spider (finished)
+2024-06-16 17:54:32 [scrapy.statscollectors] INFO: Dumping Scrapy stats:
+{'downloader/request_bytes': 219,
+ 'downloader/request_count': 1,
+ 'downloader/request_method_count/GET': 1,
+ 'downloader/response_bytes': 371577,
+ 'downloader/response_count': 1,
+ 'downloader/response_status_count/200': 1,
+ 'elapsed_time_seconds': 0.761926,
+ 'finish_reason': 'finished',
+ 'finish_time': datetime.datetime(2024, 6, 16, 23, 54, 32, 826497, tzinfo=datetime.timezone.utc),
+ 'item_scraped_count': 27,
+ 'log_count/DEBUG': 34,
+ 'log_count/INFO': 115,
+ 'log_count/WARNING': 2,
+ 'memusage/max': 61726720,
+ 'memusage/startup': 61726720,
+ 'response_received_count': 1,
+ 'scheduler/dequeued': 1,
+ 'scheduler/dequeued/memory': 1,
+ 'scheduler/enqueued': 1,
+ 'scheduler/enqueued/memory': 1,
+ 'start_time': datetime.datetime(2024, 6, 16, 23, 54, 32, 64571, tzinfo=datetime.timezone.utc)}
+2024-06-16 17:54:32 [scrapy.core.engine] INFO: Spider closed (finished)
+2024-06-16 17:55:01 [scrapy.utils.log] INFO: Scrapy 2.11.2 started (bot: scrapybot)
+2024-06-16 17:55:01 [scrapy.utils.log] INFO: Versions: lxml 5.2.2.0, libxml2 2.12.6, cssselect 1.2.0, parsel 1.9.1, w3lib 2.2.1, Twisted 24.3.0, Python 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0], pyOpenSSL 24.1.0 (OpenSSL 3.2.2 4 Jun 2024), cryptography 42.0.8, Platform Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
+2024-06-16 17:55:01 [logger] INFO: Starting process for https://jobs.lever.co/x-claim
+2024-06-16 17:55:01 [lever_postings] INFO: Initialized Spider, default_source
+2024-06-16 17:55:01 [scrapy.addons] INFO: Enabled addons:
+[]
+2024-06-16 17:55:01 [py.warnings] WARNING: /home/vishwajeet/projects/job_parser/env/lib/python3.10/site-packages/scrapy/utils/request.py:254: ScrapyDeprecationWarning: '2.6' is a deprecated value for the 'REQUEST_FINGERPRINTER_IMPLEMENTATION' setting.
+
+It is also the default value. In other words, it is normal to get this warning if you have not defined a value for the 'REQUEST_FINGERPRINTER_IMPLEMENTATION' setting. This is so for backward compatibility reasons, but it will change in a future version of Scrapy.
+
+See the documentation of the 'REQUEST_FINGERPRINTER_IMPLEMENTATION' setting for information on how to handle this deprecation.
+  return cls(crawler)
+
+2024-06-16 17:55:01 [scrapy.utils.log] DEBUG: Using reactor: twisted.internet.epollreactor.EPollReactor
+2024-06-16 17:55:01 [scrapy.extensions.telnet] INFO: Telnet Password: 6417e4e8b53b6c4b
+2024-06-16 17:55:01 [scrapy.middleware] INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.memusage.MemoryUsage',
+ 'scrapy.extensions.logstats.LogStats']
+2024-06-16 17:55:01 [scrapy.crawler] INFO: Overridden settings:
+{}
+2024-06-16 17:55:01 [scrapy.middleware] INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+2024-06-16 17:55:01 [scrapy.middleware] INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+2024-06-16 17:55:01 [scrapy.middleware] INFO: Enabled item pipelines:
+[]
+2024-06-16 17:55:01 [scrapy.core.engine] INFO: Spider opened
+2024-06-16 17:55:01 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+2024-06-16 17:55:01 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6023
+2024-06-16 17:55:01 [logger] INFO: Starting process for http://jobs.lever.co/explodingkittens
+2024-06-16 17:55:01 [lever_postings] INFO: Initialized Spider, default_source
+2024-06-16 17:55:01 [scrapy.addons] INFO: Enabled addons:
+[]
+2024-06-16 17:55:01 [py.warnings] WARNING: /home/vishwajeet/projects/job_parser/env/lib/python3.10/site-packages/scrapy/utils/request.py:254: ScrapyDeprecationWarning: '2.6' is a deprecated value for the 'REQUEST_FINGERPRINTER_IMPLEMENTATION' setting.
+
+It is also the default value. In other words, it is normal to get this warning if you have not defined a value for the 'REQUEST_FINGERPRINTER_IMPLEMENTATION' setting. This is so for backward compatibility reasons, but it will change in a future version of Scrapy.
+
+See the documentation of the 'REQUEST_FINGERPRINTER_IMPLEMENTATION' setting for information on how to handle this deprecation.
+  return cls(crawler)
+
+2024-06-16 17:55:01 [scrapy.extensions.telnet] INFO: Telnet Password: d7b41cee6ff84017
+2024-06-16 17:55:01 [scrapy.middleware] INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.memusage.MemoryUsage',
+ 'scrapy.extensions.logstats.LogStats']
+2024-06-16 17:55:01 [scrapy.crawler] INFO: Overridden settings:
+{}
+2024-06-16 17:55:01 [scrapy.middleware] INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+2024-06-16 17:55:01 [scrapy.middleware] INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+2024-06-16 17:55:01 [scrapy.middleware] INFO: Enabled item pipelines:
+[]
+2024-06-16 17:55:01 [scrapy.core.engine] INFO: Spider opened
+2024-06-16 17:55:02 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+2024-06-16 17:55:02 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6024
+2024-06-16 17:55:02 [logger] INFO: Starting process for https://jobs.lever.co/boulevard
+2024-06-16 17:55:02 [lever_postings] INFO: Initialized Spider, default_source
+2024-06-16 17:55:02 [scrapy.addons] INFO: Enabled addons:
+[]
+2024-06-16 17:55:02 [scrapy.extensions.telnet] INFO: Telnet Password: db1ee1d8517909f0
+2024-06-16 17:55:02 [scrapy.middleware] INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.memusage.MemoryUsage',
+ 'scrapy.extensions.logstats.LogStats']
+2024-06-16 17:55:02 [scrapy.crawler] INFO: Overridden settings:
+{}
+2024-06-16 17:55:02 [scrapy.middleware] INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+2024-06-16 17:55:02 [scrapy.middleware] INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+2024-06-16 17:55:02 [scrapy.middleware] INFO: Enabled item pipelines:
+[]
+2024-06-16 17:55:02 [scrapy.core.engine] INFO: Spider opened
+2024-06-16 17:55:02 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+2024-06-16 17:55:02 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6025
+2024-06-16 17:55:02 [logger] INFO: Starting process for https://jobs.lever.co/italic
+2024-06-16 17:55:02 [lever_postings] INFO: Initialized Spider, default_source
+2024-06-16 17:55:02 [scrapy.addons] INFO: Enabled addons:
+[]
+2024-06-16 17:55:02 [scrapy.extensions.telnet] INFO: Telnet Password: 6731037b81476789
+2024-06-16 17:55:02 [scrapy.middleware] INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.memusage.MemoryUsage',
+ 'scrapy.extensions.logstats.LogStats']
+2024-06-16 17:55:02 [scrapy.crawler] INFO: Overridden settings:
+{}
+2024-06-16 17:55:02 [scrapy.middleware] INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+2024-06-16 17:55:02 [scrapy.middleware] INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+2024-06-16 17:55:02 [scrapy.middleware] INFO: Enabled item pipelines:
+[]
+2024-06-16 17:55:02 [scrapy.core.engine] INFO: Spider opened
+2024-06-16 17:55:02 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+2024-06-16 17:55:02 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6026
+2024-06-16 17:55:02 [logger] INFO: Starting process for https://jobs.lever.co/dave
+2024-06-16 17:55:02 [lever_postings] INFO: Initialized Spider, default_source
+2024-06-16 17:55:02 [scrapy.addons] INFO: Enabled addons:
+[]
+2024-06-16 17:55:02 [scrapy.extensions.telnet] INFO: Telnet Password: 469ce98df92d849d
+2024-06-16 17:55:02 [scrapy.middleware] INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.memusage.MemoryUsage',
+ 'scrapy.extensions.logstats.LogStats']
+2024-06-16 17:55:02 [scrapy.crawler] INFO: Overridden settings:
+{}
+2024-06-16 17:55:02 [scrapy.middleware] INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+2024-06-16 17:55:02 [scrapy.middleware] INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+2024-06-16 17:55:02 [scrapy.middleware] INFO: Enabled item pipelines:
+[]
+2024-06-16 17:55:02 [scrapy.core.engine] INFO: Spider opened
+2024-06-16 17:55:02 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+2024-06-16 17:55:02 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6027
+2024-06-16 17:55:02 [logger] INFO: Starting process for https://jobs.lever.co/meetalbert
+2024-06-16 17:55:02 [lever_postings] INFO: Initialized Spider, default_source
+2024-06-16 17:55:02 [scrapy.addons] INFO: Enabled addons:
+[]
+2024-06-16 17:55:02 [scrapy.extensions.telnet] INFO: Telnet Password: 2285cd04fc7905d1
+2024-06-16 17:55:02 [scrapy.middleware] INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.memusage.MemoryUsage',
+ 'scrapy.extensions.logstats.LogStats']
+2024-06-16 17:55:02 [scrapy.crawler] INFO: Overridden settings:
+{}
+2024-06-16 17:55:02 [scrapy.middleware] INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+2024-06-16 17:55:02 [scrapy.middleware] INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+2024-06-16 17:55:02 [scrapy.middleware] INFO: Enabled item pipelines:
+[]
+2024-06-16 17:55:02 [scrapy.core.engine] INFO: Spider opened
+2024-06-16 17:55:02 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+2024-06-16 17:55:02 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6028
+2024-06-16 17:55:02 [scrapy.downloadermiddlewares.redirect] DEBUG: Redirecting (301) to <GET https://jobs.lever.co/explodingkittens> from <GET http://jobs.lever.co/explodingkittens>
+2024-06-16 17:55:02 [scrapy.core.engine] DEBUG: Crawled (404) <GET https://jobs.lever.co/italic> (referer: None)
+2024-06-16 17:55:02 [scrapy.core.engine] DEBUG: Crawled (404) <GET https://jobs.lever.co/x-claim> (referer: None)
+2024-06-16 17:55:02 [scrapy.core.engine] DEBUG: Crawled (404) <GET https://jobs.lever.co/boulevard> (referer: None)
+2024-06-16 17:55:02 [scrapy.spidermiddlewares.httperror] INFO: Ignoring response <404 https://jobs.lever.co/italic>: HTTP status code is not handled or not allowed
+2024-06-16 17:55:02 [scrapy.core.engine] INFO: Closing spider (finished)
+2024-06-16 17:55:02 [scrapy.statscollectors] INFO: Dumping Scrapy stats:
+{'downloader/request_bytes': 220,
+ 'downloader/request_count': 1,
+ 'downloader/request_method_count/GET': 1,
+ 'downloader/response_bytes': 290086,
+ 'downloader/response_count': 1,
+ 'downloader/response_status_count/404': 1,
+ 'elapsed_time_seconds': 0.564354,
+ 'finish_reason': 'finished',
+ 'finish_time': datetime.datetime(2024, 6, 16, 23, 55, 2, 572897, tzinfo=datetime.timezone.utc),
+ 'httperror/response_ignored_count': 1,
+ 'httperror/response_ignored_status_count/404': 1,
+ 'log_count/DEBUG': 4,
+ 'log_count/INFO': 35,
+ 'memusage/max': 62214144,
+ 'memusage/startup': 62214144,
+ 'response_received_count': 1,
+ 'scheduler/dequeued': 1,
+ 'scheduler/dequeued/memory': 1,
+ 'scheduler/enqueued': 1,
+ 'scheduler/enqueued/memory': 1,
+ 'start_time': datetime.datetime(2024, 6, 16, 23, 55, 2, 8543, tzinfo=datetime.timezone.utc)}
+2024-06-16 17:55:02 [scrapy.core.engine] INFO: Spider closed (finished)
+2024-06-16 17:55:02 [scrapy.core.engine] DEBUG: Crawled (200) <GET https://jobs.lever.co/dave> (referer: None)
+2024-06-16 17:55:02 [scrapy.spidermiddlewares.httperror] INFO: Ignoring response <404 https://jobs.lever.co/x-claim>: HTTP status code is not handled or not allowed
+2024-06-16 17:55:02 [scrapy.core.engine] INFO: Closing spider (finished)
+2024-06-16 17:55:02 [scrapy.statscollectors] INFO: Dumping Scrapy stats:
+{'downloader/request_bytes': 221,
+ 'downloader/request_count': 1,
+ 'downloader/request_method_count/GET': 1,
+ 'downloader/response_bytes': 290086,
+ 'downloader/response_count': 1,
+ 'downloader/response_status_count/404': 1,
+ 'elapsed_time_seconds': 0.588912,
+ 'finish_reason': 'finished',
+ 'finish_time': datetime.datetime(2024, 6, 16, 23, 55, 2, 583571, tzinfo=datetime.timezone.utc),
+ 'httperror/response_ignored_count': 1,
+ 'httperror/response_ignored_status_count/404': 1,
+ 'log_count/DEBUG': 6,
+ 'log_count/INFO': 75,
+ 'log_count/WARNING': 2,
+ 'memusage/max': 61722624,
+ 'memusage/startup': 61722624,
+ 'response_received_count': 1,
+ 'scheduler/dequeued': 1,
+ 'scheduler/dequeued/memory': 1,
+ 'scheduler/enqueued': 1,
+ 'scheduler/enqueued/memory': 1,
+ 'start_time': datetime.datetime(2024, 6, 16, 23, 55, 1, 994659, tzinfo=datetime.timezone.utc)}
+2024-06-16 17:55:02 [scrapy.core.engine] INFO: Spider closed (finished)
+2024-06-16 17:55:02 [scrapy.core.engine] DEBUG: Crawled (200) <GET https://jobs.lever.co/meetalbert> (referer: None)
+2024-06-16 17:55:02 [scrapy.spidermiddlewares.httperror] INFO: Ignoring response <404 https://jobs.lever.co/boulevard>: HTTP status code is not handled or not allowed
+2024-06-16 17:55:02 [scrapy.core.engine] INFO: Closing spider (finished)
+2024-06-16 17:55:02 [scrapy.statscollectors] INFO: Dumping Scrapy stats:
+{'downloader/request_bytes': 223,
+ 'downloader/request_count': 1,
+ 'downloader/request_method_count/GET': 1,
+ 'downloader/response_bytes': 290086,
+ 'downloader/response_count': 1,
+ 'downloader/response_status_count/404': 1,
+ 'elapsed_time_seconds': 0.610751,
+ 'finish_reason': 'finished',
+ 'finish_time': datetime.datetime(2024, 6, 16, 23, 55, 2, 615134, tzinfo=datetime.timezone.utc),
+ 'httperror/response_ignored_count': 1,
+ 'httperror/response_ignored_status_count/404': 1,
+ 'log_count/DEBUG': 6,
+ 'log_count/INFO': 55,
+ 'memusage/max': 61915136,
+ 'memusage/startup': 61915136,
+ 'response_received_count': 1,
+ 'scheduler/dequeued': 1,
+ 'scheduler/dequeued/memory': 1,
+ 'scheduler/enqueued': 1,
+ 'scheduler/enqueued/memory': 1,
+ 'start_time': datetime.datetime(2024, 6, 16, 23, 55, 2, 4383, tzinfo=datetime.timezone.utc)}
+2024-06-16 17:55:02 [scrapy.core.engine] INFO: Spider closed (finished)
+2024-06-16 17:55:02 [scrapy.core.engine] DEBUG: Crawled (200) <GET https://jobs.lever.co/explodingkittens> (referer: None)
+2024-06-16 17:55:02 [lever_postings] INFO: Parsing row 1, default_company lever_postings
+2024-06-16 17:55:02 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/dave>
+{'company_name': 'dave',
+ 'job_href': 'https://jobs.lever.co/dave/1430b4a6-754b-4aff-9542-1b9cefc63859',
+ 'job_id': None,
+ 'job_title': 'Manager, Data Science Platform Engineering',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:55:02.686698',
+ 'posting_date': None}
+2024-06-16 17:55:02 [lever_postings] INFO: Parsing row 2, default_company lever_postings
+2024-06-16 17:55:02 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/dave>
+{'company_name': 'dave',
+ 'job_href': 'https://jobs.lever.co/dave/91bdcb8b-836e-457e-857e-2cd01a4e3f81',
+ 'job_id': None,
+ 'job_title': 'Security Engineer II',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:55:02.686698',
+ 'posting_date': None}
+2024-06-16 17:55:02 [scrapy.core.engine] INFO: Closing spider (finished)
+2024-06-16 17:55:02 [scrapy.statscollectors] INFO: Dumping Scrapy stats:
+{'downloader/request_bytes': 218,
+ 'downloader/request_count': 1,
+ 'downloader/request_method_count/GET': 1,
+ 'downloader/response_bytes': 342907,
+ 'downloader/response_count': 1,
+ 'downloader/response_status_count/200': 1,
+ 'elapsed_time_seconds': 0.677294,
+ 'finish_reason': 'finished',
+ 'finish_time': datetime.datetime(2024, 6, 16, 23, 55, 2, 690034, tzinfo=datetime.timezone.utc),
+ 'item_scraped_count': 2,
+ 'log_count/DEBUG': 9,
+ 'log_count/INFO': 36,
+ 'memusage/max': 62484480,
+ 'memusage/startup': 62484480,
+ 'response_received_count': 1,
+ 'scheduler/dequeued': 1,
+ 'scheduler/dequeued/memory': 1,
+ 'scheduler/enqueued': 1,
+ 'scheduler/enqueued/memory': 1,
+ 'start_time': datetime.datetime(2024, 6, 16, 23, 55, 2, 12740, tzinfo=datetime.timezone.utc)}
+2024-06-16 17:55:02 [scrapy.core.engine] INFO: Spider closed (finished)
+2024-06-16 17:55:02 [scrapy.core.engine] INFO: Closing spider (finished)
+2024-06-16 17:55:02 [scrapy.statscollectors] INFO: Dumping Scrapy stats:
+{'downloader/request_bytes': 224,
+ 'downloader/request_count': 1,
+ 'downloader/request_method_count/GET': 1,
+ 'downloader/response_bytes': 336675,
+ 'downloader/response_count': 1,
+ 'downloader/response_status_count/200': 1,
+ 'elapsed_time_seconds': 0.685757,
+ 'finish_reason': 'finished',
+ 'finish_time': datetime.datetime(2024, 6, 16, 23, 55, 2, 703851, tzinfo=datetime.timezone.utc),
+ 'log_count/DEBUG': 9,
+ 'log_count/INFO': 27,
+ 'memusage/max': 62484480,
+ 'memusage/startup': 62484480,
+ 'response_received_count': 1,
+ 'scheduler/dequeued': 1,
+ 'scheduler/dequeued/memory': 1,
+ 'scheduler/enqueued': 1,
+ 'scheduler/enqueued/memory': 1,
+ 'start_time': datetime.datetime(2024, 6, 16, 23, 55, 2, 18094, tzinfo=datetime.timezone.utc)}
+2024-06-16 17:55:02 [scrapy.core.engine] INFO: Spider closed (finished)
+2024-06-16 17:55:02 [lever_postings] INFO: Parsing row 1, default_company lever_postings
+2024-06-16 17:55:02 [scrapy.core.scraper] DEBUG: Scraped from <200 https://jobs.lever.co/explodingkittens>
+{'company_name': 'explodingkittens',
+ 'job_href': 'https://jobs.lever.co/explodingkittens/d2c413b5-142d-4723-b427-b74d069cc9a3',
+ 'job_id': None,
+ 'job_title': 'International Sales Coordinator',
+ 'parsed_date': '2024-06-16',
+ 'parsed_time': '17:55:02.736431',
+ 'posting_date': None}
+2024-06-16 17:55:02 [scrapy.core.engine] INFO: Closing spider (finished)
+2024-06-16 17:55:02 [scrapy.statscollectors] INFO: Dumping Scrapy stats:
+{'downloader/request_bytes': 460,
+ 'downloader/request_count': 2,
+ 'downloader/request_method_count/GET': 2,
+ 'downloader/response_bytes': 342098,
+ 'downloader/response_count': 2,
+ 'downloader/response_status_count/200': 1,
+ 'downloader/response_status_count/301': 1,
+ 'elapsed_time_seconds': 0.738516,
+ 'finish_reason': 'finished',
+ 'finish_time': datetime.datetime(2024, 6, 16, 23, 55, 2, 738577, tzinfo=datetime.timezone.utc),
+ 'item_scraped_count': 1,
+ 'log_count/DEBUG': 10,
+ 'log_count/INFO': 79,
+ 'log_count/WARNING': 1,
+ 'memusage/max': 61915136,
+ 'memusage/startup': 61915136,
+ 'response_received_count': 1,
+ 'scheduler/dequeued': 2,
+ 'scheduler/dequeued/memory': 2,
+ 'scheduler/enqueued': 2,
+ 'scheduler/enqueued/memory': 2,
+ 'start_time': datetime.datetime(2024, 6, 16, 23, 55, 2, 61, tzinfo=datetime.timezone.utc)}
+2024-06-16 17:55:02 [scrapy.core.engine] INFO: Spider closed (finished)
+^CTraceback (most recent call last):
+  File "/home/vishwajeet/projects/job_parser/postings_parser/backend/runner.py", line 22, in <module>
+    Runner()
+  File "/home/vishwajeet/projects/job_parser/postings_parser/backend/runner.py", line 9, in __init__
+    self.run_lever()
+  File "/home/vishwajeet/projects/job_parser/postings_parser/backend/runner.py", line 17, in run_lever
+    lever_parser_obj.start_multiprocess()
+  File "/home/vishwajeet/projects/job_parser/postings_parser/backend/lever_scraper/main_lever_scraper.py", line 25, in start_multiprocess
+    time.sleep(30)
+KeyboardInterrupt

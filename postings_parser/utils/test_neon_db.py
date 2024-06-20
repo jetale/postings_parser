@@ -4,18 +4,11 @@ from dotenv import load_dotenv
 import os
 
 
+
+
 class Connector:
     def __init__(self):
         load_dotenv()
-        """
-        self.db_params = {
-                            'dbname': 'postgres',
-                            'user': 'dev',
-                            'password': 'abcd', #os.getenv('DB_PASSWORD'),
-                            'host': 'host.docker.internal',  # e.g., 'localhost' or '127.0.0.1','host.docker.internal'
-                            'port': '5432'  # e.g., '5432'
-                        }
-        """
         self.db_params = {
                             'dbname':  os.getenv('PGDATABASE'),
                             'user': os.getenv('PGUSER'),
@@ -23,6 +16,7 @@ class Connector:
                             'host': os.getenv('PGHOST'),
                             'port': os.getenv('PGPORT', 5432),
                         }
+        
 
     def connect(self):
         try:

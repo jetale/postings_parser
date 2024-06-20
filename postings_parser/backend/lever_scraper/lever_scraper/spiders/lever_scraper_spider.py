@@ -1,8 +1,9 @@
+
 import scrapy
 from scrapy.selector import Selector
 from datetime import datetime, date, time, timedelta
 
-from postings_parser.backend.lever_scraper.items import JobItem
+from postings_parser.backend.lever_scraper.lever_scraper.items import JobItem
 
 
 class LeverSpider(scrapy.Spider):
@@ -14,12 +15,7 @@ class LeverSpider(scrapy.Spider):
         self.spider_id = kwargs.pop("spider_id", 3)
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
-        self.html_source = kwargs.pop("html_source", "default_source")
-        self.company_name = kwargs.pop("company_name", "default_company")
-        self.run_hash = kwargs.pop("run_hash", "default_run_hash")
-        self.full_s3_html_path = kwargs.pop("full_s3_html_path", "default_path")
-        self.existing_html_used = kwargs.pop("existing_html_used", False)
-        self.logger.info(f"Initialized Spider, {self.html_source}")
+        #self.logger.info(f"Initialized Spider, {self.html_source}")
 
     def parse(self, response):
         response_html = response.text
@@ -59,7 +55,7 @@ class LeverSpider(scrapy.Spider):
             job_openings = stratified_selector.xpath("//a[@class='posting-title']")
 
             for j, opening in enumerate(job_openings):
-                self.logger.info(f"Parsing row {i+1}, {self.company_name} {self.name}")
+                self.logger.info(f"Parsing row {i+1}, {company_name}")
 
                 job_href = opening.xpath('./@href').get()
                 job_title = opening.xpath('.//h5/text()').get()
