@@ -1,5 +1,5 @@
 ## README
-
+![example workflow](https://github.com/jetale/postings_parser/actions/workflows/main.yml/badge.svg)
 
 
 - To access postgres terminal if postgres is running in wsl2. Here `dev` is the user and `postgres` is the database name - `psql -U dev -h 127.0.0.1 -d postgres`
