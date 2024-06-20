@@ -24,8 +24,8 @@ jobs:
     - name: Run the Container
       id: run
       run: |
-        docker run -p 5432:5432 -e PGHOST=PGHOST \
-        -e PGDATABASE=PGDATABASE \
-        -e PGUSER=PGUSER \
-        -e PGPASSWORD=PGPASSWORD \
+        docker run -p 5432:5432 -e PGHOST='${{secrets.PGHOST}}' \
+        -e PGDATABASE='${{secrets.PGDATABASE}}' \
+        -e PGUSER='${{ secrets.PGUSER}}' \
+        -e PGPASSWORD='${{ secrets.PGPASSWORD}}' \
         postings_parser_image
