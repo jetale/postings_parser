@@ -26,7 +26,6 @@ class StartSpiders:
             p.start()
 
         for p in process:
-            time.sleep(30)
             p.join()
 
 
@@ -49,7 +48,7 @@ class StartSpiders:
             for line in input_f:
                 line = line.strip()
                 batch_list.append(line)
-                if len(batch_list) == 6:
+                if len(batch_list) == 50:
                     main_list.append(batch_list)
                     batch_list = []
         #return [['https://jobs.lever.co/rover']]

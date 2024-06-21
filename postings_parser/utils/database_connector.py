@@ -1,7 +1,10 @@
 import psycopg2
+from psycopg2 import pool
+import logging
 from dotenv import load_dotenv
 import os
 
+logger = logging.getLogger("logger")
 
 class Connector:
     _instance = None
@@ -32,13 +35,29 @@ class Connector:
                             'host': os.getenv('PGHOST'),
                             'port': os.getenv('PGPORT', 5432),
                         }
+        self.connection_pool = pool.SimpleConnectionPool(
+                            minconn=1,
+                            maxconn=60,
+                            database=self.db_params['dbname'],
+                            user=self.db_params['user'],
+                            password=self.db_params['password'],
+                            host=self.db_params['host'],
+                            port=self.db_params['port']
+                        )
         
         self._initialized = True
 
+
+    def get_conn(self):
+        return self.connection_pool.getconn()
+    
+    def release_conn(self, connection):
+        return self.connection_pool.putconn(connection)
+    
     def connect(self):
         try:
             conn = psycopg2.connect(**self.db_params)
-            print("Database connection successful")
+            logger.info("Database connection successful")
         except psycopg2.OperationalError as e:
             print(f"Error: {e}")
             exit(1)
