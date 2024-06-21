@@ -26,7 +26,7 @@ class LeverScraperPipeline:
         self.hold_items_list.append(item)
         
     def convert_to_list(self):
-        keys_order = ['job_id', 'job_title', 'company_name',  'parsed_date', 'parsed_time', 'job_href', 'posting_date' ]
+        keys_order = ['job_id', 'job_title', 'company_name',  'work_location', 'workplace_type', 'parsed_date', 'parsed_time', 'job_href', 'posting_date', 'commitment']
         list_ordered = [[sub_item[key] for key in keys_order] for sub_item in self.hold_items_list] 
         return list_ordered
     
@@ -53,7 +53,7 @@ class LeverScraperPipeline:
             self.connection.commit()
             self.logger.info(f"Successfully Inserted {len(postings_list)} items")
         except Exception as e:
-            self.logger.info(f"An error occurred: {e}")
+            self.logger.warning(f"An error occurred: {e}")
             self.connection.rollback()
         
     def close_spider(self, spider):

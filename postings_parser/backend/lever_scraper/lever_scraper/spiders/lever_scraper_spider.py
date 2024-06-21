@@ -57,13 +57,15 @@ class LeverSpider(scrapy.Spider):
                 job_title = opening.xpath('.//h5/text()').get()
                 job_id = self.generate_unique_id(job_title, company_name, job_href)
                 workplace_type = opening.xpath(".//span[contains(@class, 'workplaceTypes')]/text()").get()
+                if "-" in workplace_type:
+                    workplace_type = workplace_type.split("-")[0].strip()
                 commitment = opening.xpath(".//span[contains(@class, 'commitment')]/text()").get()
                 location = opening.xpath(".//span[contains(@class, 'location')]/text()").get()
                 item = JobItem(
                         job_id=job_id,
                         job_title=job_title,
                         company_name=company_name,
-                        location = location,
+                        work_location = location,
                         workplace_type = workplace_type,
                         parsed_date=parsed_date,
                         parsed_time=parsed_time,

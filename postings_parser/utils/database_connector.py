@@ -32,6 +32,7 @@ class Connector:
                             'host': os.getenv('PGHOST'),
                             'port': os.getenv('PGPORT', 5432),
                         }
+        
         self._initialized = True
 
     def connect(self):

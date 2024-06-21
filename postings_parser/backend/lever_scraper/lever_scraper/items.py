@@ -9,7 +9,7 @@ import scrapy
 class JobItem(scrapy.Item):
     job_id = scrapy.Field()
     job_title = scrapy.Field()
-    location = scrapy.Field()
+    work_location = scrapy.Field()
     workplace_type = scrapy.Field()
     company_name = scrapy.Field()
     parsed_date = scrapy.Field()
