@@ -37,13 +37,11 @@ class Connector:
                         }
         self.connection_pool = pool.SimpleConnectionPool(
                             minconn=1,
-                            maxconn=60,
-                            database=self.db_params['dbname'],
-                            user=self.db_params['user'],
-                            password=self.db_params['password'],
-                            host=self.db_params['host'],
-                            port=self.db_params['port']
+                            maxconn=100,
+                            **self.db_params
                         )
+        if self.connection_pool:
+            logger.info("Connection pool created successfully")
         
         self._initialized = True
 
@@ -53,6 +51,13 @@ class Connector:
     
     def release_conn(self, connection):
         return self.connection_pool.putconn(connection)
+    
+    def close_all_connections(self):
+        try:
+            self.connection_pool.closeall()
+            logger.info("Successfully closed all connections in the pool")
+        except Exception as error:
+            logger.error("Error while closing all connections", error)
     
     def connect(self):
         try:

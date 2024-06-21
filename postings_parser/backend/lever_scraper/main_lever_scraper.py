@@ -5,6 +5,7 @@ import multiprocessing
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 
+from postings_parser.utils.database_connector import Connector
 from postings_parser.backend.lever_scraper.lever_scraper.spiders.lever_scraper_spider import LeverSpider
 #from postings_parser.backend.lever_scraper.lever_scraper.spiders.workday_spider import WorkdaySpider
 
@@ -20,7 +21,7 @@ class StartSpiders:
     def start_multiprocess(self):
         process = []
         for index, batch in enumerate(self.url_batches):
-            time.sleep(30)
+            time.sleep(10)
             p = multiprocessing.Process(target=self.run_spiders, args=(batch,))
             process.append(p)
             p.start()
@@ -28,6 +29,8 @@ class StartSpiders:
         for p in process:
             p.join()
 
+        #close all connections
+        Connector().close_all_connections()
 
 
     def run_spiders(self, url_batch:list):
