@@ -13,7 +13,7 @@ from postings_parser.backend.lever_scraper.lever_scraper.spiders.lever_scraper_s
 class StartSpiders:
 
     def __init__(self):
-        self.url_file_path =  pkg_resources.resource_filename('postings_parser', 'input/lever_urls.txt')
+        self.url_file_path =  pkg_resources.resource_filename('postings_parser', 'input/cleaned_lever_urls.txt')
         self.logger = logging.getLogger("logger")
         self.url_batches = self.get_url_batches()
 
@@ -53,8 +53,7 @@ class StartSpiders:
                 if len(batch_list) == 6:
                     main_list.append(batch_list)
                     batch_list = []
-
-        return [['https://jobs.lever.co/rover']]
+        #return [['https://jobs.lever.co/rover']]
         return main_list
 
 
