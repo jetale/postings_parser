@@ -28,5 +28,5 @@ jobs:
         -e PGDATABASE='${{secrets.PGDATABASE}}' \
         -e PGUSER='${{ secrets.PGUSER}}' \
         -e PGPASSWORD='${{ secrets.PGPASSWORD}}' \
-        -e RUN_SELENIUM = 'false' \
+        -e RUN_SELENIUM='false' \
         postings_parser_scrapy_image
