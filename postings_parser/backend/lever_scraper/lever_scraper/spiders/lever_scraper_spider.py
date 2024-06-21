@@ -18,7 +18,6 @@ class LeverSpider(scrapy.Spider):
         self.updated_at = datetime.now()
 
     def parse(self, response):
-        postings_list = []
         response_html = response.text
         url = response.request.url
         company_name = url.split(".")[-1].split("/")[-1]
@@ -60,7 +59,6 @@ class LeverSpider(scrapy.Spider):
                 workplace_type = opening.xpath(".//span[contains(@class, 'workplaceTypes')]/text()").get()
                 commitment = opening.xpath(".//span[contains(@class, 'commitment')]/text()").get()
                 location = opening.xpath(".//span[contains(@class, 'location')]/text()").get()
-                
                 item = JobItem(
                         job_id=job_id,
                         job_title=job_title,
@@ -73,8 +71,7 @@ class LeverSpider(scrapy.Spider):
                         posting_date=None,
                         commitment=commitment
                     )
-                postings_list.append(item)
-            yield postings_list
+                yield item
 
 
     def start_requests(self):
