@@ -22,7 +22,6 @@ COPY . /app/
 RUN pip install . 
 
 ENV PYTHONPATH "${PYTHONPATH}:/app/"
-RUN apt-get remove -y wget curl unzip gnupg ca-certificates
 
 #CMD ["python3", "postings_parser/backend/runner.py"]
 CMD ["./postings_parser/backend/start_scrapers.sh"]
