@@ -21,7 +21,7 @@ class StartSpiders:
     def start_multiprocess(self):
         process = []
         for index, batch in enumerate(self.url_batches):
-            time.sleep(10)
+            time.sleep(20)
             p = multiprocessing.Process(target=self.run_spiders, args=(batch,))
             process.append(p)
             p.start()
