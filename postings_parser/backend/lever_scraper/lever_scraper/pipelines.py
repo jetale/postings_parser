@@ -38,14 +38,17 @@ class LeverScraperPipeline:
         self.logger.info(postings_list)
         insert_query = \
                     """
-                    INSERT INTO postings(job_id,  
-                                        job_title,       
-                                        company,         
-                                        parsed_date,     
-                                        parsed_time,     
-                                        posting_url,
-                                        posting_date )
-                    VALUES (%s, %s, %s, %s, %s, %s, %s);
+                    INSERT INTO postings_new(job_id,	
+                                            job_title,		
+                                            company,	
+                                            work_location,		
+                                            workplace_type,		
+                                            parsed_date,	
+                                            parsed_time,				
+                                            posting_url,	
+                                            posting_date,
+                                            commitment )
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
                     """
         #print(insert_query)
         try:
