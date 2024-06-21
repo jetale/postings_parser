@@ -1,0 +1,32 @@
+name: run_only_scrapy
+
+on:
+  workflow_dispatch
+
+env:
+  PGHOST: '${{secrets.PGHOST}}'
+  PGDATABASE: '${{secrets.PGDATABASE}}'
+  PGUSER: '${{ secrets.PGUSER}}'
+  PGPASSWORD: '${{ secrets.PGPASSWORD}}'
+
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile.scrapy --tag postings_parser_scrapy_image
+      
+
+    - name: Run the Container
+      id: run
+      run: |
+        docker run -p 5432:5432 -e PGHOST='${{secrets.PGHOST}}' \
+        -e PGDATABASE='${{secrets.PGDATABASE}}' \
+        -e PGUSER='${{ secrets.PGUSER}}' \
+        -e PGPASSWORD='${{ secrets.PGPASSWORD}}' \
+        -e RUN_SELENIUM = 'false' \
+        postings_parser_scrapy_image

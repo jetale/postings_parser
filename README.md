@@ -58,3 +58,10 @@
 
 ### Data
  - Data hosted at - https://neon.tech/
+
+
+
+### TODO -
+ [] add linter 
+ [] add pre-commit hooks
+ [] add static checker

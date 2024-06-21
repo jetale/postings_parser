@@ -6,17 +6,14 @@
 import scrapy
 
 
-class LeverScraperItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
-
-
 class JobItem(scrapy.Item):
     job_id = scrapy.Field()
     job_title = scrapy.Field()
+    location = scrapy.Field()
+    workplace_type = scrapy.Field()
     company_name = scrapy.Field()
     parsed_date = scrapy.Field()
     parsed_time = scrapy.Field()
     job_href = scrapy.Field()
-    posting_date = scrapy.Field()  # Add any additional fields as needed
+    posting_date = scrapy.Field()  
+    commitment=scrapy.Field()

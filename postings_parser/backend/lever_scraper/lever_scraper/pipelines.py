@@ -30,7 +30,7 @@ class LeverScraperPipeline:
     
     def convert_to_list(self, item):
         keys_order = ['job_id', 'job_title', 'company_name',  'parsed_date', 'parsed_time', 'job_href', 'posting_date' ]
-        list_ordered = [item[key] for key in keys_order]
+        list_ordered = [[sub_item[key] for key in keys_order] for sub_item in item] 
         return list_ordered
     
 
@@ -49,7 +49,7 @@ class LeverScraperPipeline:
                     """
         #print(insert_query)
         try:
-            self.cursor.execute(insert_query, postings_list)
+            self.cursor.executemany(insert_query, postings_list)
             self.connection.commit()
         except Exception as e:
             self.logger.info(f"An error occurred: {e}")

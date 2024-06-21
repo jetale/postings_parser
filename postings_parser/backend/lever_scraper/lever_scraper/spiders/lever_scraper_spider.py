@@ -1,3 +1,4 @@
+import hashlib
 
 import scrapy
 from scrapy.selector import Selector
@@ -15,9 +16,9 @@ class LeverSpider(scrapy.Spider):
         self.spider_id = kwargs.pop("spider_id", 3)
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
-        #self.logger.info(f"Initialized Spider, {self.html_source}")
 
     def parse(self, response):
+        postings_list = []
         response_html = response.text
         url = response.request.url
         company_name = url.split(".")[-1].split("/")[-1]
@@ -26,14 +27,11 @@ class LeverSpider(scrapy.Spider):
 
         parsed_date, parsed_time = self.get_date_time()
 
-
         for i, postings_group in enumerate(postings_groups):
             stratified_selector = Selector(text=postings_group.get(), type="html")
-
             potential_primary_department = stratified_selector.xpath(
                 f"//div[contains(@class, 'large-category-header')]/text()"
             )
-
             label_department = stratified_selector.xpath(
                 f"//div[contains(@class, 'large-category-label')]/text()"
             )
@@ -56,31 +54,35 @@ class LeverSpider(scrapy.Spider):
 
             for j, opening in enumerate(job_openings):
                 self.logger.info(f"Parsing row {i+1}, {company_name}")
-
                 job_href = opening.xpath('./@href').get()
                 job_title = opening.xpath('.//h5/text()').get()
-                workplace_type = opening.xpath(".//span[contains(@class, 'workplaceType')]/text()").get()
+                job_id = self.generate_unique_id(job_title, company_name, job_href)
+                workplace_type = opening.xpath(".//span[contains(@class, 'workplaceTypes')]/text()").get()
+                commitment = opening.xpath(".//span[contains(@class, 'commitment')]/text()").get()
                 location = opening.xpath(".//span[contains(@class, 'location')]/text()").get()
                 
                 item = JobItem(
-                        job_id=None,
+                        job_id=job_id,
                         job_title=job_title,
                         company_name=company_name,
+                        location = location,
+                        workplace_type = workplace_type,
                         parsed_date=parsed_date,
                         parsed_time=parsed_time,
                         job_href=job_href,
-                        posting_date=None
+                        posting_date=None,
+                        commitment=commitment
                     )
-                
-                yield item
+                postings_list.append(item)
+            yield postings_list
 
-    def determine_row_id(self, value):
-        # Assuming determine_row_id is a function that generates a unique ID for each row
-        return value
 
     def start_requests(self):
         yield scrapy.Request(url=self.url, callback=self.parse)
 
+    def generate_unique_id(self, job_title, company_name, job_href):
+        composite_key = f"{job_title}-{company_name}-{job_href}"
+        return hashlib.md5(composite_key.encode()).hexdigest()
 
     def get_date_time(self):
         current_date = date.today()

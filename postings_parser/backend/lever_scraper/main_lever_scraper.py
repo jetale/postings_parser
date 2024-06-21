@@ -6,11 +6,8 @@ import multiprocessing
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 
-
 from postings_parser.backend.lever_scraper.lever_scraper.spiders.lever_scraper_spider import LeverSpider
 #from postings_parser.backend.lever_scraper.lever_scraper.spiders.workday_spider import WorkdaySpider
-
-
 
 
 class StartSpiders:
@@ -19,7 +16,6 @@ class StartSpiders:
         self.url_file_path =  pkg_resources.resource_filename('postings_parser', 'input/lever_urls.txt')
         self.logger = logging.getLogger("logger")
         self.url_batches = self.get_url_batches()
-
 
 
     def start_multiprocess(self):

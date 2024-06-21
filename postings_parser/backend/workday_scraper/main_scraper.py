@@ -1,16 +1,11 @@
-import csv 
-import pickle
+
 from datetime import datetime, date
 from importlib.resources import files
 import time
-import sys
 
 from selenium import webdriver
-from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
-import uuid
 
 from postings_parser.utils.database_connector import Connector
 from postings_parser.backend.workday_scraper.scrape_postings import PageScraper
@@ -46,7 +41,6 @@ class ParsePostings:
 
 
     def parse(self):
-
         loader = self.load_url()
         for url in loader:
             # Temporary measure while I sort out the scrapy situation
@@ -55,7 +49,6 @@ class ParsePostings:
             time.sleep(2)
             #print(postings_list)
             #exit()
-
         self.close_connection()
         self.driver.quit()
     
@@ -92,8 +85,6 @@ class ParsePostings:
         except Exception as e:
             print(f"An error occurred: {e}")
             self.connection.rollback()
-
-   
 
 
 
