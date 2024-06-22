@@ -1,0 +1,93 @@
+---
+- name: Setup EC2 instance
+  hosts: ec2_instances
+  become: yes
+  vars:
+    ansible_user: ubuntu
+    repo_url: git@github.com:jetale/postings_parser.git
+    repo_dest: /home/ubuntu/postings_parser
+    local_ssh_key: /home/vishwajeet/.ssh/id_rsa
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install prerequisites
+      apt:
+        name: [ca-certificates, curl]
+        state: present
+
+    - name: Create directory for Docker keyring
+      file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+
+    - name: Download Docker GPG key
+      shell: |
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+        chmod a+r /etc/apt/keyrings/docker.asc
+
+    - name: Add Docker repository to Apt sources
+      shell: |
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+    - name: Update apt cache after adding repository
+      apt:
+        update_cache: yes
+
+    - name: Install Docker packages
+      apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose
+        state: present
+
+    - name: Add user to the docker group
+      user:
+        name: ubuntu
+        groups: docker
+        append: yes
+
+    - name: Ensure Docker service is started
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Transfer SSH private key to EC2 instance
+      copy:
+        src: "{{ local_ssh_key }}"
+        dest: /home/ubuntu/.ssh/id_rsa
+        mode: '0600'
+
+    - name: Transfer SSH public key to EC2 instance
+      copy:
+        src: "{{ local_ssh_key }}.pub"
+        dest: /home/ubuntu/.ssh/id_rsa.pub
+        mode: '0644'
+
+    - name: Add the public key to authorized_keys
+      lineinfile:
+        path: /home/ubuntu/.ssh/authorized_keys
+        line: "{{ lookup('file', '{{ local_ssh_key }}.pub') }}"
+        create: yes
+        mode: '0600'
+
+    - name: Clone the private repository
+      git:
+        repo: "{{ repo_url }}"
+        dest: "{{ repo_dest }}"
+        key_file: /home/ubuntu/.ssh/id_rsa
+        version: master
+
+    - name: Build Docker image
+      command: docker build --file Dockerfile --tag postings_parser_image 
+      args:
+        chdir: "{{ repo_dest }}"
+
+    - name: Run Docker container
+      command: docker run -d -p 5432:5432 --name test_container postings_parser_image
