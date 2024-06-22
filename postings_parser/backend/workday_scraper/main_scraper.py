@@ -65,12 +65,12 @@ class ParsePostings:
         insert_query = """
                     INSERT INTO postings(job_id,
                                         job_title,
-                                        company,
+                                        company_name,
                                         location,
+                                        posted_on_date,
+                                        job_href,
                                         parsed_date,
-                                        parsed_time,
-                                        posting_url,
-                                        posting_date )
+                                        parsed_time, )
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
                     """
         try:

@@ -60,7 +60,7 @@ class PageScraper:
         self.driver.get(url)
         page = 1
         try:
-            while page < 10:
+            while page < 2:
                 # Wait for job elements to load
                 self.wait.until(
                     EC.presence_of_element_located(
@@ -94,10 +94,10 @@ class PageScraper:
                         job_title,
                         company_name,
                         location,
+                        posted_on_date,
+                        job_href,
                         parsed_date,
                         parsed_time,
-                        job_href,
-                        posted_on_date,
                     )
                     postings_list.append(temp_tuple)
                     # print(temp_tuple)
@@ -111,6 +111,7 @@ class PageScraper:
                     next_button.click()
                 except Exception as e:
                     print("Reached at the end of all listings")
+                    break
                 page += 1
                 time.sleep(1)  # delay for page loading
         except Exception as e:
