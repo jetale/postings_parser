@@ -1,22 +1,20 @@
-import psycopg2
-from psycopg2 import sql
-from dotenv import load_dotenv
 import os
 
-
+import psycopg2
+from dotenv import load_dotenv
+from psycopg2 import sql
 
 
 class Connector:
     def __init__(self):
         load_dotenv()
         self.db_params = {
-                            'dbname':  os.getenv('PGDATABASE'),
-                            'user': os.getenv('PGUSER'),
-                            'password': os.getenv('PGPASSWORD'),
-                            'host': os.getenv('PGHOST'),
-                            'port': os.getenv('PGPORT', 5432),
-                        }
-        
+            "dbname": os.getenv("PGDATABASE"),
+            "user": os.getenv("PGUSER"),
+            "password": os.getenv("PGPASSWORD"),
+            "host": os.getenv("PGHOST"),
+            "port": os.getenv("PGPORT", 5432),
+        }
 
     def connect(self):
         try:
@@ -29,8 +27,6 @@ class Connector:
         # Create a cursor object
         cur = conn.cursor()
         return conn, cur
-
-
 
 
 if __name__ == "__main__":

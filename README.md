@@ -16,7 +16,7 @@
 
 ## Notes -
 - If you want to print directory structure use this command. This samples command ignores env and lib directory - `tree -I 'env|lib'`
-- TO remove a file from remote after adding it to `.gitignore` - 
+- TO remove a file from remote after adding it to `.gitignore` -
 	- `git rm --cached file`
 	- `git add .`
 	- `git commit -m "msg"`
@@ -33,13 +33,13 @@
 	- Step 1 - Create a `Dockerfile` in your projects root directory. It can be in another directory but having it in home directory makes things easier
 	- Step 2 - To build docker image from Dockerfile use the command -
 		- ` docker build -t postings_parser_image .`
-	- Step 2 - To run the container use the following command. Here 5432:5432 specifies to map port 5432 of internal docker container to outside 
+	- Step 2 - To run the container use the following command. Here 5432:5432 specifies to map port 5432 of internal docker container to outside
 		- ` docker run -p 5432:5432 postings_parser_image`
 
  - TIL:
 	- In docker if you are connecting to services on the host machine (I was connecting to a postgres server on wsl2), then put this in the address field of that. Otherwise you will have problem connecting to the service
 		- `'host.docker.internal'`
-	- To pass environment variables while running container use this command format. There are other better ways to pass environment variables but I just wanted to test so used this 
+	- To pass environment variables while running container use this command format. There are other better ways to pass environment variables but I just wanted to test so used this
 		- `docker run -p 5432:5432 -e PGHOST='${{secrets.PGHOST}}' -e PGDATABASE='${{secrets.PGDATABASE}}' postings_parser_image`
 	- To delete stopped containers
 		- `docker container prune`
@@ -62,6 +62,6 @@
 
 
 ### TODO -
- [] add linter 
+ [] add linter
  [] add pre-commit hooks
  [] add static checker

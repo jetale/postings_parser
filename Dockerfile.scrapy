@@ -15,14 +15,13 @@ RUN apt-get update && apt-get install -y \
 
 COPY requirements.txt /app/
 
-RUN pip install --no-cache-dir -r requirements.txt 
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /app/
 
-RUN pip install . 
+RUN pip install .
 
 ENV PYTHONPATH "${PYTHONPATH}:/app/"
 
 #CMD ["python3", "postings_parser/backend/runner.py"]
 CMD ["bash", "postings_parser/backend/start_scrapers.sh"]
-

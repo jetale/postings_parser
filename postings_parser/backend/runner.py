@@ -1,7 +1,6 @@
-
-
+from postings_parser.backend.lever_scraper.main_lever_scraper import \
+    StartSpiders
 from postings_parser.backend.workday_scraper.main_scraper import ParsePostings
-from postings_parser.backend.lever_scraper.main_lever_scraper import StartSpiders
 
 
 class Runner:
@@ -15,7 +14,6 @@ class Runner:
     def run_lever(self):
         lever_parser_obj = StartSpiders()
         lever_parser_obj.start_multiprocess()
-
 
 
 if __name__ == "__main__":

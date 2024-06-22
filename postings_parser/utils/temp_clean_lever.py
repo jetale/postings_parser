@@ -1,9 +1,8 @@
-
 urls = []
 with open("lever_urls.txt", "r") as f:
     for line in f.readlines():
         if "?" in line:
-            url = line.split("?")[0]+"\n"
+            url = line.split("?")[0] + "\n"
             urls.append(url)
         else:
             urls.append(line)

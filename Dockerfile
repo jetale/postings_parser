@@ -15,19 +15,19 @@ RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
     wget curl unzip xvfb libxi6 libgconf-2-4\
-    google-chrome-stable \  
+    google-chrome-stable \
     && rm -rf /var/lib/apt/lists/*
 
 
 # RUN wget --no-verbose https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
 #     && apt-get -qqy --no-install-recommends install --allow-downgrades ./google-chrome-stable_current_amd64.deb \
 #     && rm google-chrome-stable_current_amd64.deb \
-#     && apt-get clean 
+#     && apt-get clean
 
 
 COPY requirements.txt /app/
 
-RUN pip install --no-cache-dir -r requirements.txt 
+RUN pip install --no-cache-dir -r requirements.txt
 
 
 RUN wget --no-verbose -O chromedriver_linux64.zip https://storage.googleapis.com/chrome-for-testing-public/126.0.6478.61/linux64/chromedriver-linux64.zip \
@@ -41,7 +41,7 @@ RUN wget --no-verbose -O chromedriver_linux64.zip https://storage.googleapis.com
 
 COPY . /app/
 
-RUN pip install . 
+RUN pip install .
 
 ENV PYTHONPATH "${PYTHONPATH}:/app/"
 RUN apt-get remove -y wget curl unzip gnupg ca-certificates
