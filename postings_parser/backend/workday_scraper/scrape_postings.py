@@ -1,5 +1,6 @@
 import sys
 import time
+import hashlib
 import uuid
 from datetime import date, datetime, timedelta
 
