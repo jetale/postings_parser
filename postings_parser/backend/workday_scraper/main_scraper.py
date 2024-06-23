@@ -45,7 +45,7 @@ class ParsePostings:
         for url in loader:# Temporary measure while I sort out the scrapy situation
             postings_list = self.scraper.scrape(url=url)
             self.insert_query(postings_list) #Keeping this here instead of time.sleep(). I know it can be handled in async way but if I am adding time.sleep then it doesn't make sense to handle this asynchronously
-        self.close_connection()
+        self.conn.close_all_connections()
         self.driver.quit()
 
     def close_connection(self)->None:

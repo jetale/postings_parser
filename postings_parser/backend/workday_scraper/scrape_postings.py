@@ -80,13 +80,16 @@ class PageScraper:
                         By.XPATH,
                         './/dd[@class="css-129m7dg"][preceding-sibling::dt[contains(text(),"posted on")]]',
                     )
-                    location = job_element.find_element(
+                    location_element = job_element.find_element(
                         By.XPATH,
                         './/dd[@class="css-129m7dg"][preceding-sibling::dt[contains(text(),"locations")]]',
                     )
+                    if not location:
+                        location = None
                     job_id = job_id_element.text.strip()
                     job_href = job_title_element.get_attribute("href")
                     job_title = job_title_element.text.strip()
+                    location = location_element.text.strip()
                     posted_on = posted_on_element.text
                     job_id = self.generate_unique_id(job_id, company_name, job_href)
                     posted_on_date = self.get_posting_date(posted_on)
