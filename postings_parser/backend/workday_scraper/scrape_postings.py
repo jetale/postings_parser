@@ -99,7 +99,7 @@ class PageScraper:
                         posted_on_date,
                         job_href,
                         parsed_date,
-                        parsed_time,
+                        parsed_time
                     )
                     postings_list.append(temp_tuple)
                     # print(temp_tuple)
