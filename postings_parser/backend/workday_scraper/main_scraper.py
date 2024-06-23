@@ -67,7 +67,7 @@ class ParsePostings:
                                         job_title,
                                         company,
                                         work_location,
-                                        posted_on_date,
+                                        posting_date,
                                         job_href,
                                         parsed_date,
                                         parsed_time )
