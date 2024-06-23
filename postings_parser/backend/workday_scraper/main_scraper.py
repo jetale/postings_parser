@@ -68,7 +68,7 @@ class ParsePostings:
                                         company,
                                         work_location,
                                         posting_date,
-                                        job_href,
+                                        posting_url,
                                         parsed_date,
                                         parsed_time )
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
