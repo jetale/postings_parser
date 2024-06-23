@@ -94,3 +94,11 @@
         -e PGPASSWORD='WsEr5pQf0gFz' \
         -e RUN_SELENIUM='true' \
         postings_parser_image
+
+    - name: Prune all stopped Docker containers
+      command: docker container prune -f
+      register: prune_result
+
+    - name: Print prune result
+      debug:
+        var: prune_result.stdout
