@@ -48,7 +48,7 @@ RUN apt-get remove -y wget curl unzip gnupg ca-certificates
 
 # Run the Flask application
 #CMD ["python3", "postings_parser/backend/runner.py"]
-CMD ["./postings_parser/backend/start_scrapers.sh"]
+CMD ["bash", "postings_parser/backend/start_scrapers.sh"]
 
 
 # Copy the application code (initially empty or minimal setup)

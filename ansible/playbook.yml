@@ -4,9 +4,12 @@
   become: yes
   vars:
     ansible_user: ubuntu
-    repo_url: git@github.com:jetale/postings_parser.git
+    github_username: jetale
+    github_access_token: $GIT_PASSWORD
+    repo_url: https://github.com/jetale/postings_parser.git
+    repo_name: postings_parser
     repo_dest: /home/ubuntu/postings_parser
-    local_ssh_key: /home/vishwajeet/.ssh/id_rsa
+    github_ssh_key_path: "/home/ubuntu/.ssh/id_rsa" 
   tasks:
     - name: Update apt cache
       apt:
@@ -58,36 +61,36 @@
         state: started
         enabled: yes
 
-    - name: Transfer SSH private key to EC2 instance
-      copy:
-        src: "{{ local_ssh_key }}"
-        dest: /home/ubuntu/.ssh/id_rsa
-        mode: '0600'
-
-    - name: Transfer SSH public key to EC2 instance
-      copy:
-        src: "{{ local_ssh_key }}.pub"
-        dest: /home/ubuntu/.ssh/id_rsa.pub
-        mode: '0644'
-
-    - name: Add the public key to authorized_keys
+    - name: Enable SSH agent forwarding for sudo
       lineinfile:
-        path: /home/ubuntu/.ssh/authorized_keys
-        line: "{{ lookup('file', '{{ local_ssh_key }}.pub') }}"
-        create: yes
-        mode: '0600'
+        dest: /etc/sudoers
+        insertafter: '^#?\s*Defaults\s+env_keep\b'
+        line: 'Defaults    env_keep += "SSH_AUTH_SOCK"'
 
-    - name: Clone the private repository
+    - name: Run ssh-add -l command
+      command: ssh-add -l
+      register: ssh_add_output
+
+    - name: Display output
+      debug:
+        var: ssh_add_output.stdout_lines
+
+    - name: Clone private git repository
       git:
         repo: "{{ repo_url }}"
+        clone: true
         dest: "{{ repo_dest }}"
-        key_file: /home/ubuntu/.ssh/id_rsa
-        version: master
 
     - name: Build Docker image
-      command: docker build --file Dockerfile --tag postings_parser_image 
+      command: docker build . --file Dockerfile --tag postings_parser_image 
       args:
         chdir: "{{ repo_dest }}"
 
     - name: Run Docker container
-      command: docker run -d -p 5432:5432 --name test_container postings_parser_image
+      command: docker run -d -p 5432:5432 \
+        -e PGHOST='ep-purple-king-a5n11fyg.us-east-2.aws.neon.tech'
+        -e PGDATABASE='postings_db'
+        -e PGUSER='postings_db_owner'
+        -e PGPASSWORD='WsEr5pQf0gFz'
+        -e RUN_SELENIUM='true' \
+        postings_parser_image
