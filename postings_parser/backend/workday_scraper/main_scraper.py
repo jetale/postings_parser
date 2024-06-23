@@ -65,7 +65,7 @@ class ParsePostings:
         insert_query = """
                     INSERT INTO postings(job_id,
                                         job_title,
-                                        company_name,
+                                        company,
                                         location,
                                         posted_on_date,
                                         job_href,
