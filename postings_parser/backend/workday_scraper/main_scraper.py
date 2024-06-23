@@ -70,7 +70,7 @@ class ParsePostings:
                                         posted_on_date,
                                         job_href,
                                         parsed_date,
-                                        parsed_time, )
+                                        parsed_time )
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
                     """
         try:
