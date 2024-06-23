@@ -84,8 +84,6 @@ class PageScraper:
                         By.XPATH,
                         './/dd[@class="css-129m7dg"][preceding-sibling::dt[contains(text(),"locations")]]',
                     )
-                    if not location:
-                        location = None
                     job_id = job_id_element.text.strip()
                     job_href = job_title_element.get_attribute("href")
                     job_title = job_title_element.text.strip()
