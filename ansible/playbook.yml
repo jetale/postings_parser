@@ -87,7 +87,7 @@
         chdir: "{{ repo_dest }}"
 
     - name: Run Docker container
-      command: docker run -d -p 5432:5432 \
+      command: docker run -p 5432:5432 \
         -e PGHOST='ep-purple-king-a5n11fyg.us-east-2.aws.neon.tech'
         -e PGDATABASE='postings_db'
         -e PGUSER='postings_db_owner'

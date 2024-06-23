@@ -2,7 +2,7 @@
 
 #echo "$(pip list)"
 echo "Inside bash script"
-if [[ "$RUN_SCRAPY" == "true"]]; then
+if [[ "$RUN_SCRAPY" == "true" ]]; then
 	cd postings_parser/backend/lever_scraper/
 	python3 main_lever_scraper.py
 fi
