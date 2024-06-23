@@ -1,1 +1,90 @@
+
+# Ignore Python cache files
+__pycache__/
+*.py[cod]
+
+# Ignore virtual environments
+.venv/
+venv/
 env/
+ENV/
+env.bak/
+venv.bak/
+
+# Ignore logs
+*.log
+
+# Ignore macOS files
+.DS_Store
+
+# Ignore Git repository files
+.git/
+.gitignore
+
+# Ignore Docker configuration files
+.dockerignore
+
+# Ignore build files
+build/
+dist/
+*.o
+*.so
+
+# Ignore test-related files and directories
+.tox/
+.nox/
+.pytest_cache/
+coverage/
+*.cover
+*.py,cover
+.hypothesis/
+
+# Ignore IDE and editor settings
+.idea/
+.vscode/
+*.swp
+
+# Ignore documentation build files
+docs/_build/
+
+# Ignore node_modules (if using Node.js in the project)
+node_modules/
+
+# Ignore temporary files
+*.tmp
+*.bak
+
+# Ignore dependency directories (if using Python package managers)
+__pypackages__/
+site/
+
+
+
+# Ignore Terraform state files
+*.tfstate
+*.tfstate.*
+
+# Ignore Terraform variables files
+*.tfvars
+*.tfvars.json
+
+# Ignore Terraform plan files
+*.tfplan
+
+# Ignore the .terraform directory
+.terraform/
+
+# Ignore crash log files
+crash.log
+
+# Ignore backup files created by Terraform
+*.backup
+
+# Ignore lock files created by Terraform
+*.lock.hcl
+
+# Ignore Terraform override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
