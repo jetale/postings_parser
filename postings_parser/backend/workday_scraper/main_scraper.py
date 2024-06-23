@@ -66,7 +66,7 @@ class ParsePostings:
                     INSERT INTO postings(job_id,
                                         job_title,
                                         company,
-                                        location,
+                                        work_location,
                                         posted_on_date,
                                         job_href,
                                         parsed_date,
