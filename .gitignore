@@ -140,6 +140,18 @@ cython_debug/
 # macOS
 .DS_Store
 
+# Ignore Terraform state files
+*.tfstate
+*.tfstate.*
+
+# Ignore Terraform variables file
+*.tfvars
+
+# Ignore Terraform plan files
+*.tfplan
+
+# Ignore the .terraform directory
+.terraform/
 
 # Ignore Terraform variables file
 *.tfvars

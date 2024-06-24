@@ -1,15 +1,14 @@
----
 - name: Setup EC2 instance
   hosts: ec2_instances
   become: yes
   vars:
+    token: d6sdfshhghyjggj448t8tnt9h
     ansible_user: ubuntu
     github_username: jetale
     github_access_token: $GIT_PASSWORD
-    repo_url: https://github.com/jetale/postings_parser.git
+    repo_url: git@github.com:jetale/postings_parser.git
     repo_name: postings_parser
     repo_dest: /home/ubuntu/postings_parser
-    github_ssh_key_path: "/home/ubuntu/.ssh/id_rsa" 
   tasks:
     - name: Update apt cache
       apt:
@@ -78,7 +77,7 @@
     - name: Clone private git repository
       git:
         repo: "{{ repo_url }}"
-        clone: true
+        accept_newhostkey: true
         dest: "{{ repo_dest }}"
 
     - name: Build Docker image

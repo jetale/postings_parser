@@ -1,6 +1,7 @@
-
-
 #!/bin/bash
+
+eval $(ssh-agent -s)
+ssh-add ~/.ssh/id_rsa
 
 # Function to check the exit status of a command and exit if error
 exit_if_error() {
@@ -27,11 +28,16 @@ terraform apply -auto-approve
 exit_if_error "Terraform apply"
 echo "Terraform apply completed successfully."
 
+# Make sure ec2 boots up
+echo "Sleeping for 60 seconds"
+sleep 60
+
+
 # Run Ansible playbook
 cd ../
 
 echo "Running Ansible playbook..."
-ansible-playbook -i terraform/inventory.ini ansible/playbook.yml
+ansible-playbook -vvvv -i terraform/inventory.ini ansible/playbook.yml
 check_exit_status "Ansible playbook"
 echo "Ansible playbook completed"
 
