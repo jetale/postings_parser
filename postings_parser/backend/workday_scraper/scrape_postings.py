@@ -61,7 +61,7 @@ class PageScraper:
         self.driver.get(url)
         page = 1
         try:
-            while page < 50:
+            while page < 50: # I don't think any website will have more than 50 pages. Keeping it to avoid infinite loop
                 # Wait for job elements to load
                 self.wait.until(
                     EC.presence_of_element_located(

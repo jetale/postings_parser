@@ -34,14 +34,14 @@ class ParsePostings:
 
         self.scraper = PageScraper(self.driver, self.wait)
 
-    def load_url(self):
-        with open(self.input_path, "r") as input_f:
-            for line in input_f:
-                line = line.strip()
-                yield line
+    def load_urls(self):
+        rows = self.select_query()
+        for row in rows:
+            url = row[0]
+            yield url
 
     def parse(self)->None:
-        loader = self.load_url()
+        loader = self.load_urls()
         for url in loader:# Temporary measure while I sort out the scrapy situation
             postings_list = self.scraper.scrape(url=url)
             self.insert_query(postings_list) #Keeping this here instead of time.sleep(). I know it can be handled in async way but if I am adding time.sleep then it doesn't make sense to handle this asynchronously
@@ -84,6 +84,27 @@ class ParsePostings:
         finally:
             self.conn.release_conn(connection)
 
+    def select_query(self):
+        select_query = """
+                SELECT url FROM site_urls
+                WHERE url_domain='workday';
+                """
+        try:
+            connection = self.conn.get_conn()
+            cursor = connection.cursor()
+            cursor.execute(select_query)
+            rows = cursor.fetchall()
+            
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            connection.rollback()
+        finally:
+            self.conn.release_conn(connection)
+        
+        if rows:
+            return rows
+        else:
+            raise RuntimeError(f"{select_query} did not return any rows")
 
 if __name__ == "__main__":
     main = ParsePostings()
