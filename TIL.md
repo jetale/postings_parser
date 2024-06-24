@@ -28,7 +28,7 @@
   ```
 
 
- -```
+ - ```
  Each and every shell has its own environment. There's no Universal environment that will magically appear in all console windows. An environment variable created in one shell cannot be accessed in another shell.
 
 It's even more restrictive. If one shell spawns a subshell, that subshell has access to the parent's environment variables, but if that subshell creates an environment variable, it's not accessible in the parent shell.
@@ -39,3 +39,31 @@ You can try using shared memory, but I believe that only works while processes a
 
 Imagine the problems that could happen if someone could change the environment of one shell without my knowledge.
 ```
+
+ - ```
+	No, you will not have access to VAR when the script exits. Because a child process (the script) can not set the environment of the parent process (the shell/bash instance that runs the script).
+
+	I set a number of environment variables and shell functions in my ~/.bashrc, so that they are available in the environment of every new shell I open. How is this achieved?
+
+	You can execute the contents of a script in the current environment, by sourcing it, rather than running it as a new process. IIUC, bash executes the sourced script in a subroutine instead of a new process, keeping it in the same environment. It's essentially as if you typed it at the command line directly. You can source a script by preceding its path with a dot (.), or source:
+
+	# Works in POSIX sh + bash
+	. /path/to/env-var-script
+
+	# Doesn't work with /bin/sh - bash only (maybe other shells?)
+	source /path/to/env-var-script
+	In man bash it states that ~/.bashrc is sourced when a new shell is started. Any lines in .bashrc, that source other scripts, will source those scripts in the current environment also. Personally, I have a single file each for env vars, functions, $PATH, aliases, etc. Splitting in to categories makes it easier to manage. You can also set up a directory where all files inside get sourced. That way if you have a new file, you need only move it there.
+
+	You can put this line in .bashrc to do this:
+
+	for i in /path/to/bash-env-dir/*; do
+			. "$i"
+	done
+	If a script is made to be sourced, it does not need a shebang (#!/bin/bash).
+
+	You can source any regular script, just by using the dot, or source. But scripts not designed to be sourced may sometimes have unexpected behaviour if they are sourced. Also, variables and functions in the script will persist in the current shell.
+
+	Finally, export tells the shell to always export the given variable or function to the environment of all subsequent commands / child processes. export VAR=foo to set environment variables. export will not copy a variable from a script's environment to the parent shell. If the script is sourced though, you're directly changing the environment of the current shell.
+
+	TLDR: You can't change the parent environment from a child process. Source the script with . /path/to/script to execute it in the current environment.
+	```
