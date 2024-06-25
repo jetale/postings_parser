@@ -3,6 +3,8 @@ from datetime import date, datetime
 from importlib.resources import files
 
 import asyncio
+from concurrent.futures import ThreadPoolExecutor
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
@@ -29,8 +31,9 @@ class RunBatches:
         }
         self.driver = webdriver.Chrome(options=chrome_options)
         self.wait = WebDriverWait(self.driver, 10)  # Adjust the timeout as needed
-
         self.conn = Connector()
+        self.executor = ThreadPoolExecutor()
+        self.queue = asyncio.Queue()
 
         self.scraper = PageScraper(self.driver, self.wait)
 
@@ -43,13 +46,15 @@ class RunBatches:
     async def parse(self, url)->None:
         
         postings_list = await asyncio.get_event_loop().run_in_executor(self.executor, self.scraper.scrape, url)
-        postings_list = self.scraper.scrape(url=url)
-            
-        self.driver.quit()
+        await self.queue.put(postings_list)            
+        
 
     async def insert_in_db(self):
-        self.insert_query(postings_list) #Keeping this here instead of time.sleep(). I know it can be handled in async way but if I am adding time.sleep then it doesn't make sense to handle this asynchronously
-        
+        while True:
+            postings_list = await self.queue.get()
+            if postings_list is None:
+                break      
+            await asyncio.get_event_loop().run_in_executor(self.executor, self.insert_query, postings_list)
         
 
     async def main_executor(self):
@@ -62,6 +67,7 @@ class RunBatches:
         await insert_data_task
 
         self.conn.close_all_connections()
+        self.driver.quit()
 
 
     def close_connection(self)->None:
