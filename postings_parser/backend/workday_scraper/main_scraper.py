@@ -1,8 +1,8 @@
-import time
 import logging
 from datetime import date, datetime
 from importlib.resources import files
 
+import asyncio
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
@@ -12,7 +12,7 @@ from postings_parser.utils.database_connector import Connector
 
 
 # right now i want to parse all postings. After that we can modify to check for previous posting and then notify only about new ones
-class ParsePostings:
+class RunBatches:
     def __init__(self)->None:
         self.input_path = files("postings_parser.input").joinpath(
             "urls.txt"
@@ -40,13 +40,29 @@ class ParsePostings:
             url = row[0]
             yield url
 
-    def parse(self)->None:
-        loader = self.load_urls()
-        for url in loader:# Temporary measure while I sort out the scrapy situation
-            postings_list = self.scraper.scrape(url=url)
-            self.insert_query(postings_list) #Keeping this here instead of time.sleep(). I know it can be handled in async way but if I am adding time.sleep then it doesn't make sense to handle this asynchronously
-        self.conn.close_all_connections()
+    async def parse(self, url)->None:
+        
+        postings_list = await asyncio.get_event_loop().run_in_executor(self.executor, self.scraper.scrape, url)
+        postings_list = self.scraper.scrape(url=url)
+            
         self.driver.quit()
+
+    async def insert_in_db(self):
+        self.insert_query(postings_list) #Keeping this here instead of time.sleep(). I know it can be handled in async way but if I am adding time.sleep then it doesn't make sense to handle this asynchronously
+        
+        
+
+    async def main_executor(self):
+        loader = self.load_urls()
+        scraper_tasks = [self.parse(url) for url in loader]
+        insert_data_task = asyncio.create_task(self.insert_in_db())
+        
+        await asyncio.gather(*scraper_tasks)
+        await self.queue.put(None)
+        await insert_data_task
+
+        self.conn.close_all_connections()
+
 
     def close_connection(self)->None:
         if self.cursor:
@@ -60,7 +76,7 @@ class ParsePostings:
         formatted_date = current_date.strftime("%Y-%m-%d")
         formatted_time = current_time.strftime("%H:%M:%S.%f")
         return (formatted_date, formatted_time)
-
+    
     def insert_query(self, postings_list):
         insert_query = """
                     INSERT INTO postings(job_id,
@@ -105,7 +121,10 @@ class ParsePostings:
             return rows
         else:
             raise RuntimeError(f"{select_query} did not return any rows")
+        
+    def run(self):
+        asyncio.run(self.main_executor())
 
 if __name__ == "__main__":
-    main = ParsePostings()
+    main = RunBatches()
     main.parse()

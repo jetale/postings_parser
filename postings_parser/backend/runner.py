@@ -1,6 +1,6 @@
 from postings_parser.backend.lever_scraper.main_lever_scraper import \
     StartSpiders
-from postings_parser.backend.workday_scraper.main_scraper import ParsePostings
+from postings_parser.backend.workday_scraper.main_scraper import RunJobs
 
 
 class Runner:
@@ -8,7 +8,7 @@ class Runner:
         self.run_workday()
 
     def run_workday(self):
-        workday_parser_obj = ParsePostings()
+        workday_parser_obj = RunJobs()
         workday_parser_obj.parse()
 
     def run_lever(self):
