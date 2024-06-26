@@ -2,7 +2,6 @@ import logging
 from datetime import date, datetime
 from importlib.resources import files
 
-import asyncio
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
@@ -29,8 +28,8 @@ class RunBatches:
         }
         self.driver = webdriver.Chrome(options=chrome_options)
         self.wait = WebDriverWait(self.driver, 10)  # Adjust the timeout as needed
-
         self.conn = Connector()
+        
 
         self.scraper = PageScraper(self.driver, self.wait)
 
@@ -38,30 +37,19 @@ class RunBatches:
         rows = self.select_query()
         for row in rows:
             url = row[0]
-            yield url
+            yield "https://boeing.wd1.myworkdayjobs.com/EXTERNAL_CAREERS/"
 
-    async def parse(self, url)->None:
-        
-        postings_list = await asyncio.get_event_loop().run_in_executor(self.executor, self.scraper.scrape, url)
-        postings_list = self.scraper.scrape(url=url)
-            
-        self.driver.quit()
+    def parse(self, url)->None: 
+        postings_list = self.scraper.scrape(url)
+        self.insert_query(postings_list)
 
-    async def insert_in_db(self):
-        self.insert_query(postings_list) #Keeping this here instead of time.sleep(). I know it can be handled in async way but if I am adding time.sleep then it doesn't make sense to handle this asynchronously
-        
-        
-
-    async def main_executor(self):
+    def main_executor(self):
         loader = self.load_urls()
-        scraper_tasks = [self.parse(url) for url in loader]
-        insert_data_task = asyncio.create_task(self.insert_in_db())
+        for url in loader:
+            self.parse(url)
         
-        await asyncio.gather(*scraper_tasks)
-        await self.queue.put(None)
-        await insert_data_task
-
         self.conn.close_all_connections()
+        self.driver.quit()
 
 
     def close_connection(self)->None:
@@ -121,10 +109,8 @@ class RunBatches:
             return rows
         else:
             raise RuntimeError(f"{select_query} did not return any rows")
-        
-    def run(self):
-        asyncio.run(self.main_executor())
+     
 
 if __name__ == "__main__":
     main = RunBatches()
-    main.parse()
+    main.main_executor()

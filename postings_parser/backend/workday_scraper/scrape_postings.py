@@ -1,7 +1,6 @@
-import sys
 import time
 import hashlib
-import uuid
+import logging
 from datetime import date, datetime, timedelta
 
 from selenium.webdriver.common.by import By
@@ -12,6 +11,7 @@ class PageScraper:
     def __init__(self, driver, wait):
         self.driver = driver
         self.wait = wait
+        self.logger = logging.getLogger("logger")
 
     def scrape(self, url):
         # Add conditions based on url and which scraper to use. Eg. workday, lever etc.
@@ -45,23 +45,14 @@ class PageScraper:
         return ret_val
 
     def scrape_workday(self, url):
-        print(url)
-        posting_dict = {
-            "job_id": "",
-            "job_title": "",
-            "company": "",
-            "location": "",
-            "parsed_date": "",
-            "parsed_time": "",
-            "posting_url": "",
-        }
+        self.logger.info(url)
         postings_list = []
         company_name = url.split(".")[0].split(":")[1].replace("/", "")
         parsed_date, parsed_time = self.get_date_time()
         self.driver.get(url)
         page = 1
         try:
-            while page < 50: # I don't think any website will have more than 50 pages. Keeping it to avoid infinite loop
+            while page < 2: # I don't think any website will have more than 50 pages. Keeping it to avoid infinite loop just in case
                 # Wait for job elements to load
                 self.wait.until(
                     EC.presence_of_element_located(
@@ -73,22 +64,13 @@ class PageScraper:
                 )
                 for job_element in job_elements:
                     job_title_element = job_element.find_element(By.XPATH, ".//h3/a")
-                    job_id_element = job_element.find_element(
-                        By.XPATH, './/ul[@data-automation-id="subtitle"]/li'
-                    )
-                    posted_on_element = job_element.find_element(
-                        By.XPATH,
-                        './/dd[@class="css-129m7dg"][preceding-sibling::dt[contains(text(),"posted on")]]',
-                    )
-                    location_element = job_element.find_element(
-                        By.XPATH,
-                        './/dd[@class="css-129m7dg"][preceding-sibling::dt[contains(text(),"locations")]]',
-                    )
-                    job_id = job_id_element.text.strip()
+                    
+                    
                     job_href = job_title_element.get_attribute("href")
                     job_title = job_title_element.text.strip()
-                    location = location_element.text.strip()
-                    posted_on = posted_on_element.text
+                    location = self.get_location(job_element, job_title)
+                    job_id, posted_on = self.get_jobid_and_posted_on(job_element, job_title) 
+                    
                     job_id = self.generate_unique_id(job_id, company_name, job_href)
                     posted_on_date = self.get_posting_date(posted_on)
                     temp_tuple = (
@@ -101,9 +83,9 @@ class PageScraper:
                         parsed_date,
                         parsed_time
                     )
+                    print(temp_tuple)
                     postings_list.append(temp_tuple)
-                    # print(temp_tuple)
-                # print(f"Page {page} - Total jobs parsed from {company_name}")
+                    
                 try:
                     next_button = self.driver.find_element(
                         By.XPATH, '//button[@data-uxi-element-id="next"]'
@@ -120,6 +102,65 @@ class PageScraper:
             print(f"An error occurred while processing {company_name}: {str(e)}")
 
         return postings_list
+
+
+    def get_jobid_and_posted_on(self, job_element, job_title):
+        job_id = "dummy" #setting this to dummy because it is used in calculating hash
+        posted_on = None
+
+        try:
+            job_id_element = job_element.find_element(
+                            By.XPATH, './/ul[@data-automation-id="subtitle"]/li'
+                        )
+            job_id = job_id_element.text.strip()
+        except Exception as e:
+            self.logger.warning(e)
+            self.logger.warning(f"\n Did not find job_id for {job_title}")
+            self.logger.warning(job_element.get_attribute("outerHTML"))
+            self.logger.warning(job_element.text)
+        try:
+            posted_on_element = job_element.find_element(
+                By.XPATH,
+                './/dd[@class="css-129m7dg"][preceding-sibling::dt[contains(text(),"posted on")]]',
+            )
+            posted_on = posted_on_element.text
+        except Exception as e:
+            self.logger.warning(e)
+            self.logger.warning(f"\n did not find posted on date for {job_title}")
+            self.logger.warning(job_element.get_attribute("outerHTML"))
+            self.logger.warning(job_element.text)
+
+        return (job_id, posted_on)
+    
+
+
+    def get_location(self, job_element, job_title):
+        location = None
+        try:
+            location_element = job_element.find_element(
+                            By.XPATH,
+                            './/dd[@class="css-129m7dg"][preceding-sibling::dt[contains(text(),"locations")]]',
+                        )
+            location = location_element.text.strip()
+        except:
+            try:
+                location_elements = job_element.find_elements(By.CSS_SELECTOR, 'dt.css-y8qsrx')
+                location_string_list = []
+                for dt in location_elements:
+                    if dt.text.lower() == 'remote type':
+                        dd_element = dt.find_element(By.XPATH, 'following-sibling::dd[@class="css-129m7dg"]')
+                        location_string_list.append(dd_element.text)
+                    elif dt.text.lower() == 'locations':
+                        dd_element = dt.find_element(By.XPATH, 'following-sibling::dd[@class="css-129m7dg"]')
+                        location_string_list.append(dd_element.text)
+                location = "\n".join(location_string_list)
+            except Exception as e:
+                self.logger.warning(e)
+                self.logger.warning(f"\n Did not find any location element for {job_title} ")
+                self.logger.warning(job_element.get_attribute("outerHTML"))
+                self.logger.warning(job_element.text)
+        return location
+
 
     def generate_unique_id(self, job_title, company_name, job_href):
         composite_key = f"{job_title}-{company_name}-{job_href}"
