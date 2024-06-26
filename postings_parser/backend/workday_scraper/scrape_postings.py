@@ -52,7 +52,7 @@ class PageScraper:
         self.driver.get(url)
         page = 1
         try:
-            while page < 2: # I don't think any website will have more than 50 pages. Keeping it to avoid infinite loop just in case
+            while page < 50: # I don't think any website will have more than 50 pages. Keeping it to avoid infinite loop just in case
                 # Wait for job elements to load
                 self.wait.until(
                     EC.presence_of_element_located(
@@ -64,13 +64,10 @@ class PageScraper:
                 )
                 for job_element in job_elements:
                     job_title_element = job_element.find_element(By.XPATH, ".//h3/a")
-                    
-                    
                     job_href = job_title_element.get_attribute("href")
                     job_title = job_title_element.text.strip()
                     location = self.get_location(job_element, job_title)
                     job_id, posted_on = self.get_jobid_and_posted_on(job_element, job_title) 
-                    
                     job_id = self.generate_unique_id(job_id, company_name, job_href)
                     posted_on_date = self.get_posting_date(posted_on)
                     temp_tuple = (
@@ -83,9 +80,7 @@ class PageScraper:
                         parsed_date,
                         parsed_time
                     )
-                    print(temp_tuple)
                     postings_list.append(temp_tuple)
-                    
                 try:
                     next_button = self.driver.find_element(
                         By.XPATH, '//button[@data-uxi-element-id="next"]'

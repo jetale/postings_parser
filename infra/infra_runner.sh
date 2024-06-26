@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NUM_PROCESSES=5
+NUM_PROCESSES=20
 
 eval $(ssh-agent -s)
 ssh-add ~/.ssh/id_rsa
@@ -13,7 +13,6 @@ exit_if_error() {
   fi
 }
 
-
 # Function to just check the exit status. This does not exit the  script if there is error just displays
 check_exit_status() {
    if [ $? -ne 0 ]; then
@@ -23,6 +22,9 @@ check_exit_status() {
 
 printf '%.0s#' $(seq 1 $term_width)
 echo
+
+start=$(date +%s)
+
 #Generate input files
 echo "=> Activating environment"
 source $PROJ_POSTINGS_PARSER_PATH/env/bin/activate
@@ -50,7 +52,7 @@ echo
 cd ../
 
 echo "=> Running Ansible playbook..."
-ansible-playbook -v -i terraform/inventory.ini --forks=$NUM_PROCESSES ansible/playbook.yml
+ansible-playbook -i terraform/inventory.ini --forks=$NUM_PROCESSES ansible/playbook.yml
 check_exit_status "Ansible playbook"
 echo "=> Ansible playbook completed"
 
@@ -62,5 +64,8 @@ terraform destroy -auto-approve
 check_exit_status "Terraform destroy"
 echo "=> Terraform destroy completed"
 
-
+hours=$((runtime / 3600))
+minutes=$(( (runtime % 3600) / 60 ))
+seconds=$((runtime % 60))
+printf "Elapsed time: %02d:%02d:%02d\n" $hours $minutes $seconds
 

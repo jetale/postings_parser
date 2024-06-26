@@ -68,6 +68,7 @@
       git:
         repo: "{{ repo_url }}"
         accept_newhostkey: true
+        version: start_multiple_ec2_instances
         dest: "{{ repo_dest }}"
 
     - name: Copy input file to instance

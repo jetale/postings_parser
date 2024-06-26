@@ -81,7 +81,8 @@ class RunBatches:
                                         posting_url,
                                         parsed_date,
                                         parsed_time )
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                    ON CONFLICT (job_id) DO NOTHING;
                     """
         try:
             connection = self.conn.get_conn()

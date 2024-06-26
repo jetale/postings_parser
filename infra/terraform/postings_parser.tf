@@ -24,7 +24,7 @@ resource "aws_key_pair" "ssh_key" {
 }
 
 resource "aws_instance" "example" {
-  count = 5
+  count = 20
   ami           = "ami-04b70fa74e45c3917" # Replace with a valid AMI ID for your region
   instance_type = "t2.micro"
   key_name      = aws_key_pair.ssh_key.key_name
