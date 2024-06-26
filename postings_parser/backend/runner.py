@@ -5,11 +5,11 @@ from postings_parser.backend.workday_scraper.main_scraper import RunBatches
 
 class Runner:
     def __init__(self):
-        self.run_workday()
+        pass
 
     def run_workday(self):
         workday_parser_obj = RunBatches()
-        workday_parser_obj.parse()
+        workday_parser_obj.main_executor()
 
     def run_lever(self):
         lever_parser_obj = StartSpiders()
@@ -17,4 +17,5 @@ class Runner:
 
 
 if __name__ == "__main__":
-    Runner()
+    current_runner = Runner()
+    current_runner.run_workday()

@@ -3,7 +3,7 @@ from postings_parser.utils.database_connector import Connector
 urls = []
 with open("urls.txt", "r") as f:
     for line in f:
-        #line = line.replace("job/", "").replace("\n","")
+        # aline = line.replace("job/", "").replace("\n","")
         urls.append((line, "workday"))
        
 

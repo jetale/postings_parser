@@ -41,31 +41,17 @@ class RunBatches:
         rows = self.select_query()
         for row in rows:
             url = row[0]
-            yield url
+            yield "https://boeing.wd1.myworkdayjobs.com/EXTERNAL_CAREERS/"
 
-    async def parse(self, url)->None:
-        
-        postings_list = await asyncio.get_event_loop().run_in_executor(self.executor, self.scraper.scrape, url)
-        await self.queue.put(postings_list)            
-        
+    def parse(self, url)->None: 
+        postings_list = self.scraper.scrape(url)
+        self.insert_query(postings_list)
 
-    async def insert_in_db(self):
-        while True:
-            postings_list = await self.queue.get()
-            if postings_list is None:
-                break      
-            await asyncio.get_event_loop().run_in_executor(self.executor, self.insert_query, postings_list)
-        
-
-    async def main_executor(self):
+    def main_executor(self):
         loader = self.load_urls()
-        scraper_tasks = [self.parse(url) for url in loader]
-        insert_data_task = asyncio.create_task(self.insert_in_db())
+        for url in loader:
+            self.parse(url)
         
-        await asyncio.gather(*scraper_tasks)
-        await self.queue.put(None)
-        await insert_data_task
-
         self.conn.close_all_connections()
         self.driver.quit()
 
@@ -127,10 +113,8 @@ class RunBatches:
             return rows
         else:
             raise RuntimeError(f"{select_query} did not return any rows")
-        
-    def run(self):
-        asyncio.run(self.main_executor())
+     
 
 if __name__ == "__main__":
     main = RunBatches()
-    main.parse()
+    main.main_executor()
