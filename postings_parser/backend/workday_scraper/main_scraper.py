@@ -14,7 +14,7 @@ from postings_parser.utils.database_connector import Connector
 class RunBatches:
     def __init__(self)->None:
         self.input_path = files("postings_parser.input").joinpath(
-            "urls.txt"
+            "input_urls.txt"
         )  # ('postings_parser', 'input/urls.txt')
         # self.input_path = "input/urls.txt"
         self.logger = logging.getLogger("logger")
@@ -33,18 +33,24 @@ class RunBatches:
 
         self.scraper = PageScraper(self.driver, self.wait)
 
-    def load_urls(self):
+    def load_urls_from_file(self):
+        with open (self.input_path, "r") as f:
+            for url in f:
+                yield url
+
+    def load_urls_from_db(self):
         rows = self.select_query()
         for row in rows:
             url = row[0]
-            yield "https://boeing.wd1.myworkdayjobs.com/EXTERNAL_CAREERS/"
+            yield url
+            #yield "https://boeing.wd1.myworkdayjobs.com/EXTERNAL_CAREERS/"
 
     def parse(self, url)->None: 
         postings_list = self.scraper.scrape(url)
         self.insert_query(postings_list)
 
     def main_executor(self):
-        loader = self.load_urls()
+        loader = self.load_urls_from_file()
         for url in loader:
             self.parse(url)
         
