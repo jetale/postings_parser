@@ -2,9 +2,6 @@ import logging
 from datetime import date, datetime
 from importlib.resources import files
 
-import asyncio
-from concurrent.futures import ThreadPoolExecutor
-
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
@@ -32,8 +29,7 @@ class RunBatches:
         self.driver = webdriver.Chrome(options=chrome_options)
         self.wait = WebDriverWait(self.driver, 10)  # Adjust the timeout as needed
         self.conn = Connector()
-        self.executor = ThreadPoolExecutor()
-        self.queue = asyncio.Queue()
+        
 
         self.scraper = PageScraper(self.driver, self.wait)
 
