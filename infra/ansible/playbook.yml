@@ -2,13 +2,11 @@
   hosts: ec2_instances
   become: yes
   vars:
-    token: d6sdfshhghyjggj448t8tnt9h
     ansible_user: ubuntu
     github_username: jetale
-    github_access_token: $GIT_PASSWORD
     repo_url: git@github.com:jetale/postings_parser.git
-    repo_name: postings_parser
     repo_dest: /home/ubuntu/postings_parser
+    input_file_dest: /home/ubuntu/postings_parser/postings_parser/input/input_urls.txt
   tasks:
     - name: Update apt cache
       apt:
@@ -66,19 +64,17 @@
         insertafter: '^#?\s*Defaults\s+env_keep\b'
         line: 'Defaults    env_keep += "SSH_AUTH_SOCK"'
 
-    - name: Run ssh-add -l command
-      command: ssh-add -l
-      register: ssh_add_output
-
-    - name: Display output
-      debug:
-        var: ssh_add_output.stdout_lines
-
     - name: Clone private git repository
       git:
         repo: "{{ repo_url }}"
         accept_newhostkey: true
+        version: start_multiple_ec2_instances
         dest: "{{ repo_dest }}"
+
+    - name: Copy input file to instance
+      ansible.builtin.copy:
+        src: "{{ hostvars[inventory_hostname]['input_file'] }}"
+        dest: "{{ input_file_dest }}"
 
     - name: Build Docker image
       command: docker build . --file Dockerfile --tag postings_parser_image 

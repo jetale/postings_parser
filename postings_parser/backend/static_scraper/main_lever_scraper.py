@@ -6,7 +6,7 @@ import pkg_resources
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 
-from postings_parser.backend.lever_scraper.lever_scraper.spiders.lever_scraper_spider import \
+from postings_parser.backend.static_scraper.lever_scraper.spiders.lever_scraper_spider import \
     LeverSpider
 from postings_parser.utils.database_connector import Connector
 

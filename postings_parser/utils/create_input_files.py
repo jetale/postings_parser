@@ -1,18 +1,22 @@
 import os
+import math
+import argparse
 from postings_parser.utils.database_connector import Connector
 
 PROJ_ROOT = os.getenv('PROJ_POSTINGS_PARSER_PATH')
 print(PROJ_ROOT)
-BATCH_SIZE = 100
+
 OUT_FILE_PATH = PROJ_ROOT + "/postings_parser/input/"
 out_file_name = "urls_batch_"
 
 
-def main():
+def main(max_files):
     rows = select_query()
-    create_files(rows)
+    url_count = len(rows)
+    batch_size = math.ceil(url_count/max_files)
+    create_files(rows, batch_size)
 
-def create_files(rows):
+def create_files(rows, batch_size):
     row_counter = 1
     file_counter = 0
     urls_list = []
@@ -20,7 +24,7 @@ def create_files(rows):
         url = row[0] + "\n"
         urls_list.append(url)
         row_counter += 1
-        if row_counter == BATCH_SIZE:
+        if row_counter == batch_size:
             flush_to_file(urls_list, file_counter)
             urls_list = []
             row_counter = 0
@@ -62,4 +66,13 @@ def select_query():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description='File Generator')
+    parser.add_argument('--num_files', type=int, help='Max number of files to be generated')
+    args = parser.parse_args()
+
+    if args.num_files:
+        main(max_files=args.num_files)
+    else:
+        print('Please specify the number of files to process using --num_file option.')
+
+    
