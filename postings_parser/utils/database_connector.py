@@ -1,4 +1,5 @@
 import logging
+from enum import Enum
 import os
 
 import psycopg2
@@ -7,6 +8,9 @@ from psycopg2 import pool
 
 logger = logging.getLogger("logger")
 
+class ExecutionType(Enum):
+    SINGLE = "single"
+    MANY = "many"
 
 class Connector:
     _instance = None
@@ -42,11 +46,15 @@ class Connector:
         )
         if self.connection_pool:
             logger.info("Connection pool created successfully")
-
         self._initialized = True
 
     def get_conn(self):
-        return self.connection_pool.getconn()
+        try:
+            connection = self.connection_pool.getconn()
+            cursor = connection.cursor()
+        except:
+            logger.warning("Could not get DB connection or cursor")
+        return connection, cursor
 
     def release_conn(self, connection):
         return self.connection_pool.putconn(connection)
@@ -65,6 +73,35 @@ class Connector:
         except psycopg2.OperationalError as e:
             print(f"Error: {e}")
             exit(1)
-
         cur = conn.cursor()
         return conn, cur
+    
+    def execute_select_query(self, query):
+        rows = ()
+        try:
+            connection, cursor = self.get_conn()
+            cursor.execute(query)
+            rows = cursor.fetchall()
+        except Exception as e:
+            logger.warning(f"An error occurred while fetching data from DB: {e}")
+            connection.rollback()
+        finally:
+            self.release_conn(connection)
+        return rows
+
+
+    def execute_insert_query(self, insert_query, data=None, type_execute=None)->None:
+        try:
+            connection, cursor = self.get_conn()
+            if type_execute== ExecutionType.MANY:
+                cursor.executemany(insert_query, data)
+            elif type_execute==ExecutionType.SINGLE:
+                cursor.execute(insert_query, data)
+            else:
+                logger.warning(f"Invalid query type: {type_execute}")
+            connection.commit()
+        except Exception as e:
+            logger.warning(f"An error occurred while inserting data to DB: {e}")
+            connection.rollback()
+        finally:
+            self.release_conn(connection)
