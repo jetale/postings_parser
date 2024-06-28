@@ -8,7 +8,7 @@ printf '%.0s#' $(seq 1 $term_width)
 
 echo -e "\n\n => Inside bash script"
 if [[ "$RUN_SCRAPY" == "true" ]]; then
-	cd postings_parser/backend/lever_scraper/
+	cd postings_parser/backend/static_scraper/
 	python3 main_lever_scraper.py
 fi
 

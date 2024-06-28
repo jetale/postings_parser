@@ -1,6 +1,6 @@
-from postings_parser.backend.lever_scraper.main_lever_scraper import \
+from postings_parser.backend.static_scraper.main_lever_scraper import \
     StartSpiders
-from postings_parser.backend.workday_scraper.main_scraper import RunBatches
+from postings_parser.backend.dynamic_scraper.main_scraper import RunBatches
 
 
 class Runner:

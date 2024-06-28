@@ -6,7 +6,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 
-from postings_parser.backend.workday_scraper.scrape_postings import PageScraper
+from postings_parser.backend.dynamic_scraper.workday.scrape_postings import PageScraper
 from postings_parser.utils.database_connector import Connector
 
 
