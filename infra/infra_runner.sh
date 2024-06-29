@@ -1,7 +1,8 @@
 #!/bin/bash -l
 
-env
+
 NUM_PROCESSES=20
+TIMEOUT_SEC=3600
 
 eval $(ssh-agent -s)
 ssh-add ~/.ssh/id_rsa
@@ -21,6 +22,7 @@ check_exit_status() {
    fi
 }
 
+echo
 printf '%.0s#' $(seq 1 $term_width)
 echo
 
@@ -53,9 +55,18 @@ echo
 cd ../
 
 echo "=> Running Ansible playbook..."
-ansible-playbook -i $PROJ_POSTINGS_PARSER_PATH/infra/terraform/inventory.ini --forks=$NUM_PROCESSES $PROJ_POSTINGS_PARSER_PATH/infra/ansible/playbook.yml
-check_exit_status "Ansible playbook"
-echo "=> Ansible playbook completed"
+timeout $TIMEOUT_SEC ansible-playbook -i $PROJ_POSTINGS_PARSER_PATH/infra/terraform/inventory.ini --forks=$NUM_PROCESSES $PROJ_POSTINGS_PARSER_PATH/infra/ansible/playbook.yml &
+pid=$!
+if wait $pid; then
+    echo "Ansible playbook completed successfully."
+    check_exit_status "Ansible playbook"
+    echo "=> Ansible playbook completed"
+else
+    # Timeout occurred, kill the ansible-playbook process
+    echo "Timeout occurred. Killing ansible-playbook process with PID: $pid"
+    kill -9 $pid  # Forcefully terminate 
+fi
+
 
 # Destroy Terraform configuration
 cd terraform || { echo "Failed to change directory to terraform. Exiting."; exit 1; }
