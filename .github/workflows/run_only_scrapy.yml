@@ -1,7 +1,9 @@
 name: run_only_scrapy
 
 on:
-  workflow_dispatch
+  schedule:
+    - cron: '0 12,23 * * *'
+  
 
 env:
   PGHOST: '${{secrets.PGHOST}}'

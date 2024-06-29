@@ -46,18 +46,7 @@ def select_query():
             SELECT url FROM site_urls
             WHERE url_domain='workday';
             """
-    try:
-        conn = Connector()
-        connection = conn.get_conn()
-        cursor = connection.cursor()
-        cursor.execute(select_query)
-        rows = cursor.fetchall()
-        
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        connection.rollback()
-    finally:
-        conn.release_conn(connection)
+    rows = Connector().execute_select_query(select_query)
     
     if rows:
         return rows

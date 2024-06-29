@@ -1,5 +1,6 @@
-#!/bin/bash
+#!/bin/bash -l
 
+env
 NUM_PROCESSES=20
 
 eval $(ssh-agent -s)
@@ -52,7 +53,7 @@ echo
 cd ../
 
 echo "=> Running Ansible playbook..."
-ansible-playbook -i terraform/inventory.ini --forks=$NUM_PROCESSES ansible/playbook.yml
+ansible-playbook -i $PROJ_POSTINGS_PARSER_PATH/infra/terraform/inventory.ini --forks=$NUM_PROCESSES $PROJ_POSTINGS_PARSER_PATH/infra/ansible/playbook.yml
 check_exit_status "Ansible playbook"
 echo "=> Ansible playbook completed"
 

@@ -7,7 +7,7 @@
 # useful for handling different item types with a single interface
 import logging
 
-from postings_parser.utils.database_connector import Connector
+from postings_parser.utils.database_connector import Connector, ExecutionType
 
 
 class LeverScraperPipeline:
@@ -46,8 +46,6 @@ class LeverScraperPipeline:
 
     def insert_data(self, postings_list):
         self.logger.info("Inserting data into DB")
-        connection = self.db_connector.get_conn()
-        cursor = connection.cursor()
         insert_query = """
                     INSERT INTO postings_new(job_id,
                                             job_title,
@@ -61,16 +59,7 @@ class LeverScraperPipeline:
                                             commitment )
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
                     """
-        try:
-            cursor.executemany(insert_query, postings_list)
-            connection.commit()
-            self.logger.info(f"Successfully Inserted {len(postings_list)} items")
-        except Exception as e:
-            self.logger.warning(f"An error occurred: {e}")
-            connection.rollback()
-        finally:
-            cursor.close()
-            self.db_connector.release_conn(connection)
+        self.db_connector.execute_insert_query(insert_query, postings_list, type_execute=ExecutionType.MANY)
 
     def close_spider(self, spider):
         item_list = self.convert_to_list()

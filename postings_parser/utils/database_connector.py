@@ -77,7 +77,7 @@ class Connector:
         return conn, cur
     
     def execute_select_query(self, query):
-        rows = ()
+        rows = tuple()
         try:
             connection, cursor = self.get_conn()
             cursor.execute(query)
