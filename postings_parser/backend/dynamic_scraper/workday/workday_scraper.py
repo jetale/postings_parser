@@ -28,9 +28,12 @@ class WorkdayScraper(BaseScraper):
                     EC.presence_of_element_located((By.XPATH, '//li[@class="css-1q2dra3"]')))
                 job_elements = self.driver.find_elements(By.XPATH, '//li[@class="css-1q2dra3"]')
                 for job_element in job_elements:
-                    info_tuple = self.extract_info_from_posting(job_element=job_element, company_name=company_name, \
+                    is_today, info_tuple = self.extract_info_from_posting(job_element=job_element, company_name=company_name, \
                                                                 parsed_date=parsed_date, parsed_time=parsed_time)
                     postings_list.append(info_tuple)
+                    if not is_today:
+                        self.logger.info("Finished scraping new postings")
+                        break
                 next_btn_prsd = self.click_next_button()
                 if not next_btn_prsd:
                     self.logger.info("Reached at the end of all listings")
@@ -43,11 +46,13 @@ class WorkdayScraper(BaseScraper):
     
     def get_posting_date(self, posted_on):
         current_date = date.today()
+        is_today = False
         ret_val = None
         if "+" in posted_on:
             ret_val = None
         elif "Today" in posted_on:
             ret_val = current_date.strftime("%Y-%m-%d")
+            is_today = True
         elif "Yesterday" in posted_on:
             one_day_ago = current_date - timedelta(days=1)
             ret_val = one_day_ago.strftime("%Y-%m-%d")
@@ -58,7 +63,7 @@ class WorkdayScraper(BaseScraper):
                 ret_val = n_days_ago_date.strftime("%Y-%m-%d")
             except:
                 ret_val = None
-        return ret_val
+        return (is_today, ret_val)
 
 
     def extract_info_from_posting(self, job_element, company_name, parsed_date, parsed_time):
@@ -68,7 +73,7 @@ class WorkdayScraper(BaseScraper):
         location = self.get_location(job_element, job_title)
         job_id, posted_on = self.get_jobid_and_posted_on(job_element, job_title) 
         job_id = BaseScraper.generate_unique_id(job_id, company_name, job_href)
-        posted_on_date = self.get_posting_date(posted_on)
+        is_today, posted_on_date = self.get_posting_date(posted_on)
         temp_tuple = (
                         job_id,
                         job_title,
@@ -79,7 +84,7 @@ class WorkdayScraper(BaseScraper):
                         parsed_date,
                         parsed_time
                     )
-        return temp_tuple
+        return (is_today, temp_tuple)
 
     def get_jobid_and_posted_on(self, job_element, job_title):
         job_id = "dummy" #not setting it to None because it is used in calculating hash
