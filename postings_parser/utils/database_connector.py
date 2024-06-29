@@ -84,7 +84,6 @@ class Connector:
             rows = cursor.fetchall()
         except Exception as e:
             logger.warning(f"An error occurred while fetching data from DB: {e}")
-            connection.rollback()
         finally:
             self.release_conn(connection)
         return rows
@@ -102,6 +101,18 @@ class Connector:
             connection.commit()
         except Exception as e:
             logger.warning(f"An error occurred while inserting data to DB: {e}")
+            connection.rollback()
+        finally:
+            self.release_conn(connection)
+
+
+    def execute_function(self, query):
+        try:
+            connection, cursor = self.get_conn()
+            cursor.execute(query)
+            connection.commit()
+        except Exception as e:
+            logger.warning(f"An error occurred while fetching data from DB: {e}")
             connection.rollback()
         finally:
             self.release_conn(connection)
