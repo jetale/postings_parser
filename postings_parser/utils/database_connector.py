@@ -55,7 +55,16 @@ class Connector:
         except:
             logger.warning("Could not get DB connection or cursor")
         return connection, cursor
-
+    
+    def get_single_conn(self):
+        """ This is used for multithreaded & multiprocess scenarios"""
+        try:
+            connection = psycopg2.connect(**self.db_params)
+            cursor = connection.cursor()
+        except psycopg2.OperationalError as e:
+            print(f"Error: {e}")    
+        return connection, cursor
+    
     def release_conn(self, connection):
         return self.connection_pool.putconn(connection)
 
@@ -89,9 +98,17 @@ class Connector:
         return rows
 
 
-    def execute_insert_query(self, insert_query, data=None, type_execute=None)->None:
+    def execute_insert_query(self, insert_query, data=None, type_execute=None, new_conn=True)->None:
         try:
-            connection, cursor = self.get_conn()
+            if new_conn:
+                connection, cursor = self.get_single_conn()
+            else:
+                connection, cursor = self.get_conn()
+        except Exception as e:
+            self.log.warning(e)
+            return None
+
+        try: 
             if type_execute== ExecutionType.MANY:
                 cursor.executemany(insert_query, data)
             elif type_execute==ExecutionType.SINGLE:
@@ -103,7 +120,11 @@ class Connector:
             logger.warning(f"An error occurred while inserting data to DB: {e}")
             connection.rollback()
         finally:
-            self.release_conn(connection)
+            if new_conn:
+                cursor.close()
+                connection.close()
+            else:
+                self.release_conn(connection)
 
 
     def execute_function(self, query):

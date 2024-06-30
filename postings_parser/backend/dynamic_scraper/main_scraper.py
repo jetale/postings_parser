@@ -69,7 +69,7 @@ class RunBatches:
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                     ON CONFLICT (job_id) DO NOTHING;
                     """
-        self.conn.execute_insert_query(insert_query, data, type_execute=ExecutionType.MANY)
+        self.conn.execute_insert_query(insert_query, data, type_execute=ExecutionType.MANY, new_conn=True)
 
     def select_query(self):
         select_query = """
