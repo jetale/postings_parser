@@ -1,9 +1,8 @@
 name: get_daily_stats
 
 on:
-  workflow_dispatch
-  #schedule:
-  #  - cron: '0 20 * * *'
+  schedule:
+    - cron: '0 1 * * *'
   
 env:
   PGHOST: '${{secrets.PGHOST}}'

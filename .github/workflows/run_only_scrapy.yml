@@ -1,8 +1,9 @@
 name: run_only_scrapy
 
 on:
-  schedule:
-    - cron: '0 12,23 * * *'
+  workflow_dispatch
+  #schedule:
+  #  - cron: '0 12,23 * * *'
   
 
 env:
