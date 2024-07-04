@@ -25,10 +25,19 @@
 	- `Python`
 	- `Selenium`
 	- `Scrapy`
-- **Additional Requirements**: (This includes requirements for infra parts)
+	- `Postgres` 
+ - **Additional Requirements**: (This includes requirements for infra parts)
+	- `Docker`
 	- `Ansible`
 	- `Terraform`
 	- `AWS account`
+ - **Minimum Install with Docker**:
+	- These steps are for ubuntu. They might differ for other scenarios
+ 	```
+	./install.sh
+	
+ 	```
+
 
 ## Future -
  - They are tons of things to do but I am not sure how I will proceed
