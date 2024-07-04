@@ -2,7 +2,7 @@
 ![example workflow](https://github.com/jetale/postings_parser/actions/workflows/main.yml/badge.svg)
 
 ## Design and Workflow -
- ![Design diagram](assets/diagram_white_background.png)
+ ![Design diagram](assets/diagram_updated.png)
 
 ### TODO -
  [] add linter
