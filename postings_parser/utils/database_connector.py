@@ -1,6 +1,6 @@
 import logging
-from enum import Enum
 import os
+from enum import Enum
 
 import psycopg2
 from dotenv import load_dotenv
@@ -8,9 +8,11 @@ from psycopg2 import pool
 
 logger = logging.getLogger("logger")
 
+
 class ExecutionType(Enum):
     SINGLE = "single"
     MANY = "many"
+
 
 class Connector:
     _instance = None
@@ -55,16 +57,16 @@ class Connector:
         except:
             logger.warning("Could not get DB connection or cursor")
         return connection, cursor
-    
+
     def get_single_conn(self):
-        """ This is used for multithreaded & multiprocess scenarios"""
+        """This is used for multithreaded & multiprocess scenarios"""
         try:
             connection = psycopg2.connect(**self.db_params)
             cursor = connection.cursor()
         except psycopg2.OperationalError as e:
-            print(f"Error: {e}")    
+            print(f"Error: {e}")
         return connection, cursor
-    
+
     def release_conn(self, connection):
         return self.connection_pool.putconn(connection)
 
@@ -84,7 +86,7 @@ class Connector:
             exit(1)
         cur = conn.cursor()
         return conn, cur
-    
+
     def execute_select_query(self, query):
         rows = tuple()
         try:
@@ -97,8 +99,9 @@ class Connector:
             self.release_conn(connection)
         return rows
 
-
-    def execute_insert_query(self, insert_query, data=None, type_execute=None, new_conn=True)->None:
+    def execute_insert_query(
+        self, insert_query, data=None, type_execute=None, new_conn=True
+    ) -> None:
         try:
             if new_conn:
                 connection, cursor = self.get_single_conn()
@@ -108,10 +111,10 @@ class Connector:
             self.log.warning(e)
             return None
 
-        try: 
-            if type_execute== ExecutionType.MANY:
+        try:
+            if type_execute == ExecutionType.MANY:
                 cursor.executemany(insert_query, data)
-            elif type_execute==ExecutionType.SINGLE:
+            elif type_execute == ExecutionType.SINGLE:
                 cursor.execute(insert_query, data)
             else:
                 logger.warning(f"Invalid query type: {type_execute}")
@@ -125,7 +128,6 @@ class Connector:
                 connection.close()
             else:
                 self.release_conn(connection)
-
 
     def execute_function(self, query):
         try:

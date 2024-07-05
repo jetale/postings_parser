@@ -194,4 +194,3 @@ crash.log
 # Ignore SSH keys or other sensitive files
 id_rsa
 id_rsa.pub
-

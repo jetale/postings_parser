@@ -2,6 +2,10 @@
   hosts: ec2_instances
   become: yes
   vars:
+    pgdb: "{{ lookup('env','PGDATABASE') }}"
+    pghost: "{{ lookup('env','PGHOST') }}"
+    pguser: "{{ lookup('env','PGUSER') }}"
+    pgpass: "{{ lookup('env','PGPASSWORD') }}"
     ansible_user: ubuntu
     github_username: jetale
     repo_url: git@github.com:jetale/postings_parser.git
@@ -77,16 +81,16 @@
         dest: "{{ input_file_dest }}"
 
     - name: Build Docker image
-      command: docker build . --file Dockerfile --tag postings_parser_image 
+      command: docker build . --file Dockerfile --tag postings_parser_image
       args:
         chdir: "{{ repo_dest }}"
 
     - name: Run Docker container
       command: docker run -p 5432:5432 \
-        -e PGHOST='ep-purple-king-a5n11fyg.us-east-2.aws.neon.tech' \
-        -e PGDATABASE='postings_db' \
-        -e PGUSER='postings_db_owner' \
-        -e PGPASSWORD='WsEr5pQf0gFz' \
+        -e PGHOST= "{{ pghost }}" \
+        -e PGDATABASE= "{{ pgdb }}" \
+        -e PGUSER= "{{ pguser }}" \
+        -e PGPASSWORD= "{{ pgpass }}" \
         -e RUN_SELENIUM='true' \
         postings_parser_image
 

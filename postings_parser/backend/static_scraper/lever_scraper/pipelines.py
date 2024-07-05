@@ -59,7 +59,9 @@ class LeverScraperPipeline:
                                             commitment )
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
                     """
-        self.db_connector.execute_insert_query(insert_query, postings_list, type_execute=ExecutionType.MANY, new_conn=True)
+        self.db_connector.execute_insert_query(
+            insert_query, postings_list, type_execute=ExecutionType.MANY, new_conn=True
+        )
 
     def close_spider(self, spider):
         item_list = self.convert_to_list()

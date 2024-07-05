@@ -38,4 +38,3 @@ ENV PYTHONPATH "${PYTHONPATH}:/app/"
 RUN apt-get remove -y wget curl unzip gnupg ca-certificates
 
 CMD ["bash", "postings_parser/backend/start_scrapers.sh"]
-

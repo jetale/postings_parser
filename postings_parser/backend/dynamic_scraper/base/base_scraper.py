@@ -22,21 +22,19 @@ class BaseScraper:
     def generate_unique_id(job_title, company_name, job_href):
         composite_key = f"{job_title}-{company_name}-{job_href}"
         return hashlib.md5(composite_key.encode()).hexdigest()
-    
+
     @abstractmethod
     def get_posting_date(self):
         pass
 
     @abstractmethod
-    def scrape(self, url):
+    def scrape(self):
         pass
 
     @abstractmethod
     def get_jobid_and_posted_on(self):
-      pass
-    
+        pass
+
     @abstractmethod
     def get_location(self):
         pass
-
-    

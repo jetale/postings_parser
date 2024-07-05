@@ -69,7 +69,7 @@ class StartSpiders:
                 main_list.append(batch_list)
                 batch_list = []
         return main_list
-    
+
     def execute_select_query(self):
         select_query = """
                 SELECT url FROM site_urls

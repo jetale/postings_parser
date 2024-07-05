@@ -64,7 +64,7 @@ if wait $pid; then
 else
     # Timeout occurred, kill the ansible-playbook process
     echo "Timeout occurred. Killing ansible-playbook process with PID: $pid"
-    kill -9 $pid  # Forcefully terminate 
+    kill -9 $pid  # Forcefully terminate
 fi
 
 
@@ -80,4 +80,3 @@ hours=$((runtime / 3600))
 minutes=$(( (runtime % 3600) / 60 ))
 seconds=$((runtime % 60))
 printf "Elapsed time: %02d:%02d:%02d\n" $hours $minutes $seconds
-
