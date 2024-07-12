@@ -46,6 +46,3 @@
  - Improve frontend. I barely know any frontend and am using Django templates for it. This can be made pretty in some JS framework
 
 ### TODO -
- [] add linter
- [] add pre-commit hooks
- [] add static checker
