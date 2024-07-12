@@ -87,10 +87,10 @@
 
     - name: Run Docker container
       command: docker run -p 5432:5432 \
-        -e PGHOST= "{{ pghost }}" \
-        -e PGDATABASE= "{{ pgdb }}" \
-        -e PGUSER= "{{ pguser }}" \
-        -e PGPASSWORD= "{{ pgpass }}" \
+        -e PGHOST="{{ pghost }}" \
+        -e PGDATABASE="{{ pgdb }}" \
+        -e PGUSER="{{ pguser }}" \
+        -e PGPASSWORD="{{ pgpass }}" \
         -e RUN_SELENIUM='true' \
         postings_parser_image
 

@@ -1,8 +1,11 @@
 #!/bin/bash -l
 
+start_time=$(date +%s)
 
 if [[ -f $PROJ_POSTINGS_PARSER_PATH/.env ]]; then
+    set -o allexport
     source $PROJ_POSTINGS_PARSER_PATH/.env
+    set +o allexport
 else
     echo "Error: .env file not found."
     exit 1
@@ -23,7 +26,7 @@ exit_if_error() {
   fi
 }
 
-# Function to just check the exit status. This does not exit the  script if there is error just displays
+# Function to just check the exit status. This does not exit the script if there is error just displays
 check_exit_status() {
    if [ $? -ne 0 ]; then
 	echo "Error: $1 failed check log"
@@ -36,7 +39,7 @@ echo
 
 start=$(date +%s)
 
-#Generate input files
+# ------------- Generate input files ---------------
 echo "=> Activating environment"
 source $PROJ_POSTINGS_PARSER_PATH/env/bin/activate
 echo "=> Generating input files"
@@ -47,23 +50,26 @@ echo "=> Done generating input files"
 cd $PROJ_POSTINGS_PARSER_PATH/infra/
 cd terraform || { echo "Failed to change directory to terraform. Exiting."; exit 1; }
 
-# Apply Terraform configuration
+# ------------- Apply Terraform configuration --------
 echo "=> Applying Terraform configuration..."
 terraform apply -auto-approve
 exit_if_error "Terraform apply"
 echo "=> Terraform apply completed successfully."
 
-# Make sure ec2 boots up
+# ------------- Make sure ec2 boots up ---------------
 echo "=> Pausing for 60 seconds for ec2s to boot up"
 sleep 60
 
+
+# ------------- Run Ansible playbook -----------------
 printf '%.0s#' $(seq 1 $term_width)
 echo
-# Run Ansible playbook
 cd ../
 
 echo "=> Running Ansible playbook..."
-timeout $TIMEOUT_SEC ansible-playbook -i $PROJ_POSTINGS_PARSER_PATH/infra/terraform/inventory.ini --forks=$NUM_PROCESSES $PROJ_POSTINGS_PARSER_PATH/infra/ansible/playbook.yml &
+timeout $TIMEOUT_SEC ansible-playbook -i $PROJ_POSTINGS_PARSER_PATH/infra/terraform/inventory.ini \
+                                      --forks=$NUM_PROCESSES $PROJ_POSTINGS_PARSER_PATH/infra/ansible/playbook.yml & \
+                                      
 pid=$!
 if wait $pid; then
     echo "Ansible playbook completed successfully."
@@ -76,13 +82,18 @@ else
 fi
 
 
-# Destroy Terraform configuration
+# ----------- Destroy Terraform configuration -------------
 cd terraform || { echo "Failed to change directory to terraform. Exiting."; exit 1; }
 
 echo "=> Destroying Terraform configuration..."
 terraform destroy -auto-approve
 check_exit_status "Terraform destroy"
 echo "=> Terraform destroy completed"
+
+
+# ------------ Calculate time taken ----------------
+end_time=$(date +%s)
+runtime=$((end_time - start_time))
 
 hours=$((runtime / 3600))
 minutes=$(( (runtime % 3600) / 60 ))
