@@ -1,6 +1,14 @@
 #!/bin/bash -l
 
 
+if [[ -f $PROJ_POSTINGS_PARSER_PATH/.env ]]; then
+    source $PROJ_POSTINGS_PARSER_PATH/.env
+else
+    echo "Error: .env file not found."
+    exit 1
+fi
+
+
 NUM_PROCESSES=20
 TIMEOUT_SEC=3600
 

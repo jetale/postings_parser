@@ -1,14 +1,16 @@
 from typing import Any, Generator
-from parsel.selector import SelectorList
+
 import scrapy
+from parsel.selector import SelectorList
 from scrapy.selector import Selector
 
-from postings_parser.backend.static_scraper.lever_scraper.spiders import BaseSpider
 from postings_parser.backend.static_scraper.lever_scraper.items import JobItem
+from postings_parser.backend.static_scraper.lever_scraper.spiders import \
+    BaseSpider
 
 
 class LeverSpider(BaseSpider):
-    name: str= "lever_postings"
+    name: str = "lever_postings"
     allowed_domains: list[str] = ["jobs.lever.co"]
 
     def __init__(self, *args, **kwargs):
@@ -22,18 +24,22 @@ class LeverSpider(BaseSpider):
 
         for index, postings_group in enumerate(postings_groups):
             stratified_selector = Selector(text=postings_group.get(), type="html")
-            departments = self.get_department(stratified_selector, index)            
+            departments = self.get_department(stratified_selector, index)
             job_openings = stratified_selector.xpath("//a[@class='posting-title']")
             for _, opening in enumerate(job_openings):
-                opening_data_tuple = self.parse_posting_info(opening, company_name, parsed_date, parsed_time)
+                opening_data_tuple = self.parse_posting_info(
+                    opening, company_name, parsed_date, parsed_time
+                )
                 yield opening_data_tuple
 
-    def get_data_from_response(self, response)-> tuple[Any, SelectorList[Selector]]:
+    def get_data_from_response(self, response) -> tuple[Any, SelectorList[Selector]]:
         response_html = response.text
         url = response.request.url
         company_name = url.split(".")[-1].split("/")[-1]
         selector = Selector(text=response_html, type="html")
-        postings_groups: SelectorList[Selector] = selector.xpath('//div[@class="postings-group"]')
+        postings_groups: SelectorList[Selector] = selector.xpath(
+            '//div[@class="postings-group"]'
+        )
         return company_name, postings_groups
 
     def parse_posting_info(self, opening, company_name, parsed_date, parsed_time):
@@ -46,27 +52,25 @@ class LeverSpider(BaseSpider):
         commitment = opening.xpath(
             ".//span[contains(@class, 'commitment')]/text()"
         ).get()
-        location = opening.xpath(
-            ".//span[contains(@class, 'location')]/text()"
-        ).get()
+        location = opening.xpath(".//span[contains(@class, 'location')]/text()").get()
         item = JobItem(
-                    job_id=job_id,
-                    job_title=job_title,
-                    company_name=company_name,
-                    work_location=location,
-                    workplace_type=workplace_type,
-                    parsed_date=parsed_date,
-                    parsed_time=parsed_time,
-                    job_href=job_href,
-                    posting_date=None,
-                    commitment=commitment,
-                )
+            job_id=job_id,
+            job_title=job_title,
+            company_name=company_name,
+            work_location=location,
+            workplace_type=workplace_type,
+            parsed_date=parsed_date,
+            parsed_time=parsed_time,
+            job_href=job_href,
+            posting_date=None,
+            commitment=commitment,
+        )
         return item
 
     def get_department(self, stratified_selector, index) -> Any:
         potential_primary_department = stratified_selector.xpath(
-                f"//div[contains(@class, 'large-category-header')]/text()"
-            )
+            f"//div[contains(@class, 'large-category-header')]/text()"
+        )
         label_department = stratified_selector.xpath(
             f"//div[contains(@class, 'large-category-label')]/text()"
         )
@@ -88,5 +92,3 @@ class LeverSpider(BaseSpider):
 
     def start_requests(self):
         yield scrapy.Request(url=self.url, callback=self.parse)
-
-    

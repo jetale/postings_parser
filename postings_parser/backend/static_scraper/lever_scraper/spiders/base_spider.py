@@ -1,15 +1,15 @@
 import hashlib
-from datetime import date, datetime
 from abc import abstractmethod
+from datetime import date, datetime
 
 import scrapy
 
+
 class BaseSpider(scrapy.Spider):
-    
     @abstractmethod
     def parse(self):
         pass
-       
+
     @abstractmethod
     def start_requests(self):
         pass
