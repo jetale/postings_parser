@@ -5,7 +5,7 @@ with open("urls.txt", "r") as f:
     for line in f:
         # aline = line.replace("job/", "").replace("\n","")
         urls.append((line, "workday"))
-       
+
 
 insert_query = """
                     INSERT INTO site_urls(url,

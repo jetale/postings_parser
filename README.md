@@ -1,7 +1,7 @@
 ![example workflow](https://github.com/jetale/postings_parser/actions/workflows/main.yml/badge.svg)
-## Postings Parser - 
+## Postings Parser -
  I created this project to get relevant job postings as soon as they are posted. I found Linkedin to be pretty bad for finding relevant job postings
- 
+
  I also heard that it takes time from job being posted on company website for it to show up on Linkedin (not sure if it is true) so I wanted to see if I can get it before that and apply to maximize my chances of getting an interview in this job market
 
 
@@ -25,7 +25,7 @@
 	- `Python`
 	- `Selenium`
 	- `Scrapy`
-	- `Postgres` 
+	- `Postgres`
  - **Additional Requirements**: (This includes requirements for infra parts)
 	- `Docker`
 	- `Ansible`
@@ -35,13 +35,13 @@
 	- These steps are for ubuntu. They might differ for other scenarios
  	```
 	./install.sh
-	
+
  	```
 
 
 ## Future -
  - They are tons of things to do but I am not sure how I will proceed
- - Currently it scrapes only workday and lever sites. There is potential to add a lot more 
+ - Currently it scrapes only workday and lever sites. There is potential to add a lot more
  - Optimize Terraform and Ansible scripts. Maybe I can use lambda instead of ec2
  - Improve frontend. I barely know any frontend and am using Django templates for it. This can be made pretty in some JS framework
 
