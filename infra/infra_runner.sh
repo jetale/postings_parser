@@ -12,7 +12,7 @@ else
 fi
 
 
-NUM_PROCESSES=20
+NUM_PROCESSES=1
 TIMEOUT_SEC=3600
 
 eval $(ssh-agent -s)
@@ -33,9 +33,10 @@ check_exit_status() {
    fi
 }
 
+printf '#%.0s' {1..100}
 echo
-printf '%.0s#' $(seq 1 $term_width)
-echo
+printf '#%.0s' {1..100}
+echo 
 
 start=$(date +%s)
 
@@ -44,13 +45,14 @@ echo "=> Activating environment"
 source $PROJ_POSTINGS_PARSER_PATH/env/bin/activate
 echo "=> Generating input files"
 python $PROJ_POSTINGS_PARSER_PATH/postings_parser/utils/create_input_files.py --num_file $NUM_PROCESSES
-echo "=> Done generating input files"
 
 
 cd $PROJ_POSTINGS_PARSER_PATH/infra/
 cd terraform || { echo "Failed to change directory to terraform. Exiting."; exit 1; }
 
 # ------------- Apply Terraform configuration --------
+printf '#%.0s' {1..100}
+echo
 echo "=> Applying Terraform configuration..."
 terraform apply -auto-approve
 exit_if_error "Terraform apply"
@@ -62,6 +64,8 @@ sleep 60
 
 
 # ------------- Run Ansible playbook -----------------
+printf '#%.0s' {1..100}
+echo
 printf '%.0s#' $(seq 1 $term_width)
 echo
 cd ../
@@ -83,6 +87,8 @@ fi
 
 
 # ----------- Destroy Terraform configuration -------------
+printf '#%.0s' {1..100}
+echo
 cd terraform || { echo "Failed to change directory to terraform. Exiting."; exit 1; }
 
 echo "=> Destroying Terraform configuration..."

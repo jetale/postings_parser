@@ -6,6 +6,9 @@
     pghost: "{{ lookup('env','PGHOST') }}"
     pguser: "{{ lookup('env','PGUSER') }}"
     pgpass: "{{ lookup('env','PGPASSWORD') }}"
+    dockeruser: "{{ lookup('env', 'DOCKERUSER') }}"
+    dockerpass: "{{ lookup('env', 'DOCKERPASS') }}"
+    regurl: "{{ lookup('env', 'REGURL') }}"
     ansible_user: ubuntu
     github_username: jetale
     repo_url: git@github.com:jetale/postings_parser.git
@@ -68,22 +71,16 @@
         insertafter: '^#?\s*Defaults\s+env_keep\b'
         line: 'Defaults    env_keep += "SSH_AUTH_SOCK"'
 
-    - name: Clone private git repository
-      git:
-        repo: "{{ repo_url }}"
-        accept_newhostkey: true
-        version: start_multiple_ec2_instances
-        dest: "{{ repo_dest }}"
+    - name: Log into DockerHub
+      docker_login:
+        username: "{{ dockeruser }}"
+        password: "{{ dockerpass }}"
 
-    - name: Copy input file to instance
-      ansible.builtin.copy:
-        src: "{{ hostvars[inventory_hostname]['input_file'] }}"
-        dest: "{{ input_file_dest }}"
-
-    - name: Build Docker image
-      command: docker build . --file Dockerfile --tag postings_parser_image
-      args:
-        chdir: "{{ repo_dest }}"
+    - name: Pull Docker image
+      community.docker.docker_image:
+        name: "{{ regurl }}/postings_parser_docker"
+        tag: prod_image
+        source: pull
 
     - name: Run Docker container
       command: docker run -p 5432:5432 \
@@ -92,7 +89,7 @@
         -e PGUSER="{{ pguser }}" \
         -e PGPASSWORD="{{ pgpass }}" \
         -e RUN_SELENIUM='true' \
-        postings_parser_image
+        "{{ regurl }}/postings_parser_docker:prod_image"
 
     - name: Prune all stopped Docker containers
       command: docker container prune -f

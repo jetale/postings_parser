@@ -5,7 +5,6 @@ import os
 from postings_parser.utils.database_connector import Connector
 
 PROJ_ROOT = os.getenv("PROJ_POSTINGS_PARSER_PATH")
-print(PROJ_ROOT)
 
 OUT_FILE_PATH = PROJ_ROOT + "/postings_parser/input/"
 out_file_name = "urls_batch_"
