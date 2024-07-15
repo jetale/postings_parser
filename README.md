@@ -46,4 +46,3 @@
  - Optimize Terraform and Ansible scripts. Maybe I can use lambda instead of ec2
  - Improve frontend. I barely know any frontend and am using Django templates for it. This can be made pretty in some JS framework
 
-### TODO -
