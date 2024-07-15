@@ -56,16 +56,9 @@ class RunBatches:
 
     def insert_rows(self, data):
         insert_query = """
-                    INSERT INTO postings(job_id,
-                                        job_title,
-                                        company,
-                                        work_location,
-                                        posting_date,
-                                        posting_url,
-                                        parsed_date,
-                                        parsed_time )
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-                    ON CONFLICT (job_id) DO NOTHING;
+                    SELECT insert_into_posting(
+                        %s, %s, %s, %s, %s, %s, %s, %s
+                    );
                     """
         self.conn.execute_insert_query(
             insert_query, data, type_execute=ExecutionType.MANY, new_conn=True

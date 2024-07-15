@@ -47,17 +47,7 @@ class LeverScraperPipeline:
     def insert_data(self, postings_list):
         self.logger.info("Inserting data into DB")
         insert_query = """
-                    INSERT INTO postings_new(job_id,
-                                            job_title,
-                                            company,
-                                            work_location,
-                                            workplace_type,
-                                            parsed_date,
-                                            parsed_time,
-                                            posting_url,
-                                            posting_date,
-                                            commitment )
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+                    SELECT insert_into_posting_new(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
                     """
         self.db_connector.execute_insert_query(
             insert_query, postings_list, type_execute=ExecutionType.MANY, new_conn=True
