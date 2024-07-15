@@ -12,7 +12,7 @@ else
 fi
 
 
-NUM_PROCESSES=1
+NUM_PROCESSES=20
 TIMEOUT_SEC=3600
 
 eval $(ssh-agent -s)
