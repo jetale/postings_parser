@@ -33,6 +33,7 @@
 	- `AWS account`
  - **Minimum Install with Docker**:
 	- These steps are for ubuntu. They might differ for other scenarios
+	- [Incomplete][TODO]
  	```
 	./install.sh
 
