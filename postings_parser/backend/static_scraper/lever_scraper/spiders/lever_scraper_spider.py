@@ -5,7 +5,7 @@ from parsel.selector import SelectorList
 from scrapy.selector import Selector
 
 from postings_parser.backend.static_scraper.lever_scraper.items import JobItem
-from postings_parser.backend.static_scraper.lever_scraper.spiders import \
+from postings_parser.backend.static_scraper.lever_scraper.spiders.base_spider import \
     BaseSpider
 
 
