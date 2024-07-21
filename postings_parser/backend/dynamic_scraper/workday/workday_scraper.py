@@ -27,10 +27,12 @@ class WorkdayScraper(BaseScraper):
         ## ----------- get links to individual job postings ------------------
         self.driver.get(url)
         page_source = self.driver.page_source
+        print(len(page_source))
         page: int = 1
         
         while (page < self.pages_to_scrape):
             soup = BeautifulSoup(page_source, 'html.parser')
+            print(soup)
             job_elements = soup.find_all('li', class_='css-1q2dra3')
             print(job_elements)
             for job_element in job_elements:
