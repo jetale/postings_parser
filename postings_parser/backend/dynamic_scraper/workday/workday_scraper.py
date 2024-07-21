@@ -26,29 +26,44 @@ class WorkdayScraper(BaseScraper):
         
         ## ----------- get links to individual job postings ------------------
         self.driver.get(url)
-        page_source = self.driver.page_source
-        print(len(page_source))
         page: int = 1
         
         while (page < self.pages_to_scrape):
-            soup = BeautifulSoup(page_source, 'html.parser')
-            print(soup)
-            job_elements = soup.find_all('li', class_='css-1q2dra3')
-            print(job_elements)
+            self.wait.until(
+                EC.presence_of_element_located(
+                    (By.XPATH, '//li[@class="css-1q2dra3"]')
+                )
+            )
+            try:
+                job_elements = self.driver.find_elements(
+                    By.XPATH, '//li[@class="css-1q2dra3"]'
+                )
+            except Exception as e:
+                print(f"An error occurred while getting job elements for {company_name} on page->{page}: {str(e)}")
+                break
+
             for job_element in job_elements:
                 try:
-                    job_title_element = job_element.find('h3').find('a')
-                    print(job_title_element)
-                    if job_title_element:
-                        job_href = job_title_element.get('href')
-                        posted_on_element = job_element.find_element(
+                    self.wait.until(
+                        EC.presence_of_element_located(
+                            (By.XPATH, ".//h3/a")
+                        )
+                    )
+                    job_element_html = job_element.get_attribute('outerHTML')
+                    soup = BeautifulSoup(job_element_html, 'html.parser')
+                    job_title_element = soup.find('h3').find('a')
+                    job_href = job_title_element.get("href")
+                    posted_on_element = job_element.find_element(
                                             By.XPATH,
                                             './/dd[@class="css-129m7dg"][preceding-sibling::dt[contains(text(),"posted on")]]',
                                             )
-                        posted_on = posted_on_element.text
-                        if "Today" not in posted_on:
-                            # ---------- Old postings EXIT ------- #
-                            break
+                    posted_on = posted_on_element.text
+                    if "Today" not in posted_on:
+                        # ---------- Old postings EXIT ------- #
+                        break
+                except (StaleElementReferenceException, TimeoutException) as e:
+                    self.logger.warning(f"An error occurred while finding job_title or job_href on page->{page}: {e}")
+                    continue
                 except Exception as e:
                     self.logger.error(f"An unexpected error occurred on page->{page}: {e}")
                     continue
@@ -65,7 +80,6 @@ class WorkdayScraper(BaseScraper):
         for p_url in postings_urls_list:
             self.driver.get(p_url)
             html = self.driver.page_source
-            print(html)
             html_pages_dict[p_url] = html
         
         
