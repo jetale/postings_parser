@@ -53,14 +53,7 @@ class WorkdayScraper(BaseScraper):
                     soup = BeautifulSoup(job_element_html, 'html.parser')
                     job_title_element = soup.find('h3').find('a')
                     job_href = job_title_element.get("href")
-                    posted_on_element = job_element.find_element(
-                                            By.XPATH,
-                                            './/dd[@class="css-129m7dg"][preceding-sibling::dt[contains(text(),"posted on")]]',
-                                            )
-                    posted_on = posted_on_element.text
-                    if "Today" not in posted_on:
-                        # ---------- Old postings EXIT ------- #
-                        break
+                    print(job_href)
                 except (StaleElementReferenceException, TimeoutException) as e:
                     self.logger.warning(f"An error occurred while finding job_title or job_href on page->{page}: {e}")
                     continue
