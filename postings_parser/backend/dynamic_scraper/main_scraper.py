@@ -38,7 +38,7 @@ class RunBatches:
         return urls
 
     def load_urls_from_db(self):
-        rows = self.select_query()
+        rows = self.get_urls()
         urls = []
         for row in rows:
             urls.append(row[0])
@@ -67,7 +67,8 @@ class RunBatches:
 
 
     def main_executor(self, s3_bucket_name=None, date_parse=None, only_html=False,) -> None:
-        urls: list = self.load_urls_from_file()
+        #urls: list = self.load_urls_from_file()
+        urls: list = self.load_urls_from_db()
         for url in tqdm(urls, "Scraping Progress"):
             if only_html:
                 from postings_parser.utils.boto_connector import BotoConnector
@@ -88,7 +89,7 @@ class RunBatches:
             insert_query, data, type_execute=ExecutionType.MANY, new_conn=True
         )
 
-    def select_query(self):
+    def get_urls(self):
         select_query = """
                 SELECT url FROM site_urls
                 WHERE url_domain='workday';

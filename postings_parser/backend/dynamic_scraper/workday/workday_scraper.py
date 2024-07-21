@@ -23,7 +23,7 @@ class WorkdayScraper(BaseScraper):
         
         ## ----------- get links to individual job postings ------------------
         self.driver.get(url)
-        page = 1
+        page: int = 1
         
         while (page < self.pages_to_scrape):
             self.wait.until(
@@ -37,25 +37,31 @@ class WorkdayScraper(BaseScraper):
                 )
             except Exception as e:
                 print(f"An error occurred while processing {company_name}: {str(e)}")
-                continue
+                break
 
             for job_element in job_elements:
                 try:
                     job_title_element = job_element.find_element(By.XPATH, ".//h3/a")
                     job_href = job_title_element.get_attribute("href")
+                    posted_on_element = job_element.find_element(
+                                            By.XPATH,
+                                            './/dd[@class="css-129m7dg"][preceding-sibling::dt[contains(text(),"posted on")]]',
+                                            )
+                    posted_on = posted_on_element.text
                 except Exception as e:
                     print(f"An error occured while finding job_title or job_href {e}")
                     continue
-
+                if "Today" not in posted_on:
+                    # ---------- Old postings EXIT ------- #
+                    break
                 postings_urls_list.append(job_href)
-                next_btn_prsd: bool = self.click_next_button()
+            
+            next_btn_prsd: bool = self.click_next_button()
             if not next_btn_prsd:
                 self.logger.info("Reached at the end of all listings")
                 break
             page += 1
         
-
-
         # ---------- get html for individual postings -----------
         for p_url in postings_urls_list:
             self.driver.get(p_url)
@@ -70,8 +76,12 @@ class WorkdayScraper(BaseScraper):
 
 
     def scrape(self, url):
-        """This is the main scraper. it loads the page and finds job_elemements.
-        Then gets all info for a job_element in a tuple. appends it. clicks next_page if exists"""
+        """
+        This is the main scraper. 
+        It loads the page and finds job_elemements
+        Then gets all info for a job_element in a tuple
+        Appends it and clicks next_page if exists
+        """
         self.logger.info(url)
         postings_list = []
         company_name = url.split(".")[0].split(":")[1].replace("/", "")
