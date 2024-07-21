@@ -23,6 +23,8 @@ jobs:
         -e PGDATABASE='${{ secrets.PGDATABASE }}' \
         -e PGUSER='${{ secrets.PGUSER }}' \
         -e PGPASSWORD='${{ secrets.PGPASSWORD }}' \
+        -e AWS_ACESS_KEY_ID='${{ secrets.AWS_ACESS_KEY_ID }}'
+        -e AWS_SECRET_ACCESS_KEY='${{ secrets.AWS_SECRET_ACCESS_KEY }}'
         -e RUN_SELENIUM='true' \
         -e RUN_SCRAPY='false' \
         -e S3_BUCKET_NAME='${{ secrets.S3_BUCKET_NAME }}' \
