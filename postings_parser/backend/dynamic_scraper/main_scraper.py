@@ -26,7 +26,7 @@ class RunBatches:
             "profile.managed_default_content_settings.images": 2
         }
         self.driver = webdriver.Chrome(options=chrome_options)
-        self.wait = WebDriverWait(self.driver, 10)  # Adjust the timeout as needed
+        self.wait = WebDriverWait(driver=self.driver, timeout=20)  # Adjust the timeout as needed
         self.conn = Connector()
         self.scraper = WorkdayScraper(self.driver, self.wait)
 
