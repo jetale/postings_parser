@@ -78,7 +78,7 @@ class DataBackup:
         """
         for source in sources:
             pq_file_path = OUT_FILE_PATH + source.parquet_file_name
-            self.logger.info(f"Deleting {pg_file_path}")
+            self.logger.info(f"Deleting {pq_file_path}")
             os.remove(pq_file_path)
             os.remove(pq_file_path+".gz")
 

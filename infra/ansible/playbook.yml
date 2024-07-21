@@ -8,6 +8,8 @@
     pgpass: "{{ lookup('env','PGPASSWORD') }}"
     dockeruser: "{{ lookup('env', 'DOCKERUSER') }}"
     dockerpass: "{{ lookup('env', 'DOCKERPASS') }}"
+    s3_bucket_name: "{{ lookup('env', 'S3_BUCKET_NAME') }}"
+    date_parse: "{{ lookup('env', 'DATE_PARSE') }}"
     regurl: "{{ lookup('env', 'REGURL') }}"
     ansible_user: ubuntu
     github_username: jetale
@@ -89,6 +91,9 @@
         -e PGUSER="{{ pguser }}" \
         -e PGPASSWORD="{{ pgpass }}" \
         -e RUN_SELENIUM='true' \
+        -e S3_BUCKET_NAME="{{ s3_bucket_name }}" \
+        -e DATE_PARSE="{{ date_parse }}" \
+        -e ONLY_HTML='true' \
         "{{ regurl }}/postings_parser_docker:prod_image"
 
     - name: Prune all stopped Docker containers

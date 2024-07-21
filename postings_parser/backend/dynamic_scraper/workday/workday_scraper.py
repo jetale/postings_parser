@@ -1,4 +1,5 @@
 import time
+from typing import Any
 from datetime import date, timedelta
 
 from selenium.webdriver.common.by import By
@@ -13,6 +14,61 @@ class WorkdayScraper(BaseScraper):
         super().__init__(driver, wait)
         self.pages_to_scrape = 50
 
+    def only_get_pages(self, url)-> tuple[Any | str, dict]:
+        postings_urls_list: list = []
+        html_pages_dict: dict = dict()
+        return_dict: dict = dict()
+
+        company_name: str = url.split(".")[0].split(":")[1].replace("/", "")
+        
+        ## ----------- get links to individual job postings ------------------
+        self.driver.get(url)
+        page = 1
+        
+        while (page < self.pages_to_scrape):
+            self.wait.until(
+                EC.presence_of_element_located(
+                    (By.XPATH, '//li[@class="css-1q2dra3"]')
+                )
+            )
+            try:
+                job_elements = self.driver.find_elements(
+                    By.XPATH, '//li[@class="css-1q2dra3"]'
+                )
+            except Exception as e:
+                print(f"An error occurred while processing {company_name}: {str(e)}")
+                continue
+
+            for job_element in job_elements:
+                try:
+                    job_title_element = job_element.find_element(By.XPATH, ".//h3/a")
+                    job_href = job_title_element.get_attribute("href")
+                except Exception as e:
+                    print(f"An error occured while finding job_title or job_href {e}")
+                    continue
+
+                postings_urls_list.append(job_href)
+                next_btn_prsd: bool = self.click_next_button()
+            if not next_btn_prsd:
+                self.logger.info("Reached at the end of all listings")
+                break
+            page += 1
+        
+
+
+        # ---------- get html for individual postings -----------
+        for p_url in postings_urls_list:
+            self.driver.get(p_url)
+            html = self.driver.page_source
+            html_pages_dict[p_url] = html
+        
+        return_dict[company_name] = html_pages_dict
+
+        return company_name, return_dict
+
+
+
+
     def scrape(self, url):
         """This is the main scraper. it loads the page and finds job_elemements.
         Then gets all info for a job_element in a tuple. appends it. clicks next_page if exists"""
@@ -25,7 +81,7 @@ class WorkdayScraper(BaseScraper):
         try:
             while (
                 page < self.pages_to_scrape
-            ):  # I don't think any website will have more than 50 pages. Keeping it to avoid infinite loop just in case
+            ):  # I don't think any website will have more than 50 pages
                 # Wait for job elements to load
                 self.wait.until(
                     EC.presence_of_element_located(

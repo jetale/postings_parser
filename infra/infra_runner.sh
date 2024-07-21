@@ -39,6 +39,7 @@ printf '#%.0s' {1..100}
 echo 
 
 start=$(date +%s)
+export DATE_PARSE=$(date +"%Y-%m-%d")
 
 # ------------- Generate input files ---------------
 echo "=> Activating environment"
