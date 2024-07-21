@@ -25,7 +25,7 @@ jobs:
         -e PGPASSWORD='${{ secrets.PGPASSWORD }}' \
         -e RUN_SELENIUM='true' \
         -e RUN_SCRAPY='false' \
-        -e S3_BUCKET_NAME='${{ secrets.S3_BUCKET_NAME }}'\
+        -e S3_BUCKET_NAME='${{ secrets.S3_BUCKET_NAME }}' \
         -e DATE_PARSE=$CURRENT_DATE \
         -e ONLY_HTML='true' \
-          postings_parser_image
+        postings_parser_image
