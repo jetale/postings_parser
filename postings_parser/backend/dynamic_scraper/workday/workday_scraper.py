@@ -4,6 +4,8 @@ from datetime import date, timedelta
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import StaleElementReferenceException, TimeoutException
+
 
 from postings_parser.backend.dynamic_scraper.base.base_scraper import \
     BaseScraper
@@ -26,30 +28,35 @@ class WorkdayScraper(BaseScraper):
         page: int = 1
         
         while (page < self.pages_to_scrape):
-            self.wait.until(
-                EC.presence_of_element_located(
-                    (By.XPATH, '//li[@class="css-1q2dra3"]')
-                )
-            )
+            
             try:
-                job_elements = self.driver.find_elements(
-                    By.XPATH, '//li[@class="css-1q2dra3"]'
+                job_elements = self.wait.until(
+                    EC.presence_of_element_located(
+                        (By.XPATH, '//li[@class="css-1q2dra3"]')
+                    )
                 )
             except Exception as e:
-                print(f"An error occurred while processing {company_name}: {str(e)}")
+                print(f"An error occurred while getting job elements for {company_name} on page->{page}: {str(e)}")
                 break
 
             for job_element in job_elements:
                 try:
-                    job_title_element = job_element.find_element(By.XPATH, ".//h3/a")
+                    job_title_element = self.wait.until(
+                        EC.presence_of_element_located(
+                            (By.XPATH, ".//h3/a")
+                        )
+                    )
                     job_href = job_title_element.get_attribute("href")
                     posted_on_element = job_element.find_element(
                                             By.XPATH,
                                             './/dd[@class="css-129m7dg"][preceding-sibling::dt[contains(text(),"posted on")]]',
                                             )
                     posted_on = posted_on_element.text
+                except (StaleElementReferenceException, TimeoutException) as e:
+                    self.logger.warning(f"An error occurred while finding job_title or job_href on page->{page}: {e}")
+                    continue
                 except Exception as e:
-                    print(f"An error occured while finding job_title or job_href {e}")
+                    self.logger.error(f"An unexpected error occurred on page->{page}: {e}")
                     continue
                 if "Today" not in posted_on:
                     # ---------- Old postings EXIT ------- #
@@ -236,7 +243,7 @@ class WorkdayScraper(BaseScraper):
                 By.XPATH, '//button[@data-uxi-element-id="next"]'
             )  # Check if there's a next page button
             if not "disabled" in next_button.get_attribute("class"):
-                button_pressed = True  # exit loop if the "next" button is disabled
+                button_pressed = True  # Do not exit loop if the "next" button is disabled
                 next_button.click()
         except Exception as e:
             print("Reached at the end of all listings")

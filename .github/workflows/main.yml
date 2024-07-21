@@ -16,7 +16,6 @@ jobs:
       run: |
         CURRENT_DATE=$(date +"%Y-%m-%d")
         echo "CURRENT_DATE=$CURRENT_DATE" >> $GITHUB_ENV
-        echo '${{ env.S3_BUCKET_NAME }}'
 
     - name: Run the Container
       id: run
@@ -27,7 +26,7 @@ jobs:
         -e PGPASSWORD='${{ secrets.PGPASSWORD }}' \
         -e RUN_SELENIUM='true' \
         -e RUN_SCRAPY='false' \
-        -e S3_BUCKET_NAME=$S3_BUCKET_NAME \
+        -e S3_BUCKET_NAME='${{ secrets.S3_BUCKET_NAME }}'\
         -e DATE_PARSE=$CURRENT_DATE \
         -e ONLY_HTML='true' \
           postings_parser_image
