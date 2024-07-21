@@ -29,5 +29,5 @@ jobs:
         -e RUN_SCRAPY='false' \
         -e S3_BUCKET_NAME='${{ secrets.S3_BUCKET_NAME }}' \
         -e DATE_PARSE=$CURRENT_DATE \
-        -e ONLY_HTML='true' \
+        -e ONLY_HTML='false' \
         postings_parser_image
