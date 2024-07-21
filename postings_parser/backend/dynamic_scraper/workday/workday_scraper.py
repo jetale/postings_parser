@@ -2,6 +2,7 @@ import time
 from typing import Any
 from datetime import date, timedelta
 
+from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import StaleElementReferenceException, TimeoutException
@@ -28,42 +29,26 @@ class WorkdayScraper(BaseScraper):
         page: int = 1
         
         while (page < self.pages_to_scrape):
-            self.wait.until(
-                EC.presence_of_element_located(
-                    (By.XPATH, '//li[@class="css-1q2dra3"]')
-                )
-            )
-            try:
-                job_elements = self.driver.find_elements(
-                    By.XPATH, '//li[@class="css-1q2dra3"]'
-                )
-            except Exception as e:
-                print(f"An error occurred while getting job elements for {company_name} on page->{page}: {str(e)}")
-                break
+            soup = BeautifulSoup(page_source, 'html.parser')
+            job_elements = soup.find_all('li', class_='css-1q2dra3')
 
             for job_element in job_elements:
                 try:
-                    self.wait.until(
-                        EC.presence_of_element_located(
-                            (By.XPATH, ".//h3/a")
-                        )
-                    )
-                    job_title_element = job_element.find_element(By.XPATH, ".//h3/a")
-                    job_href = job_title_element.get_attribute("href")
-                    posted_on_element = job_element.find_element(
+                    job_title_element = job_element.find('h3').find('a')
+                    if job_title_element:
+                        job_href = job_title_element.get('href')
+                        posted_on_element = job_element.find_element(
                                             By.XPATH,
                                             './/dd[@class="css-129m7dg"][preceding-sibling::dt[contains(text(),"posted on")]]',
                                             )
-                    posted_on = posted_on_element.text
-                except (StaleElementReferenceException, TimeoutException) as e:
-                    self.logger.warning(f"An error occurred while finding job_title or job_href on page->{page}: {e}")
-                    continue
+                        posted_on = posted_on_element.text
+                        if "Today" not in posted_on:
+                            # ---------- Old postings EXIT ------- #
+                            break
                 except Exception as e:
                     self.logger.error(f"An unexpected error occurred on page->{page}: {e}")
                     continue
-                if "Today" not in posted_on:
-                    # ---------- Old postings EXIT ------- #
-                    break
+                
                 postings_urls_list.append(job_href)
             
             next_btn_prsd: bool = self.click_next_button()
