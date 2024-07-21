@@ -28,10 +28,15 @@ class WorkdayScraper(BaseScraper):
         page: int = 1
         
         while (page < self.pages_to_scrape):
+            self.wait.until(
+                EC.presence_of_element_located(
+                    (By.XPATH, '//li[@class="css-1q2dra3"]')
+                )
+            )
             try:
-                job_elements = self.wait.until(
-                            EC.presence_of_all_elements_located((By.XPATH, '//li[@class="css-1q2dra3"]'))
-                        )
+                job_elements = self.driver.find_elements(
+                    By.XPATH, '//li[@class="css-1q2dra3"]'
+                )
             except Exception as e:
                 print(f"An error occurred while getting job elements for {company_name} on page->{page}: {str(e)}")
                 break
