@@ -32,10 +32,11 @@ class WorkdayScraper(BaseScraper):
         while (page < self.pages_to_scrape):
             soup = BeautifulSoup(page_source, 'html.parser')
             job_elements = soup.find_all('li', class_='css-1q2dra3')
-
+            print(job_elements)
             for job_element in job_elements:
                 try:
                     job_title_element = job_element.find('h3').find('a')
+                    print(job_title_element)
                     if job_title_element:
                         job_href = job_title_element.get('href')
                         posted_on_element = job_element.find_element(
@@ -62,6 +63,7 @@ class WorkdayScraper(BaseScraper):
         for p_url in postings_urls_list:
             self.driver.get(p_url)
             html = self.driver.page_source
+            print(html)
             html_pages_dict[p_url] = html
         
         
