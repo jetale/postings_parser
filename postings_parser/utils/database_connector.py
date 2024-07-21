@@ -1,5 +1,6 @@
 import logging
 import os
+from typing import Any
 from enum import Enum
 
 import psycopg2
@@ -27,15 +28,6 @@ class Connector:
         if self._initialized:
             return
         load_dotenv()
-        """
-        self.db_params = {
-                            'dbname': 'postgres',
-                            'user': 'dev',
-                            'password': 'abcd', #os.getenv('DB_PASSWORD'),
-                            'host': 'host.docker.internal',  # e.g., 'localhost' or '127.0.0.1','host.docker.internal'
-                            'port': '5432'  # e.g., '5432'
-                        }
-        """
         self.db_params = {
             "dbname": os.getenv("PGDATABASE"),
             "user": os.getenv("PGUSER"),
@@ -50,6 +42,7 @@ class Connector:
             logger.info("Connection pool created successfully")
         self._initialized = True
 
+
     def get_conn(self):
         try:
             connection = self.connection_pool.getconn()
@@ -57,6 +50,7 @@ class Connector:
         except:
             logger.warning("Could not get DB connection or cursor")
         return connection, cursor
+
 
     def get_single_conn(self):
         """This is used for multithreaded & multiprocess scenarios"""
@@ -67,8 +61,10 @@ class Connector:
             print(f"Error: {e}")
         return connection, cursor
 
+
     def release_conn(self, connection):
         return self.connection_pool.putconn(connection)
+
 
     def close_all_connections(self):
         try:
@@ -77,27 +73,22 @@ class Connector:
         except Exception as error:
             logger.error("Error while closing all connections", error)
 
-    def connect(self):
-        try:
-            conn = psycopg2.connect(**self.db_params)
-            logger.info("Database connection successful")
-        except psycopg2.OperationalError as e:
-            print(f"Error: {e}")
-            exit(1)
-        cur = conn.cursor()
-        return conn, cur
-
-    def execute_select_query(self, query):
+    
+    def execute_select_query(self, query, data=None) -> Any | tuple:
         rows = tuple()
         try:
             connection, cursor = self.get_conn()
-            cursor.execute(query)
+            if data:
+                cursor.execute(query, (data,))
+            else:
+                cursor.execute(query)
             rows = cursor.fetchall()
         except Exception as e:
-            logger.warning(f"An error occurred while fetching data from DB: {e}")
+            logger.warning(f"In database_connector.py-> In {self.execute_select_query.__name__} function -> An error occurred while fetching data from DB: {e}")
         finally:
             self.release_conn(connection)
         return rows
+
 
     def execute_insert_query(
         self, insert_query, data=None, type_execute=None, new_conn=True
@@ -128,6 +119,7 @@ class Connector:
                 connection.close()
             else:
                 self.release_conn(connection)
+
 
     def execute_function(self, query):
         try:
