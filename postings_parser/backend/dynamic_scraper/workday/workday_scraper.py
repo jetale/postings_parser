@@ -26,6 +26,7 @@ class WorkdayScraper(BaseScraper):
         
         ## ----------- get links to individual job postings ------------------
         self.driver.get(url)
+        page_source = self.driver.page_source
         page: int = 1
         
         while (page < self.pages_to_scrape):
