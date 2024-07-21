@@ -1,6 +1,7 @@
 #!/bin/bash
 
-
+date_parse=$(date +"%Y-%m-%d")
+echo $date_parse
 # Get the directory of the current script
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 
@@ -26,4 +27,7 @@ docker run -p 5432:5432 -e PGHOST="$PGHOST" \
         	-e PGPASSWORD="$PGPASSWORD" \
 			-e RUN_SELENIUM="true" \
 			-e RUN_SCRAPY="false" \
+			-e S3_BUCKET_NAME="$S3_BUCKET_NAME" \
+        	-e DATE_PARSE="$date_parse" \
+        	-e ONLY_HTML='true' \
         	postings_parser_image
