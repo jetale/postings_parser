@@ -1,4 +1,6 @@
 import logging
+import json
+import argparse
 from importlib.resources import files
 
 from selenium import webdriver
@@ -9,7 +11,6 @@ from tqdm import tqdm
 from postings_parser.backend.dynamic_scraper.workday.workday_scraper import \
     WorkdayScraper
 from postings_parser.utils.database_connector import Connector, ExecutionType
-
 
 # right now i want to parse all postings. After that we can modify to check for previous posting and then notify only about new ones
 class RunBatches:
@@ -37,20 +38,44 @@ class RunBatches:
         return urls
 
     def load_urls_from_db(self):
-        rows = self.select_query()
+        rows = self.get_urls()
         urls = []
         for row in rows:
             urls.append(row[0])
         return urls
+    
+    def get_pages(self, url: str, date_parse: str, s3_bucket_name: str)-> None:
+        """
+        Only gets page's html and uploads json to s3
+        """
+        company_name: str
+        postings_pages_dict: dict
+        company_name, postings_pages_dict = self.scraper.only_get_pages(url)
 
-    def parse(self, url) -> None:
+        if company_name and  postings_pages_dict:
+            json_data: str = json.dumps(postings_pages_dict)
+            s3_dest_path: str = "postings"+ "/" + date_parse + "/" + company_name + ".json"
+            self.boto_conn.upload_json_to_s3(json_data=json_data, bucket_name=s3_bucket_name, s3_dest_path=s3_dest_path)
+
+
+    def parse(self, url: str)-> None:
+        """
+        Gets page using selenium -> parses it and returns row to be inserted in db
+        """
         postings_list = self.scraper.scrape(url)
         self.insert_rows(postings_list)
 
-    def main_executor(self):
-        urls = self.load_urls_from_file()
+
+    def main_executor(self, s3_bucket_name=None, date_parse=None, only_html=False,) -> None:
+        #urls: list = self.load_urls_from_file()
+        urls: list = self.load_urls_from_db()
         for url in tqdm(urls, "Scraping Progress"):
-            self.parse(url)
+            if only_html:
+                from postings_parser.utils.boto_connector import BotoConnector
+                self.boto_conn = BotoConnector()
+                self.get_pages(url=url, date_parse=date_parse, s3_bucket_name=s3_bucket_name)
+            else:
+                self.parse(url=url)
         self.conn.close_all_connections()
         self.driver.quit()
 
@@ -64,7 +89,7 @@ class RunBatches:
             insert_query, data, type_execute=ExecutionType.MANY, new_conn=True
         )
 
-    def select_query(self):
+    def get_urls(self):
         select_query = """
                 SELECT url FROM site_urls
                 WHERE url_domain='workday';
@@ -77,5 +102,13 @@ class RunBatches:
 
 
 if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser(description='Run the dynamic parser using selenium')
+    parser.add_argument('--s3_bucket_name', type=str, help='Name of the S3 bucket')
+    parser.add_argument('--date_parse', type=str, help='Date of parsing')
+    parser.add_argument('--only_html', type=lambda x: x.lower() == 'true', help='Get only html pages or full parsing', required=True)
+
+    args = parser.parse_args()
+
     main = RunBatches()
-    main.main_executor()
+    main.main_executor(s3_bucket_name=args.s3_bucket_name, date_parse=args.date_parse, only_html=args.only_html)

@@ -3,14 +3,6 @@ name: test-and-deploy
 on:
   workflow_dispatch
 
-env:
-  PGHOST: '${{secrets.PGHOST}}'
-  PGDATABASE: '${{secrets.PGDATABASE}}'
-  PGUSER: '${{ secrets.PGUSER}}'
-  PGPASSWORD: '${{ secrets.PGPASSWORD}}'
-
-
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,6 +12,10 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag postings_parser_image
 
+    - name: Get current date
+      run: |
+        CURRENT_DATE=$(date +"%Y-%m-%d")
+        echo "CURRENT_DATE=$CURRENT_DATE" >> $GITHUB_ENV
 
     - name: Run the Container
       id: run
@@ -28,4 +24,9 @@ jobs:
         -e PGDATABASE='${{secrets.PGDATABASE}}' \
         -e PGUSER='${{ secrets.PGUSER}}' \
         -e PGPASSWORD='${{ secrets.PGPASSWORD}}' \
-        postings_parser_image
+        -e RUN_SELENIUM='true' \
+        -e RUN_SCRAPY='false' \
+        -e S3_BUCKET_NAME='${{env.S3_BUCKET_NAME}}' \
+        -e DATE_PARSE=$CURRENT_DATE \
+        -e ONLY_HTML='true' \
+          postings_parser_image
