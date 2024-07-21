@@ -55,7 +55,6 @@ class RunBatches:
         if company_name and  postings_pages_dict:
             json_data: str = json.dumps(postings_pages_dict)
             s3_dest_path: str = "postings"+ "/" + date_parse + "/" + company_name + ".json"
-            print(s3_bucket_name)
             self.boto_conn.upload_json_to_s3(json_data=json_data, bucket_name=s3_bucket_name, s3_dest_path=s3_dest_path)
 
 
