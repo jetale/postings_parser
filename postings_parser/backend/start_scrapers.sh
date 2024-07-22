@@ -16,5 +16,5 @@ fi
 if [[ "$RUN_SELENIUM" == "true" ]]; then
 	echo -e "\n => Running dynamic scrapers using selenium"
 	cd postings_parser/backend/dynamic_scraper/
-	python3 main_scraper.py --s3_bucket_name="$S3_BUCKET_NAME" --date_parse="$DATE_PARSE" --only_html=True
+	python3 main_scraper.py --s3_bucket_name="$S3_BUCKET_NAME" --date_parse="$DATE_PARSE" --only_html=False
 fi
