@@ -2,7 +2,6 @@ import time
 from typing import Any
 from datetime import date, timedelta
 
-from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import StaleElementReferenceException, TimeoutException
@@ -17,64 +16,18 @@ class WorkdayScraper(BaseScraper):
         super().__init__(driver, wait)
         self.pages_to_scrape = 50
 
-    def only_get_pages(self, url)-> tuple[Any | str, dict]:
-        postings_urls_list: list = []
+    def get_pages(self, postings_urls_list: list, company_name: str)-> tuple[Any | str, dict]:
         html_pages_dict: dict = dict()
         return_dict: dict = dict()
-
-        company_name: str = url.split(".")[0].split(":")[1].replace("/", "")
-        
-        ## ----------- get links to individual job postings ------------------
-        self.driver.get(url)
-        page: int = 1
-        
-        while (page < self.pages_to_scrape):
-            self.wait.until(
-                EC.presence_of_element_located(
-                    (By.XPATH, '//li[@class="css-1q2dra3"]')
-                )
-            )
-            try:
-                job_elements = self.driver.find_elements(
-                    By.XPATH, '//li[@class="css-1q2dra3"]'
-                )
-            except Exception as e:
-                print(f"An error occurred while getting job elements for {company_name} on page->{page}: {str(e)}")
-                break
-
-            for job_element in job_elements:
-                try:
-                    self.wait.until(
-                        EC.presence_of_element_located(
-                            (By.XPATH, ".//h3/a")
-                        )
-                    )
-                    job_element_html = job_element.get_attribute('outerHTML')
-                    soup = BeautifulSoup(job_element_html, 'html.parser')
-                    job_title_element = soup.find('h3').find('a')
-                    job_href = job_title_element.get("href")
-                    print(job_href)
-                except (StaleElementReferenceException, TimeoutException) as e:
-                    self.logger.warning(f"An error occurred while finding job_title or job_href on page->{page}: {e}")
-                    continue
-                except Exception as e:
-                    self.logger.error(f"An unexpected error occurred on page->{page}: {e}")
-                    continue
-                
-                postings_urls_list.append(job_href)
-            
-            next_btn_prsd: bool = self.click_next_button()
-            if not next_btn_prsd:
-                self.logger.info("Reached at the end of all listings")
-                break
-            page += 1
-        
         # ---------- get html for individual postings -----------
-        for p_url in postings_urls_list:
-            self.driver.get(p_url)
+        for postings_tuple in postings_urls_list:
+            p_url: str = postings_tuple[5]
+            try:
+                self.driver.get(p_url)
+            except Exception as e: 
+                print("An error occured while getting html for page {p_url}")
             html = self.driver.page_source
-            html_pages_dict[p_url] = html
-        
+            html_pages_dict[p_url] = html  
         
         return_dict[company_name] = html_pages_dict
 
@@ -83,7 +36,7 @@ class WorkdayScraper(BaseScraper):
 
 
 
-    def scrape(self, url):
+    def scrape(self, url: str, only_html: bool=False):
         """
         This is the main scraper. 
         It loads the page and finds job_elemements
@@ -91,7 +44,7 @@ class WorkdayScraper(BaseScraper):
         Appends it and clicks next_page if exists
         """
         self.logger.info(url)
-        postings_list = []
+        postings_list: list = []
         company_name = url.split(".")[0].split(":")[1].replace("/", "")
         parsed_date, parsed_time = BaseScraper.get_date_time()
         self.driver.get(url)
@@ -128,7 +81,12 @@ class WorkdayScraper(BaseScraper):
                 time.sleep(1)  # delay for page loading
         except Exception as e:
             print(f"An error occurred while processing {company_name}: {str(e)}")
-        return postings_list
+
+        if only_html:
+            pages_tuple: tuple = self.get_pages(postings_urls_list=postings_list, company_name=company_name)
+            return pages_tuple
+        else:
+            return postings_list
 
     def get_posting_date(self, posted_on):
         current_date = date.today()
@@ -233,8 +191,7 @@ class WorkdayScraper(BaseScraper):
                 self.logger.warning(
                     f"\n Did not find any location element for {job_title} "
                 )
-                self.logger.warning(job_element.get_attribute("outerHTML"))
-                self.logger.warning(job_element.text)
+                
         return location
 
     def click_next_button(self):

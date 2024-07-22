@@ -44,13 +44,13 @@ class RunBatches:
             urls.append(row[0])
         return urls
     
-    def get_pages(self, url: str, date_parse: str, s3_bucket_name: str)-> None:
+    def get_pages(self, url: str, date_parse: str, s3_bucket_name: str, only_html: bool)-> None:
         """
         Only gets page's html and uploads json to s3
         """
         company_name: str
         postings_pages_dict: dict
-        company_name, postings_pages_dict = self.scraper.only_get_pages(url)
+        company_name, postings_pages_dict = self.scraper.scrape(url=url, only_html=only_html)
 
         if company_name and  postings_pages_dict:
             json_data: str = json.dumps(postings_pages_dict)
@@ -58,11 +58,11 @@ class RunBatches:
             self.boto_conn.upload_json_to_s3(json_data=json_data, bucket_name=s3_bucket_name, s3_dest_path=s3_dest_path)
 
 
-    def parse(self, url: str)-> None:
+    def parse(self, url: str, only_html: bool)-> None:
         """
         Gets page using selenium -> parses it and returns row to be inserted in db
         """
-        postings_list = self.scraper.scrape(url)
+        postings_list = self.scraper.scrape(url=url, only_html=only_html)
         self.insert_rows(postings_list)
 
 
@@ -73,9 +73,9 @@ class RunBatches:
             if only_html:
                 from postings_parser.utils.boto_connector import BotoConnector
                 self.boto_conn = BotoConnector()
-                self.get_pages(url=url, date_parse=date_parse, s3_bucket_name=s3_bucket_name)
+                self.get_pages(url=url, date_parse=date_parse, s3_bucket_name=s3_bucket_name, only_html=only_html)
             else:
-                self.parse(url=url)
+                self.parse(url=url, only_html=only_html)
         self.conn.close_all_connections()
         self.driver.quit()
 
