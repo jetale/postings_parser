@@ -69,7 +69,7 @@ class RunBatches:
     def main_executor(self, s3_bucket_name=None, date_parse=None, only_html=False,) -> None:
         #urls: list = self.load_urls_from_file()
         urls: list = self.load_urls_from_db()
-        for url in tqdm(urls, "Scraping Progress"):
+        for url in tqdm(urls[277:], "Scraping Progress"): # ----------- Temp hack to complete the run. REMOVE ASAP after this run
             if only_html:
                 from postings_parser.utils.boto_connector import BotoConnector
                 self.boto_conn = BotoConnector()
