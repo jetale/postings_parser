@@ -2,6 +2,8 @@
 # visit each url one by one
 # see if the job posting exits
 # if not mark the row to be deleted
+import time
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
@@ -29,7 +31,7 @@ class DeleteRemoved:
 
     def check_if_exists(self, response):
         to_be_deleted: list = list()
-        for item in response:
+        for index, item in enumerate(response):
             job_id = item[0]
             url = item[1]
             self.driver.get(url)
@@ -44,6 +46,10 @@ class DeleteRemoved:
                 print(data_automation_id)
             except:
                 continue
+
+            if index == 100:
+                exit()
+            time.sleep(0.5)
 
 
     def get_all_urls(self):

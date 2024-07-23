@@ -1,4 +1,4 @@
-name: dynamic-contetn-parser
+name: delete-removed-postings
 
 on:
   workflow_dispatch
@@ -25,9 +25,7 @@ jobs:
         -e PGPASSWORD='${{ secrets.PGPASSWORD }}' \
         -e AWS_ACCESS_KEY_ID='${{ secrets.AWS_ACCESS_KEY_ID }}' \
         -e AWS_SECRET_ACCESS_KEY='${{ secrets.AWS_SECRET_ACCESS_KEY }}' \
-        -e RUN_SELENIUM='true' \
-        -e RUN_SCRAPY='false' \
         -e S3_BUCKET_NAME='${{ secrets.S3_BUCKET_NAME }}' \
         -e DATE_PARSE=$CURRENT_DATE \
-        -e ONLY_HTML=True \
+        -e ETL=True \
         postings_parser_image
