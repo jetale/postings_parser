@@ -30,4 +30,5 @@ jobs:
         -e S3_BUCKET_NAME='${{ secrets.S3_BUCKET_NAME }}' \
         -e DATE_PARSE=$CURRENT_DATE \
         -e ONLY_HTML=True \
+        -e ETL=false
         postings_parser_image

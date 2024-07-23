@@ -27,5 +27,5 @@ jobs:
         -e AWS_SECRET_ACCESS_KEY='${{ secrets.AWS_SECRET_ACCESS_KEY }}' \
         -e S3_BUCKET_NAME='${{ secrets.S3_BUCKET_NAME }}' \
         -e DATE_PARSE=$CURRENT_DATE \
-        -e ETL=True \
+        -e ETL=true \
         postings_parser_image
