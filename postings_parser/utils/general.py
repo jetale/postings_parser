@@ -1,7 +1,9 @@
+import hashlib
 from datetime import date, datetime
 
-
-
+def generate_unique_id(job_title, company_name, job_href):
+        composite_key = f"{job_title}-{company_name}-{job_href}"
+        return hashlib.md5(composite_key.encode()).hexdigest()
 
 
 def get_date_time():
