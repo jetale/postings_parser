@@ -12,7 +12,6 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from postings_parser.utils.database_connector import Connector, ExecutionType
 
-logging.basicConfig(level=logging.INFO)
 
 class DeleteRemoved:
 
@@ -55,7 +54,7 @@ class DeleteRemoved:
                         )
                     )
             except:
-                print(f"timeout for url {url}")
+                self.logger.warning(f"timeout for url {url}")
                 continue
             element = self.driver.find_element(By.XPATH, '//*[@id="mainContent"]/div/div')
             try:

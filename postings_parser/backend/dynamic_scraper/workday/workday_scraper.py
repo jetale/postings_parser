@@ -6,17 +6,18 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import StaleElementReferenceException, TimeoutException
 
-
+from postings_parser.utils.general import generate_unique_id
 from postings_parser.backend.dynamic_scraper.base.base_scraper import \
     BaseScraper
 
 
 class WorkdayScraper(BaseScraper):
-    def __init__(self, driver, wait):
+    def __init__(self, driver, wait) -> None:
         super().__init__(driver, wait)
         self.pages_to_scrape = 50
 
-    def get_pages(self, postings_urls_list: list, company_name: str)-> tuple[Any | str, dict]:
+
+    def get_pages(self, postings_urls_list: list, company_name: str)-> tuple[str, dict]:
         html_pages_dict: dict = dict()
         return_dict: dict = dict()
         # ---------- get html for individual postings -----------
@@ -25,18 +26,16 @@ class WorkdayScraper(BaseScraper):
             try:
                 self.driver.get(p_url)
             except Exception as e: 
-                print("An error occured while getting html for page {p_url}")
+                self.logger.warning("An error occured while getting html for page {p_url}")
             html = self.driver.page_source
             html_pages_dict[p_url] = html  
         
         return_dict[company_name] = html_pages_dict
 
-        return company_name, return_dict
+        return (company_name, return_dict)
 
 
-
-
-    def scrape(self, url: str, only_html: bool=False):
+    def scrape(self, url: str, only_html: bool=False) -> tuple[str, dict] | list:
         """
         This is the main scraper. 
         It loads the page and finds job_elemements
@@ -45,10 +44,10 @@ class WorkdayScraper(BaseScraper):
         """
         self.logger.info(url)
         postings_list: list = []
-        company_name = url.split(".")[0].split(":")[1].replace("/", "")
+        company_name: str = url.split(".")[0].split(":")[1].replace("/", "")
         parsed_date, parsed_time = BaseScraper.get_date_time()
         self.driver.get(url)
-        page = 1
+        page: int = 1
         try:
             while (
                 page < self.pages_to_scrape
@@ -88,10 +87,11 @@ class WorkdayScraper(BaseScraper):
         else:
             return postings_list
 
-    def get_posting_date(self, posted_on):
+
+    def get_posting_date(self, posted_on) -> tuple[bool, str]:
         current_date = date.today()
-        is_today = False
-        ret_val = None
+        is_today: bool = False
+        ret_val: str = str()
         if "+" in posted_on:
             ret_val = None
         elif "Today" in posted_on:
@@ -109,15 +109,16 @@ class WorkdayScraper(BaseScraper):
                 ret_val = None
         return (is_today, ret_val)
 
+
     def extract_info_from_posting(
         self, job_element, company_name, parsed_date, parsed_time
-    ):
+    ) -> tuple[bool, tuple]:
         job_title_element = job_element.find_element(By.XPATH, ".//h3/a")
         job_href = job_title_element.get_attribute("href")
         job_title = job_title_element.text.strip()
         location = self.get_location(job_element, job_title)
         job_id, posted_on = self.get_jobid_and_posted_on(job_element, job_title)
-        job_id = BaseScraper.generate_unique_id(job_id, company_name, job_href)
+        job_id = generate_unique_id(job_title=job_title, company_name=company_name, job_href=job_href)
         is_today, posted_on_date = self.get_posting_date(posted_on)
         temp_tuple = (
             job_id,
@@ -131,11 +132,10 @@ class WorkdayScraper(BaseScraper):
         )
         return (is_today, temp_tuple)
 
-    def get_jobid_and_posted_on(self, job_element, job_title):
-        job_id = (
-            "dummy"  # not setting it to None because it is used in calculating hash
-        )
-        posted_on = None
+
+    def get_jobid_and_posted_on(self, job_element, job_title) -> tuple[ str, str]:
+        job_id: str = str() 
+        posted_on: str = str()
         try:
             job_id_element = job_element.find_element(
                 By.XPATH, './/ul[@data-automation-id="subtitle"]/li'
@@ -160,8 +160,9 @@ class WorkdayScraper(BaseScraper):
 
         return (job_id, posted_on)
 
-    def get_location(self, job_element, job_title):
-        location = None
+
+    def get_location(self, job_element, job_title) -> str:
+        location: str = str()
         try:
             location_element = job_element.find_element(
                 By.XPATH,
@@ -190,18 +191,20 @@ class WorkdayScraper(BaseScraper):
                 self.logger.warning(e)
                 self.logger.warning(
                     f"\n Did not find any location element for {job_title} "
-                )
-                
+                )      
         return location
 
-    def click_next_button(self):
-        button_pressed = False
+
+    def click_next_button(self) -> bool:
+        button_pressed: bool = False
         try:
+            # Check if there's a next page button
             next_button = self.driver.find_element(
                 By.XPATH, '//button[@data-uxi-element-id="next"]'
-            )  # Check if there's a next page button
+            ) 
             if not "disabled" in next_button.get_attribute("class"):
-                button_pressed = True  # Do not exit loop if the "next" button is disabled
+                # Do not exit loop if the "next" button is disabled
+                button_pressed = True  
                 next_button.click()
         except Exception as e:
             print("Reached at the end of all listings")

@@ -1,5 +1,4 @@
 import json
-import sys
 import logging
 from datetime import datetime
 from dataclasses import dataclass, fields, field
@@ -50,7 +49,7 @@ class MainDataLoader:
         self.db_connector = Connector()
 
 
-    def _insert_into_db(self):
+    def _insert_into_db(self) -> None:
         insert_query = """
                     INSERT INTO postings (
                         job_id, job_title, company, work_location, posting_url, 
@@ -61,7 +60,8 @@ class MainDataLoader:
                         posting_date = EXCLUDED.posting_date,
                         job_description = EXCLUDED.job_description,
                         country = EXCLUDED.country,
-                        is_remote = EXCLUDED.is_remote;
+                        is_remote = EXCLUDED.is_remote,
+                        posting_url = EXCLUDED.posting_url;
                 """
         self.db_connector.execute_insert_query(
             insert_query=insert_query,
@@ -76,7 +76,7 @@ class MainDataLoader:
             job_title_tag,
             job_description_tag,
             script_element
-            ):
+            ) -> None:
         
         posting = PostingData()
         json_content = script_element.string
@@ -90,6 +90,7 @@ class MainDataLoader:
         posting.is_remote = data.get('jobLocationType', None)
         posting.posting_date = data.get('datePosted', None)
         posting.parsed_date = self.parsed_date
+        posting.posting_url = url
         #employment_type = data.get('employmentType', None)
         #req_id = data.get('identifier', {}).get('value', None)
         posting.job_id = generate_unique_id(
@@ -131,7 +132,6 @@ class MainDataLoader:
         for obj in tqdm(objects, "Parsing Objects"):
             file_obj = self.s3_connector.get_object(Bucket=self.bucket_name, Key=obj)
             self._parse_object(file_obj) 
-           
         self._insert_into_db()
 
     def _get_objects_list(self, date_dir: str) -> None:
@@ -178,6 +178,4 @@ class MainDataLoader:
         self._get_latest_date_directory()
 
 if __name__ == "__main__":
-    #scalene_profiler.start()
     MainDataLoader().main()
-    #scalene_profiler.stop()

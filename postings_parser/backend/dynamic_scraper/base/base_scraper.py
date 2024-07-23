@@ -18,11 +18,6 @@ class BaseScraper:
         formatted_time = current_time.strftime("%H:%M:%S.%f")
         return (formatted_date, formatted_time)
 
-    @staticmethod
-    def generate_unique_id(job_title, company_name, job_href):
-        composite_key = f"{job_title}-{company_name}-{job_href}"
-        return hashlib.md5(composite_key.encode()).hexdigest()
-
     @abstractmethod
     def get_posting_date(self):
         pass
