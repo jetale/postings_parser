@@ -4,8 +4,6 @@
 # if not mark the row to be deleted
 import logging 
 
-from tqdm import tqdm
-
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
@@ -14,6 +12,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from postings_parser.utils.database_connector import Connector, ExecutionType
 
+logging.basicConfig(level=logging.INFO)
 
 class DeleteRemoved:
 
@@ -45,7 +44,7 @@ class DeleteRemoved:
 
     def check_if_posting_exists(self, response) -> None:
         to_be_deleted: list = list()
-        for item in tqdm(response, "Checking if postings still exist"):
+        for index, item in enumerate(response):
             job_id = item[0]
             url = item[1]
             self.driver.get(url)
@@ -65,6 +64,9 @@ class DeleteRemoved:
                     to_be_deleted.append(job_id)
             except:
                 continue
+
+            if index%1000 == 0:
+                self.logger.info(f"{index} out of {len(item)} urls checked")
 
         if to_be_deleted:
             self.logger.info(f"Deleting {len(to_be_deleted)} rows from postings table" )
