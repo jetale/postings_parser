@@ -1,4 +1,4 @@
-name: dynamic-contetn-parser
+name: dynamic-content-parser
 
 on:
   workflow_dispatch
