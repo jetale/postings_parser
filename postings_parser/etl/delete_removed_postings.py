@@ -66,7 +66,7 @@ class DeleteRemoved:
                 continue
 
             if index%1000 == 0:
-                self.logger.info(f"{index} out of {len(item)} urls checked")
+                self.logger.info(f"{index} out of {len(response)} urls checked")
 
         if to_be_deleted:
             self.logger.info(f"Deleting {len(to_be_deleted)} rows from postings table" )
