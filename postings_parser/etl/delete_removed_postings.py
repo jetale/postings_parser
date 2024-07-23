@@ -48,6 +48,8 @@ class DeleteRemoved:
             element = self.driver.find_element(By.XPATH, '//*[@id="mainContent"]/div/div')
             try:
                 data_automation_id = element.get_attribute('data-automation-id')
+                if data_automation_id == "errorContainer":
+                    to_be_deleted.append(item)
                 print(data_automation_id)
             except:
                 continue
@@ -56,12 +58,14 @@ class DeleteRemoved:
                 exit()
             time.sleep(0.5)
 
+        print(to_be_deleted)
+
+
 
     def get_all_urls(self):
         select_query = """
                     SELECT job_id, posting_url 
                     FROM postings
-                    LIMIT 10
                     """
 
         response = self.conn.execute_select_query(query=select_query)
