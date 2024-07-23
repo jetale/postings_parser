@@ -34,12 +34,17 @@ class DeleteRemoved:
         for index, item in enumerate(response):
             job_id = item[0]
             url = item[1]
+            print(url)
             self.driver.get(url)
-            self.wait.until(
-                    EC.presence_of_element_located(
-                        (By.XPATH, '//li[@class="css-1vosg8"]')
+            try:
+                self.wait.until(
+                        EC.presence_of_element_located(
+                            (By.XPATH, '//div[@class="css-1vosg8"]')
+                        )
                     )
-                )
+            except:
+                print(f"timeout for url {url}")
+                continue
             element = self.driver.find_element(By.XPATH, '//*[@id="mainContent"]/div/div')
             try:
                 data_automation_id = element.get_attribute('data-automation-id')
@@ -47,7 +52,7 @@ class DeleteRemoved:
             except:
                 continue
 
-            if index == 100:
+            if index > 100:
                 exit()
             time.sleep(0.5)
 
