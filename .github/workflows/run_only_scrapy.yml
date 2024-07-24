@@ -23,5 +23,5 @@ jobs:
         -e PGPASSWORD='${{ secrets.PGPASSWORD}}' \
         -e RUN_SELENIUM='false' \
         -e RUN_SCRAPY='true' \
-        -e ACTION_TYPE='deleter' \
+        -e ACTION_TYPE='scraper' \
         postings_parser_scrapy_image
