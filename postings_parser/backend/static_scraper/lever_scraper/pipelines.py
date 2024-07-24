@@ -74,7 +74,7 @@ class LeverDeleterPipeline:
         if item["removed"]:
             self.delete_marked(item["removed_url"])
         else:
-            print(f"Not removing {item["removed_url"]}")
+            print(f"Not removing {item['removed_url']}")
 
     def delete_marked(self, url: str) -> None:
         self.logger.info("Deleting removed postings from DB")
