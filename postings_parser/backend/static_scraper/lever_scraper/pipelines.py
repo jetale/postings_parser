@@ -65,7 +65,6 @@ class LeverDeleterPipeline:
     def __init__(self) -> None:
         self.db_connector = Connector()
         self.logger = logging.getLogger("logger")
-        self.items_list = []
 
     def open_spider(self, spider) -> None:
         self.logger.info("Opening Spider: {}".format(spider.name))
@@ -73,14 +72,14 @@ class LeverDeleterPipeline:
     def process_item(self, item, spider) -> None:
         self.logger.info(f"Received item with - {item}")
         if item["removed"]:
-            self.items_list.append(item["removed_url"])
+            self.delete_marked(item["removed_url"])
 
-    def delete_marked(self) -> None:
+    def delete_marked(self, url: str) -> None:
         self.logger.info("Deleting removed postings from DB")
         delete_query = """
-                    DELETE FROM postings_new where posting_url=ANY(%s);
+                    DELETE FROM postings_new where posting_url=%s;
                     """
-        print(self.item_list)
+        print(url)
         """
         self.db_connector.execute_insert_query(
             insert_query=delete_query, 
@@ -89,7 +88,3 @@ class LeverDeleterPipeline:
             new_conn=True
         )
         """
-
-    def close_spider(self, spider) -> None:
-        self.delete_marked()
-
