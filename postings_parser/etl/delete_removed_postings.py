@@ -1,7 +1,3 @@
-# get all urls
-# visit each url one by one
-# see if the job posting exits
-# if not mark the row to be deleted
 import logging 
 
 from selenium import webdriver
@@ -63,13 +59,17 @@ class DeleteRemoved:
                     to_be_deleted.append(job_id)
             except:
                 continue
-
-            if index%1000 == 0:
+            
+            # ------- after each 1000 iterations and at the end ----------
+            if index%1000 == 0 or index == len(response)-1:
                 self.logger.info(f"{index} out of {len(response)} urls checked")
+                if to_be_deleted:
+                    self.logger.info(f"Deleting {len(to_be_deleted)} rows from postings table" )
+                    self._delete_marked(to_be_deleted=to_be_deleted)
+                    # -------- clear all deleted elements from the list --------
+                    to_be_deleted.clear()
 
-        if to_be_deleted:
-            self.logger.info(f"Deleting {len(to_be_deleted)} rows from postings table" )
-            self._delete_marked(to_be_deleted=to_be_deleted)
+        
 
 
     def _get_all_urls(self) -> None:

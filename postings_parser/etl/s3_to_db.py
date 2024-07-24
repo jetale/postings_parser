@@ -40,7 +40,7 @@ class MainDataLoader:
         
         self.bucket_name: str = "selenium-job-postings"
         self.base_path: str = "postings/"
-        self.date_dir: str 
+        self.date_dir: str = str()
         self.parsed_date: str = str()
         self.posting_data_list: list = list()
 
