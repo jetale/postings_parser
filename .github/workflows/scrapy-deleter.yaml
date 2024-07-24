@@ -1,9 +1,8 @@
-name: run_only_scrapy
+name: delete-removed-scrapy-postings
 
 on:
-  schedule:
-    - cron: '0 12,23 * * *'
-
+    workflow_dispatch
+  
 jobs:
   build:
     runs-on: ubuntu-latest

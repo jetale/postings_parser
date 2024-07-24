@@ -26,7 +26,7 @@ else
 	if [[ "$RUN_SCRAPY" == "true" ]]; then
 		echo -e "\n => Running static scrapers using scrapy"
 		cd postings_parser/backend/static_scraper/
-		python3 main_lever_scraper.py
+		python3 main_lever_scraper.py --action_type="$ACTION_TYPE"
 	fi
 
 	if [[ "$RUN_SELENIUM" == "true" ]]; then
