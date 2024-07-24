@@ -7,8 +7,9 @@ echo
 printf '%.0s#' $(seq 1 $term_width)
 
 # --------- Applying config ----------------
-cd postings_parser
+cd postings_parser/
 python3 config.py
+cd ..
 
 
 
@@ -16,7 +17,7 @@ python3 config.py
 if [[ "$ETL" == "true" ]]; then
 	# ----------- ETL jobs ----------------
 	echo -e "\n\n => Running ETL jobs"
-	cd postings_parser/etl
+	cd postings_parser/etl/
 	python3 delete_removed_postings.py
 
 else
