@@ -91,7 +91,7 @@ class ScraperSpiders:
             select_query = """
                     SELECT posting_url FROM postings_new
                     """
-        rows = self.conn.execute_select_query(select_query)
+        rows = self.connector.execute_select_query(query=select_query)
         if rows:
             return rows
         else:
