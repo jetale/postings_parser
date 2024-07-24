@@ -12,6 +12,11 @@ from postings_parser.backend.static_scraper.lever_scraper.spiders.base_spider im
 class LeverDeleterSpider(BaseSpider):
     name: str = "lever_deleter"
     allowed_domains: list[str] = ["jobs.lever.co"]
+    custom_settings = {
+                'ITEM_PIPELINES': {
+                    "lever_scraper.pipelines.LeverDeleterPipeline": 100,
+                }
+            }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

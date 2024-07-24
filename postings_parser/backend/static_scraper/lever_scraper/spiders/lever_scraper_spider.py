@@ -17,6 +17,11 @@ class LeverSpider(BaseSpider):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.spider_id = kwargs.pop("spider_id", 3)
+        custom_settings = {
+                'ITEM_PIPELINES': {
+                    "lever_scraper.pipelines.LeverScraperPipeline": 100,
+                }
+            }
 
     def parse(self, response) -> Generator[Any, Any, None]:
         parsed_date, parsed_time = self.__class__.get_date_time()
