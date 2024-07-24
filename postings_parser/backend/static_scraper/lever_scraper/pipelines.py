@@ -11,22 +11,21 @@ from postings_parser.utils.database_connector import Connector, ExecutionType
 
 
 class LeverScraperPipeline:
-    def __init__(self):
+    def __init__(self) -> None:
         self.db_connector = Connector()
-
         self.logger = logging.getLogger("logger")
-        self.hold_items_list = (
-            []
-        )  # Creating this list here because scrapy spider can only return one item. So will hold them here till all items are returned
+        # Creating this list here because scrapy spider can only return one item. 
+        # So will hold them here till all items are returned
+        self.hold_items_list = []
 
-    def open_spider(self, spider):
+    def open_spider(self, spider) -> None:
         self.logger.info("Opening Spider: {}".format(spider.name))
 
-    def process_item(self, item, spider):
+    def process_item(self, item, spider) -> None:
         self.logger.info(f"Received item with - {item}")
         self.hold_items_list.append(item)
 
-    def convert_to_list(self):
+    def convert_to_list(self) -> list[list]:
         keys_order = [
             "job_id",
             "job_title",
@@ -44,15 +43,53 @@ class LeverScraperPipeline:
         ]
         return list_ordered
 
-    def insert_data(self, postings_list):
+    def insert_data(self, postings_list) -> None:
         self.logger.info("Inserting data into DB")
         insert_query = """
                     SELECT insert_into_posting_new(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
                     """
         self.db_connector.execute_insert_query(
-            insert_query, postings_list, type_execute=ExecutionType.MANY, new_conn=True
+            insert_query=insert_query, 
+            data=postings_list, 
+            type_execute=ExecutionType.MANY,
+            new_conn=True
         )
 
-    def close_spider(self, spider):
+    def close_spider(self, spider) -> None:
         item_list = self.convert_to_list()
         self.insert_data(item_list)
+
+
+
+class LeverDeleterPipeline:
+    def __init__(self) -> None:
+        self.db_connector = Connector()
+        self.logger = logging.getLogger("logger")
+        self.items_list = []
+
+    def open_spider(self, spider) -> None:
+        self.logger.info("Opening Spider: {}".format(spider.name))
+
+    def process_item(self, item, spider) -> None:
+        self.logger.info(f"Received item with - {item}")
+        if item["removed"]:
+            self.items_list.append(item["removed_url"])
+
+    def delete_marked(self) -> None:
+        self.logger.info("Deleting removed postings from DB")
+        delete_query = """
+                    DELETE FROM postings_new where posting_url=ANY(%s);
+                    """
+        print(self.item_list)
+        """
+        self.db_connector.execute_insert_query(
+            insert_query=delete_query, 
+            data=self.items_list, 
+            type_execute=ExecutionType.MANY, 
+            new_conn=True
+        )
+        """
+
+    def close_spider(self, spider) -> None:
+        self.delete_marked()
+

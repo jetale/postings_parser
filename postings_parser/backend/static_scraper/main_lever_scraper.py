@@ -1,6 +1,8 @@
 import logging
 import multiprocessing
 import time
+import argparse
+from enum import Enum
 
 import pkg_resources
 from scrapy.crawler import CrawlerProcess
@@ -8,24 +10,36 @@ from scrapy.utils.project import get_project_settings
 
 from postings_parser.backend.static_scraper.lever_scraper.spiders.lever_scraper_spider import \
     LeverSpider
+from postings_parser.backend.static_scraper.lever_scraper.spiders.lever_deleter_spider import \
+    LeverDeleterSpider
 from postings_parser.utils.database_connector import Connector
 
 
-class StartSpiders:
-    def __init__(self):
+class ActionType(Enum):
+    SCRAPER = "scraper"
+    DELETER = "deleter"
+
+
+class ScraperSpiders:
+    def __init__(self, action) -> None:
         self.url_file_path = pkg_resources.resource_filename(
             "postings_parser", "input/cleaned_lever_urls.txt"
         )
+        self.action = action
         self.logger = logging.getLogger("logger")
-        self.url_batches = self.get_url_batches()
         self.connector = Connector()
-
+        if self.action == ActionType.SCRAPER:
+            self.spider = LeverSpider
+        elif self.action == ActionType.DELETER:
+            self.spider = LeverDeleterSpider
+        
     def start_multiprocess(self):
         process = []
-        total_batches = len(self.get_url_batches())
-        for index, batch in enumerate(self.url_batches):
+        url_batches = self.get_url_batches_from_db()
+        total_batches = len(url_batches)
+        for index, batch in enumerate(url_batches):
             time.sleep(20)
-            print(f"Starting process for batch {index} of {total_batches}")
+            self.logger.info(f"Starting process for batch {index} of {total_batches}")
             p = multiprocessing.Process(target=self.run_spiders, args=(batch,))
             process.append(p)
             p.start()
@@ -40,13 +54,10 @@ class StartSpiders:
         spider_process = CrawlerProcess(get_project_settings())
         for url in url_batch:
             self.logger.info(f"Starting process for {url}")
-            if (
-                "lever" in url
-            ):  # This is for sanity check only. All urls should be for lever.co only
-                spider_process.crawl(LeverSpider, url=url)
+            spider_process.crawl(self.spider, url=url)
         spider_process.start()
 
-    def get_url_batches(self):
+    def get_url_batches_from_file(self):
         main_list = []
         batch_list = []
         with open(self.url_file_path, "r") as input_f:
@@ -71,10 +82,15 @@ class StartSpiders:
         return main_list
 
     def execute_select_query(self):
-        select_query = """
-                SELECT url FROM site_urls
-                WHERE url_domain='lever';
-                """
+        if self.action == ActionType.SCRAPER:
+            select_query =  """
+                    SELECT url FROM site_urls
+                    WHERE url_domain='lever';
+                    """
+        elif self.action == ActionType.DELETER:
+            select_query = """
+                    SELECT posting_url FROM postings_new
+                    """
         rows = self.conn.execute_select_query(select_query)
         if rows:
             return rows
@@ -82,6 +98,15 @@ class StartSpiders:
             raise RuntimeError(f"{select_query} did not return any rows")
 
 
+
+
 if __name__ == "__main__":
-    lever_parser_obj = StartSpiders()
-    lever_parser_obj.start_multiprocess()
+    parser = argparse.ArgumentParser(description='Run scrapy scraper or deleter')
+    parser.add_argument('--action_type', type=str, help="Run either scraper or deleter. Enter 'deleter' or 'scraper'")
+
+    args = parser.parse_args()
+    action_type = ActionType(args.action_type)
+
+    ScraperSpiders(action=action_type).start_multiprocess()
+    
+

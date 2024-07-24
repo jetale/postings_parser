@@ -17,3 +17,8 @@ class JobItem(scrapy.Item):
     job_href = scrapy.Field()
     posting_date = scrapy.Field()
     commitment = scrapy.Field()
+
+
+class DeleteItem(scrapy.Item):
+    removed = scrapy.Field()
+    removed_url = scrapy.Field()

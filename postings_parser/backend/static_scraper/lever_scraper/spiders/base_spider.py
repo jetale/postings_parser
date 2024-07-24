@@ -15,11 +15,6 @@ class BaseSpider(scrapy.Spider):
         pass
 
     @staticmethod
-    def generate_unique_id(job_title, company_name, job_href) -> str:
-        composite_key: str = f"{job_title}-{company_name}-{job_href}"
-        return hashlib.md5(composite_key.encode()).hexdigest()
-
-    @staticmethod
     def get_date_time() -> tuple[str, str]:
         current_date = date.today()
         current_time = datetime.now().time()
