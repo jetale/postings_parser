@@ -10,7 +10,6 @@ from postings_parser.utils.database_connector import Connector, ExecutionType
 
 
 class DeleteRemoved:
-
     def __init__(self):
         self.logger = logging.getLogger("logger")
         chrome_options = Options()
@@ -27,7 +26,7 @@ class DeleteRemoved:
 
 
     def _delete_marked(self, to_be_deleted: list) -> None:
-        delete_query = "DELETE FROM postings WHERE job_id = ANY(%s);"
+        delete_query = "DELETE FROM postings WHERE posting_url = ANY(%s);"
         self.conn.execute_insert_query(
             insert_query = delete_query, 
             data = to_be_deleted,
@@ -40,8 +39,7 @@ class DeleteRemoved:
     def check_if_posting_exists(self, response) -> None:
         to_be_deleted: list = list()
         for index, item in enumerate(response):
-            job_id = item[0]
-            url = item[1]
+            url = item[0]
             self.driver.get(url)
             try:
                 self.wait.until(
@@ -56,7 +54,7 @@ class DeleteRemoved:
             try:
                 data_automation_id = element.get_attribute('data-automation-id')
                 if data_automation_id == "errorContainer":
-                    to_be_deleted.append(job_id)
+                    to_be_deleted.append(url)
             except:
                 continue
             
@@ -74,10 +72,9 @@ class DeleteRemoved:
 
     def _get_all_urls(self) -> None:
         select_query = """
-                    SELECT job_id, posting_url 
+                    SELECT posting_url 
                     FROM postings
                     """
-
         response = self.conn.execute_select_query(query=select_query)
         if response:
             self.check_if_posting_exists(response)
