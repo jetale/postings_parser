@@ -1,5 +1,6 @@
 import json
 import logging
+import queue
 from datetime import datetime
 from dataclasses import dataclass, fields, field
 from typing import Tuple, List
@@ -8,13 +9,15 @@ import boto3
 from botocore.config import Config
 from bs4 import BeautifulSoup as bs
 import threading
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from postings_parser.utils.general import get_stripped_url
 from postings_parser.utils.database_connector import Connector, ExecutionType
 
 
 lock = threading.Lock()
+MAX_PRODUCER_THREADS = 50
+MAX_CONSUMER_THREADS = 10
 
 @dataclass
 class PostingData:
@@ -38,22 +41,22 @@ class PostingData:
 
 class MainDataLoader:
     def __init__(self) -> None:
-        self.logger: logging.Logger = logging.getLogger("logger")
-        self.max_threads = 50
+        self.logger: logging.Logger = logging.getLogger("logger")    
         self.bucket_name: str = "selenium-job-postings"
         self.base_path: str = "postings/"
         self.date_dir: str = str()
         self.parsed_date: str = str()
         self.posting_data_list: list = list()
-
+        self.que = queue.Queue()
         client_config = Config(region_name="us-east-2")
         self.s3_connector = boto3.client('s3', config=client_config)
         self.db_connector = Connector()
 
 
-    def _insert_into_db(self, postings_list) -> None:
+    def _insert_into_db(self) -> None:
+        data_list: list = []
         insert_query = """
-                    INSERT INTO postings (
+                    INSERT INTO test_postings (
                         job_title, company, work_location, posting_url, 
                         posting_date, parsed_date, parsed_time, job_description, country, is_remote
                     )
@@ -62,13 +65,25 @@ class MainDataLoader:
                         posting_date = EXCLUDED.posting_date,
                         job_description = EXCLUDED.job_description,
                         country = EXCLUDED.country,
-                        is_remote = EXCLUDED.is_remote,
+                        is_remote = EXCLUDED.is_remote
                 """
-        self.db_connector.execute_insert_query(
-            insert_query=insert_query,
-            data=postings_list, 
-            type_execute=ExecutionType.MANY,
-            new_conn=True)
+        while True:
+            item = self.que.get()
+            if item:
+                data_list.append(item)
+            if len(data_list)==1000 or item is None:
+                self.db_connector.execute_insert_query(
+                    insert_query=insert_query,
+                    data=data_list, 
+                    type_execute=ExecutionType.MANY,
+                    new_conn=True)
+                with lock:
+                    data_list.clear()
+
+            if item is None:
+                break
+            self.que.task_done()
+         
             
     def _extract_script_elements(
             self, 
@@ -95,8 +110,9 @@ class MainDataLoader:
         #employment_type = data.get('employmentType', None)
         #req_id = data.get('identifier', {}).get('value', None)
         
-        with lock:
-            self.posting_data_list.append(posting.to_tuple())
+        self.que.put(posting.to_tuple())
+        #with lock:
+        #    self.posting_data_list.append(posting.to_tuple())
 
 
     def _extract_posting_info(self, company_name: str, url: str, posting_html: str):
@@ -132,21 +148,23 @@ class MainDataLoader:
 
 
     def _get_objects(self, objects: list) -> None:
-        batch_size = 1000
-        futures_insert: list = []
-        with ThreadPoolExecutor(self.max_threads) as executor:
-            futures = [executor.submit(self._temp_get_objects, obj) for obj in objects]
-            for future in futures:
-                future.result()
-                with lock:
-                    if len(self.posting_data_list):
-                        futures_insert.append()
-                
-  
-            for i in range(0, len(self.posting_data_list), batch_size):
-                futures_insert.append(executor.submit(self._insert_into_db, self.posting_data_list[i:i+batch_size]))
-            for future in futures_insert:
-                future.result()
+        max_threads = MAX_CONSUMER_THREADS + MAX_PRODUCER_THREADS
+        with ThreadPoolExecutor(max_threads) as executor:
+            consumers = [executor.submit(self._insert_into_db) for i in range(MAX_CONSUMER_THREADS)]
+            producers = [executor.submit(self._temp_get_objects, obj) for obj in objects]
+            
+            for t in as_completed(producers):
+                t.result()
+
+            self.que.join()
+
+            for _ in range(MAX_CONSUMER_THREADS):
+                self.que.put(None)
+
+            for ct in as_completed(consumers):
+                ct.result()
+               
+
 
     def _get_objects_list(self, date_dir: str) -> None:
         prefix: str = self.base_path + date_dir + "/" 
