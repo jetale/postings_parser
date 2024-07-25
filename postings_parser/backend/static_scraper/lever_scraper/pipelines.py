@@ -27,7 +27,6 @@ class LeverScraperPipeline:
 
     def convert_to_list(self) -> list[list]:
         keys_order = [
-            "job_id",
             "job_title",
             "company_name",
             "work_location",
@@ -46,7 +45,7 @@ class LeverScraperPipeline:
     def insert_data(self, postings_list) -> None:
         self.logger.info("Inserting data into DB")
         insert_query = """
-                    SELECT insert_into_posting_new(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+                    SELECT insert_into_posting_new(%s, %s, %s, %s, %s, %s, %s, %s, %s);
                     """
         self.db_connector.execute_insert_query(
             insert_query=insert_query, 

@@ -4,7 +4,7 @@ import scrapy
 from parsel.selector import SelectorList
 from scrapy.selector import Selector
 
-from postings_parser.utils.general import generate_unique_id
+from postings_parser.utils.general import get_stripped_url
 from postings_parser.backend.static_scraper.lever_scraper.items import JobItem
 from postings_parser.backend.static_scraper.lever_scraper.spiders.base_spider import \
     BaseSpider
@@ -50,8 +50,8 @@ class LeverSpider(BaseSpider):
 
     def parse_posting_info(self, opening, company_name, parsed_date, parsed_time):
         job_href = opening.xpath("./@href").get()
+        job_href = get_stripped_url(job_href)
         job_title = opening.xpath(".//h5/text()").get()
-        job_id = generate_unique_id(job_title, company_name, job_href)
         workplace_type = opening.xpath(
             ".//span[contains(@class, 'workplaceTypes')]/text()"
         ).get()
@@ -60,7 +60,6 @@ class LeverSpider(BaseSpider):
         ).get()
         location = opening.xpath(".//span[contains(@class, 'location')]/text()").get()
         item = JobItem(
-            job_id=job_id,
             job_title=job_title,
             company_name=company_name,
             work_location=location,

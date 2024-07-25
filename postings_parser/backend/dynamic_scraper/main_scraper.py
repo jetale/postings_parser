@@ -102,7 +102,6 @@ class RunBatches:
 
 
 if __name__ == "__main__":
-
     parser = argparse.ArgumentParser(description='Run the dynamic parser using selenium')
     parser.add_argument('--s3_bucket_name', type=str, help='Name of the S3 bucket')
     parser.add_argument('--date_parse', type=str, help='Date of parsing')

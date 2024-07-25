@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import StaleElementReferenceException, TimeoutException
 
-from postings_parser.utils.general import generate_unique_id
+from postings_parser.utils.general import get_stripped_url
 from postings_parser.backend.dynamic_scraper.base.base_scraper import \
     BaseScraper
 
@@ -115,13 +115,12 @@ class WorkdayScraper(BaseScraper):
     ) -> tuple[bool, tuple]:
         job_title_element = job_element.find_element(By.XPATH, ".//h3/a")
         job_href = job_title_element.get_attribute("href")
+        job_href = get_stripped_url(job_href)
         job_title = job_title_element.text.strip()
         location = self.get_location(job_element, job_title)
-        job_id, posted_on = self.get_jobid_and_posted_on(job_element, job_title)
-        job_id = generate_unique_id(job_title=job_title, company_name=company_name, job_href=job_href)
+        posted_on = self.get_jobid_and_posted_on(job_element, job_title)
         is_today, posted_on_date = self.get_posting_date(posted_on)
         temp_tuple = (
-            job_id,
             job_title,
             company_name,
             location,
@@ -133,19 +132,8 @@ class WorkdayScraper(BaseScraper):
         return (is_today, temp_tuple)
 
 
-    def get_jobid_and_posted_on(self, job_element, job_title) -> tuple[ str, str]:
-        job_id: str = str() 
+    def get_posted_on(self, job_element, job_title) -> str:
         posted_on: str = str()
-        try:
-            job_id_element = job_element.find_element(
-                By.XPATH, './/ul[@data-automation-id="subtitle"]/li'
-            )
-            job_id = job_id_element.text.strip()
-        except Exception as e:
-            self.logger.warning(e)
-            self.logger.warning(f"\n Did not find job_id for {job_title}")
-            self.logger.warning(job_element.get_attribute("outerHTML"))
-            self.logger.warning(job_element.text)
         try:
             posted_on_element = job_element.find_element(
                 By.XPATH,
@@ -158,7 +146,7 @@ class WorkdayScraper(BaseScraper):
             self.logger.warning(job_element.get_attribute("outerHTML"))
             self.logger.warning(job_element.text)
 
-        return (job_id, posted_on)
+        return posted_on
 
 
     def get_location(self, job_element, job_title) -> str:
