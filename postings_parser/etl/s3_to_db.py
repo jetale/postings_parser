@@ -2,20 +2,22 @@ import json
 import logging
 from datetime import datetime
 from dataclasses import dataclass, fields, field
-from typing import Tuple, List, Optional
+from typing import Tuple, List
 
 import boto3
-from tqdm import tqdm
 from botocore.config import Config
 from bs4 import BeautifulSoup as bs
+import threading
+from concurrent.futures import ThreadPoolExecutor
 
-from postings_parser.utils.general import generate_unique_id
+from postings_parser.utils.general import get_stripped_url
 from postings_parser.utils.database_connector import Connector, ExecutionType
 
 
+lock = threading.Lock()
+
 @dataclass
 class PostingData:
-    job_id: str = field(default=str())
     job_title: str = field(default=str())
     company: str = field(default=str())
     work_location: str = field(default=str())
@@ -37,7 +39,7 @@ class PostingData:
 class MainDataLoader:
     def __init__(self) -> None:
         self.logger: logging.Logger = logging.getLogger("logger")
-        
+        self.max_threads = 50
         self.bucket_name: str = "selenium-job-postings"
         self.base_path: str = "postings/"
         self.date_dir: str = str()
@@ -49,26 +51,25 @@ class MainDataLoader:
         self.db_connector = Connector()
 
 
-    def _insert_into_db(self) -> None:
+    def _insert_into_db(self, postings_list) -> None:
         insert_query = """
                     INSERT INTO postings (
-                        job_id, job_title, company, work_location, posting_url, 
+                        job_title, company, work_location, posting_url, 
                         posting_date, parsed_date, parsed_time, job_description, country, is_remote
                     )
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                    ON CONFLICT (job_id) DO UPDATE SET
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    ON CONFLICT (posting_url) DO UPDATE SET
                         posting_date = EXCLUDED.posting_date,
                         job_description = EXCLUDED.job_description,
                         country = EXCLUDED.country,
                         is_remote = EXCLUDED.is_remote,
-                        posting_url = EXCLUDED.posting_url;
                 """
         self.db_connector.execute_insert_query(
             insert_query=insert_query,
-            data=self.posting_data_list, 
+            data=postings_list, 
             type_execute=ExecutionType.MANY,
             new_conn=True)
-
+            
     def _extract_script_elements(
             self, 
             url,
@@ -90,15 +91,12 @@ class MainDataLoader:
         posting.is_remote = data.get('jobLocationType', None)
         posting.posting_date = data.get('datePosted', None)
         posting.parsed_date = self.parsed_date
-        posting.posting_url = url
+        posting.posting_url = get_stripped_url(url=url)
         #employment_type = data.get('employmentType', None)
         #req_id = data.get('identifier', {}).get('value', None)
-        posting.job_id = generate_unique_id(
-            job_title=posting.job_title, 
-            company_name=company_name,
-            job_href=url)
         
-        self.posting_data_list.append(posting.to_tuple())
+        with lock:
+            self.posting_data_list.append(posting.to_tuple())
 
 
     def _extract_posting_info(self, company_name: str, url: str, posting_html: str):
@@ -128,11 +126,27 @@ class MainDataLoader:
                 posting_html=val)
   
 
+    def _temp_get_objects(self, obj):
+        file_obj = self.s3_connector.get_object(Bucket=self.bucket_name, Key=obj)
+        self._parse_object(file_obj) 
+
+
     def _get_objects(self, objects: list) -> None:
-        for obj in tqdm(objects, "Parsing Objects"):
-            file_obj = self.s3_connector.get_object(Bucket=self.bucket_name, Key=obj)
-            self._parse_object(file_obj) 
-        self._insert_into_db()
+        batch_size = 1000
+        futures_insert: list = []
+        with ThreadPoolExecutor(self.max_threads) as executor:
+            futures = [executor.submit(self._temp_get_objects, obj) for obj in objects]
+            for future in futures:
+                future.result()
+                with lock:
+                    if len(self.posting_data_list):
+                        futures_insert.append()
+                
+  
+            for i in range(0, len(self.posting_data_list), batch_size):
+                futures_insert.append(executor.submit(self._insert_into_db, self.posting_data_list[i:i+batch_size]))
+            for future in futures_insert:
+                future.result()
 
     def _get_objects_list(self, date_dir: str) -> None:
         prefix: str = self.base_path + date_dir + "/" 
@@ -162,7 +176,8 @@ class MainDataLoader:
                     date_directories.append(cp['Prefix'].split('/')[-2])
         
         return date_directories
-    
+
+ 
     def _get_latest_date_directory(self)-> None:
         date_directories: list = self._list_date_directories()
         date_directories.sort(reverse=True, key=lambda date: datetime.strptime(date, '%Y-%m-%d'))
