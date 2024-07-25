@@ -9,8 +9,11 @@ def generate_unique_id(job_title, company_name, job_href) -> str:
         composite_key = f"{job_title}-{company_name}-{job_href}"
         return hashlib.md5(composite_key.encode()).hexdigest()
 
+def get_stripped_url(url: str) -> str:
+        url = url.strip()
+        return url
 
-def get_date_time():
+def get_date_time() -> tuple[str, str]:
         current_date = date.today()
         current_time = datetime.now().time()
         formatted_date = current_date.strftime("%Y-%m-%d")
