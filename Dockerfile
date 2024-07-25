@@ -21,7 +21,7 @@ COPY requirements.txt /app/
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-RUN wget --no-verbose -O chromedriver_linux64.zip https://storage.googleapis.com/chrome-for-testing-public/126.0.6478.61/linux64/chromedriver-linux64.zip \
+RUN wget --no-verbose -O chromedriver_linux64.zip https://storage.googleapis.com/chrome-for-testing-public/127.0.6533.72/linux64/chromedriver-linux64.zip \
     && unzip chromedriver_linux64.zip \
     && mv chromedriver-linux64/chromedriver /usr/bin/chromedriver \
     && chown root:root /usr/bin/chromedriver \
