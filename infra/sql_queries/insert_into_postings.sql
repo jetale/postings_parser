@@ -1,5 +1,4 @@
 CREATE OR REPLACE FUNCTION insert_into_posting(
-    p_job_id VARCHAR,
     p_job_title VARCHAR,
     p_company VARCHAR,
     p_work_location VARCHAR,
@@ -11,7 +10,6 @@ CREATE OR REPLACE FUNCTION insert_into_posting(
 RETURNS VOID AS $$
 BEGIN
     INSERT INTO postings (
-        job_id,
         job_title,
         company,
         work_location,
@@ -20,7 +18,6 @@ BEGIN
         parsed_date,
         parsed_time
     ) VALUES (
-        p_job_id,
         p_job_title,
         p_company,
         p_work_location,
@@ -29,6 +26,6 @@ BEGIN
         p_parsed_date,
         p_parsed_time
     )
-    ON CONFLICT (job_id) DO NOTHING;
+    ON CONFLICT (posting_url) DO NOTHING;
 END;
 $$ LANGUAGE plpgsql;
