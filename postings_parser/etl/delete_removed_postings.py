@@ -22,7 +22,7 @@ class DeleteRemoved:
             "profile.managed_default_content_settings.images": 2
         }
         self.driver = webdriver.Chrome(options=chrome_options)
-        self.wait = WebDriverWait(driver=self.driver, timeout=20)  
+        self.wait = WebDriverWait(driver=self.driver, timeout=10)  
         self.conn = Connector()
 
 
