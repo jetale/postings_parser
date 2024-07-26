@@ -8,6 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from postings_parser.utils.database_connector import Connector, ExecutionType
 
+logging.basicConfig(level=logging.INFO)
 
 class DeleteRemoved:
     def __init__(self):
@@ -39,6 +40,7 @@ class DeleteRemoved:
 
     def check_if_posting_exists(self, response) -> None:
         to_be_deleted: list = list()
+        total: int = 0
         for index, item in enumerate(response):
             url = item[0]
             try:
@@ -68,11 +70,14 @@ class DeleteRemoved:
             if index%100 == 0 or index == len(response)-1:
                 self.logger.info(f"{index} out of {len(response)} urls checked")
                 if to_be_deleted:
+
                     self.logger.info(f"Deleting {len(to_be_deleted)} rows from postings table" )
                     self._delete_marked(to_be_deleted=to_be_deleted)
                     # -------- clear all deleted elements from the list --------
+                    total += len(to_be_deleted)
                     to_be_deleted.clear()
 
+        self.logger.info(f"Attampted to delete {total} rows")
         
 
 
