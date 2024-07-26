@@ -21,7 +21,7 @@ class DeleteRemoved:
             "profile.managed_default_content_settings.images": 2
         }
         self.driver = webdriver.Chrome(options=chrome_options)
-        self.wait = WebDriverWait(driver=self.driver, timeout=20)  # Adjust the timeout as needed
+        self.wait = WebDriverWait(driver=self.driver, timeout=20)  
         self.conn = Connector()
 
 
@@ -30,7 +30,7 @@ class DeleteRemoved:
         self.conn.execute_insert_query(
             insert_query = delete_query, 
             data = to_be_deleted,
-            type_execute = ExecutionType.MANY,
+            type_execute = ExecutionType.SINGLE,
             new_conn = True
             )
         self.logger.info(f"Deleted {len(to_be_deleted)} rows successfully")
@@ -58,8 +58,8 @@ class DeleteRemoved:
             except:
                 continue
             
-            # ------- after each 1000 iterations and at the end ----------
-            if index%1000 == 0 or index == len(response)-1:
+            # ------- after each 100 iterations and at the end ----------
+            if index%100 == 0 or index == len(response)-1:
                 self.logger.info(f"{index} out of {len(response)} urls checked")
                 if to_be_deleted:
                     self.logger.info(f"Deleting {len(to_be_deleted)} rows from postings table" )
