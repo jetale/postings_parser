@@ -27,13 +27,12 @@ class DeleteRemoved:
 
     def _delete_marked(self, to_be_deleted: list) -> None:
         delete_query = "DELETE FROM postings WHERE posting_url = ANY(%s);"
-        print(to_be_deleted)
-        #self.conn.execute_insert_query(
-        #    insert_query = delete_query, 
-        #    data = to_be_deleted,
-        #    type_execute = ExecutionType.SINGLE,
-        #    new_conn = True
-        #    )
+        self.conn.execute_insert_query(
+            insert_query = delete_query, 
+            data = (to_be_deleted,),
+            type_execute = ExecutionType.SINGLE,
+            new_conn = True
+            )
         self.logger.info(f"Deleted {len(to_be_deleted)} rows successfully")
 
 
