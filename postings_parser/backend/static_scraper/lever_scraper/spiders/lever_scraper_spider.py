@@ -13,15 +13,16 @@ from postings_parser.backend.static_scraper.lever_scraper.spiders.base_spider im
 class LeverSpider(BaseSpider):
     name: str = "lever_postings"
     allowed_domains: list[str] = ["jobs.lever.co"]
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.spider_id = kwargs.pop("spider_id", 3)
-        custom_settings = {
+    custom_settings = {
                 'ITEM_PIPELINES': {
                     "lever_scraper.pipelines.LeverScraperPipeline": 100,
                 }
             }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.spider_id = kwargs.pop("spider_id", 3)
+        
 
     def parse(self, response) -> Generator[Any, Any, None]:
         parsed_date, parsed_time = self.__class__.get_date_time()
