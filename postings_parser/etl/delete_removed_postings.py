@@ -34,13 +34,19 @@ class DeleteRemoved:
             new_conn = True
             )
         self.logger.info(f"Deleted {len(to_be_deleted)} rows successfully")
+        # count before - 273311
 
 
     def check_if_posting_exists(self, response) -> None:
         to_be_deleted: list = list()
         for index, item in enumerate(response):
             url = item[0]
-            self.driver.get(url)
+            try:
+                self.driver.get(url)
+            except Exception as e:
+                self.logger.warning(f"driver.get timeout for url - {url}")
+                continue
+
             try:
                 self.wait.until(
                         EC.presence_of_element_located(
