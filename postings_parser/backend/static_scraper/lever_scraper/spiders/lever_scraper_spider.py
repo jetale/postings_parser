@@ -80,6 +80,7 @@ class LeverSpider(BaseSpider):
         label_department = stratified_selector.xpath(
             f"//div[contains(@class, 'large-category-label')]/text()"
         )
+        secondary_string: str = str()
         if index == 0:
             if len(potential_primary_department) == 0:
                 secondary_string = "label"
