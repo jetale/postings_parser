@@ -39,7 +39,7 @@ class LeverDeleterAction:
         self.query: str = """
                     SELECT posting_url FROM postings_new
                     """
-        self.sleep_time: int = 5
+        self.sleep_time: int = 10
 
 class WorkdayDeleterAction:
     def __init__(self) -> None:
@@ -47,7 +47,7 @@ class WorkdayDeleterAction:
         self.query: str = """
                     SELECT posting_url FROM postings
                     """
-        self.sleep_time: int = 5
+        self.sleep_time: int = 20
 
 class ScraperSpiders:
     def __init__(self, action) -> None:
