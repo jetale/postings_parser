@@ -30,6 +30,7 @@ class ScraperAction:
                     SELECT url FROM site_urls
                     WHERE url_domain='lever';
                     """
+        self.sleep_time: int = 20
 
 
 class LeverDeleterAction:
@@ -38,15 +39,15 @@ class LeverDeleterAction:
         self.query: str = """
                     SELECT posting_url FROM postings_new
                     """
-
+        self.sleep_time: int = 5
 
 class WorkdayDeleterAction:
-    def __init__(self):
+    def __init__(self) -> None:
         self.spider = WorkdayDeleterSpider
         self.query: str = """
                     SELECT posting_url FROM postings
                     """
-
+        self.sleep_time: int = 5
 
 class ScraperSpiders:
     def __init__(self, action) -> None:
@@ -63,7 +64,7 @@ class ScraperSpiders:
         url_batches = self.get_url_batches_from_db()
         total_batches = len(url_batches)
         for index, batch in enumerate(url_batches):
-            time.sleep(20)
+            time.sleep(self.action.sleep_time)
             self.logger.info(f"Starting process for batch {index} of {total_batches}")
             p = multiprocessing.Process(target=self.run_spiders, args=(batch,))
             process.append(p)
