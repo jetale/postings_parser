@@ -1,4 +1,4 @@
-name: delete-removed-scrapy-postings
+name: delete-removed-workday-postings
 
 on:
     workflow_dispatch
@@ -22,5 +22,5 @@ jobs:
         -e PGPASSWORD='${{ secrets.PGPASSWORD}}' \
         -e RUN_SELENIUM='false' \
         -e RUN_SCRAPY='true' \
-        -e ACTION_TYPE='ldeleter' \
+        -e ACTION_TYPE='wdeleter' \
         postings_parser_scrapy_image
