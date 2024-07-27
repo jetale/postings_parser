@@ -12,12 +12,40 @@ from postings_parser.backend.static_scraper.lever_scraper.spiders.lever_scraper_
     LeverSpider
 from postings_parser.backend.static_scraper.lever_scraper.spiders.lever_deleter_spider import \
     LeverDeleterSpider
+from postings_parser.backend.static_scraper.lever_scraper.spiders.workday_deleter_spider import \
+    WorkdayDeleterSpider
 from postings_parser.utils.database_connector import Connector
 
 
 class ActionType(Enum):
     SCRAPER = "scraper"
-    DELETER = "deleter"
+    LEVER_DELETER = "ldeleter"
+    WORKDAY_DELETER = "wdeleter"
+
+
+class ScraperAction:
+    def __init__(self) -> None:
+        self.spider = LeverSpider
+        self.query: str = """
+                    SELECT url FROM site_urls
+                    WHERE url_domain='lever';
+                    """
+
+
+class LeverDeleterAction:
+    def __init__(self) -> None:
+        self.spider = LeverDeleterSpider
+        self.query: str = """
+                    SELECT posting_url FROM postings_new
+                    """
+
+
+class WorkdayDeleterAction:
+    def __init__(self):
+        self.spider = WorkdayDeleterSpider
+        self.query: str = """
+                    SELECT posting_url FROM postings
+                    """
 
 
 class ScraperSpiders:
@@ -28,10 +56,7 @@ class ScraperSpiders:
         self.action = action
         self.logger = logging.getLogger("logger")
         self.connector = Connector()
-        if self.action == ActionType.SCRAPER:
-            self.spider = LeverSpider
-        elif self.action == ActionType.DELETER:
-            self.spider = LeverDeleterSpider
+        self.spider = action.spider
         
     def start_multiprocess(self):
         process = []
@@ -82,15 +107,7 @@ class ScraperSpiders:
         return main_list
 
     def execute_select_query(self):
-        if self.action == ActionType.SCRAPER:
-            select_query =  """
-                    SELECT url FROM site_urls
-                    WHERE url_domain='lever';
-                    """
-        elif self.action == ActionType.DELETER:
-            select_query = """
-                    SELECT posting_url FROM postings_new
-                    """
+        select_query = self.action.query
         rows = self.connector.execute_select_query(query=select_query)
         if rows:
             return rows
@@ -103,10 +120,16 @@ class ScraperSpiders:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Run scrapy scraper or deleter')
     parser.add_argument('--action_type', type=str, help="Run either scraper or deleter. Enter 'deleter' or 'scraper'")
-
     args = parser.parse_args()
     action_type = ActionType(args.action_type)
 
-    ScraperSpiders(action=action_type).start_multiprocess()
+    if action_type == ActionType.SCRAPER:
+        action_obj = ScraperAction()
+    elif action_type == ActionType.LEVER_DELETER:
+        action_obj = LeverDeleterAction()
+    elif action_type == ActionType.WORKDAY_DELETER:
+        action_obj = WorkdayDeleterAction()
+
+    ScraperSpiders(action=action_obj).start_multiprocess()
     
 
