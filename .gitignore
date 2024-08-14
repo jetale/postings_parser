@@ -4,9 +4,6 @@ workspace.code-workspace
 # Local TODO list
 local_todo.txt
 
-# Local todo list
-local_todo.txt
-
 # Ignore txt file in input dir
 postings_parser/input/*.txt
 postings_parser/input/*.csv
